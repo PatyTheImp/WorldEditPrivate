@@ -4,17 +4,17 @@
 
 ## Software Engineering 2024/2025
 
-Student number - Student name - github identifier
+60593 - Nuno Duarte - Nux404
 
-Student number - Student name - github identifier
+62111 - Patrícia Costa - PatyTheImp
 
-Student number - Student name - github identifier
+62909 - Guilherme Simões - GaqSimoes
 
-Student number - Student name - github identifier
+65330 - Daniel Agostinho - AgostinhoPT
 
-Student number - Student name - github identifier
+65969 - Miguel Flor - miguelflor
 
-Student number - Student name - github identifier
+66081 - Nelson Martins - theOnlyNelsu
 
 All the Software Engineering 2024/2025 project documentation is placed under the folder SE202425.
 
