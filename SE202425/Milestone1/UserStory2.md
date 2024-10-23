@@ -1,7 +1,8 @@
 # User story 2
 ## Author(s)
-Add author(s) here
+Guilherme Simões
 ## Reviewer(s)
-Add reviewer(s) here
+Todos os membros do grupo
 # User story
-As a ... I want to ... so that ...
+As a builder,
+I want to have a tool that chooses a random build from a set of schematics so that I have more diversity and naturality on my builds.
