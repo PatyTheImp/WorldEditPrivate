@@ -1,7 +1,9 @@
-# User story 3
+# Generate animals - User Story
 ## Author(s)
-Add author(s) here
+Daniel Agostinho
+
+Patrícia Costa
 ## Reviewer(s)
-Add reviewer(s) here
+All group members
 # User story
-As a ... I want to ... so that ...
+As an animal lover, I want a tool that allows me to spawn and place specific animals in a selected area, so that I can create themed environments or ecosystems with precise control over animal placement and population density.
