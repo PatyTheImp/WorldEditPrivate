@@ -1,7 +1,7 @@
-# User story 1
+# Frame-like Walls - User story
 ## Author(s)
-Add author(s) here
+Patrícia Costa
 ## Reviewer(s)
-Add reviewer(s) here
+All group members
 # User story
-As a ... I want to ... so that ...
+As an architect, I want a tool that allows me to create frame-like faces and walls with adjustable thickness, so that I can design detailed structures, windows, doors, and decorative elements with precise control over the frame dimensions.
