@@ -1,6 +1,6 @@
 # Scrum masters log
-1. student name 1
-2. 
+1. Daniel Agostinho (65330)
+2. Miguel Flor (65969)
 3.
 4.
 5.
