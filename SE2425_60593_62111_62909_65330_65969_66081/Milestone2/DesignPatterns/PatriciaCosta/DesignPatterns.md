@@ -28,9 +28,9 @@
 - **Package:** `com.sk89q.worldedit`
 - **Class:** `WorldEdit`
 - **Fields and Methods:**
-    - `private static final WorldEdit instance` – Defines the single instance.
-    - `private WorldEdit()` – Private constructor restricts instantiation.
-    - `public static WorldEdit getInstance()` – Provides access to the instance.
+    - `private static final WorldEdit instance` : Defines the single instance.
+    - `private WorldEdit()` : Private constructor restricts instantiation.
+    - `public static WorldEdit getInstance()` : Provides access to the instance.
 
 ## 4. Discussion:
 
@@ -156,3 +156,81 @@ This implementation demonstrates the Observer pattern by allowing `EventBus` to 
 The `EventHandler` class, as an **abstract observer**, defines how events should be processed, while the `MethodHandleEventHandler` provides a **concrete implementation** that uses dynamic invocation to handle events. <br>
 This structure supports flexibility and modularity, allowing various observers to respond to events in their own ways without modifying the `EventBus`.
 
+# Design Pattern 3 (Strategy)
+
+## 1. Code snippet:
+
+### Mask (Strategy Interface):
+
+    public interface Mask {
+        boolean test(BlockVector3 vector); // Strategy method
+
+        // Other methods
+    }
+
+### BlockMask (Concrete Strategy Class):
+
+    public class BlockMask extends AbstractExtentMask {
+        // Contructor and other methods and fields
+
+        @Override
+        public boolean test(BlockVector3 vector) {
+            BlockState block = getExtent().getBlock(vector);
+            for (BaseBlock testBlock : blocks) {
+                if (testBlock.equalsFuzzy(block)) { // Criteria specific to block matching
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+### BiomeMask (Concrete Strategy Class):
+
+    public class BiomeMask extends AbstractMask {
+        // Contructor and other methods and fields
+
+        @Override
+        public boolean test(BlockVector3 vector) {
+            BiomeType biome = extent.getBiome(vector);
+            return biomes.contains(biome); // Criteria specific to biome matching
+        }
+
+    }
+
+### RecursiveVisitor (Context Class):
+
+    public class RecursiveVisitor extends BreadthFirstSearch {
+
+        private final Mask mask;
+
+        @Override
+        protected boolean isVisitable(BlockVector3 from, BlockVector3 to) {
+            return mask.test(to); // Delegates to the Mask strategy for block visitation criteria
+        }
+    }
+
+## 2. Class diagram:
+
+![Strategy Class Diagram](StrategyClassDiagram.png)
+
+## 3. Location on the codebase:
+
+- **Package:** `com.sk89q.worldedit.function.mask`
+- **Interface, Classes and Methods:**
+    - `Mask`
+        - `test(BlockVector3 vector)`: Strategy method.
+    - `BlockMask`
+        - `test(BlockVector3 vector)`: Concrete implementation specific to block matching.
+    - `BiomeMask`
+        - `test(BlockVector3 vector)`: Concrete implementation specific to biome matching.
+
+- **Package:** `com.sk89q.worldedit.function.visitor`    
+    - **Class:** `RecursiveVisitor`
+        - **Method:** `isVisitable(BlockVector3 from, BlockVector3 to)`: Delegates to the Mask strategy for block visitation criteria
+
+## 4. Discussion:
+
+This implementation demonstrates the **Strategy pattern** by allowing `RecursiveVisitor` to act as the **context** that delegates the decision-making for block visitation to the `Mask` interface, which acts as a **strategy**. <br>
+By using different `Mask` **implementations** (e.g. `BlockMask`, `BiomeMask`), `RecursiveVisitor` can apply various criteria for determining if a block should be visited without changing its own logic. <br>
+This setup allows `RecursiveVisitor` to adapt its behavior dynamically by swapping out `Mask` **strategies**, making it flexible and easy to extend with new visitation criteria.
