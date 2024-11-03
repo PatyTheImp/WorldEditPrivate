@@ -76,7 +76,7 @@ To address the "**God Class**" smell in `EditSession`, the responsibilities can 
     - After moving these methods, `EditSession` will focus on managing basic block manipulation and session management (e.g., managing the session lifecycle and setting block limits).
     - **Benefit:** The refactored `EditSession` is now focused on managing the core editing session, with other responsibilities delegated to more specific classes.
 
-# Code Smell 1 (Feature Envy)
+# Code Smell 2 (Feature Envy)
 
 ## 1. Code snippet:
 
@@ -139,3 +139,100 @@ The **high Response for Class (RFC) value of 194** in `LocalSession` suggests it
 1. **Create, the already proposed, class** called `HistoryManager`, which will be responsible for handling undo and redo operations.
 2. **Encapsulate the logic** for undo and redo in this helper class, removing the need for `LocalSession` to directly manipulate `EditSession` instances for these operations.
 3. **Delegate** the undo and redo calls from `LocalSession` to `HistoryManager`, thereby reducing the dependency on `EditSession`.
+
+# Code Smell 3 (Long Method)
+
+## 1. Code snippet:
+
+`get` method:
+
+    public synchronized LocalSession get(SessionOwner owner) {
+        checkNotNull(owner);
+
+        LocalSession session = getIfPresent(owner);
+        LocalConfiguration config = worldEdit.getConfiguration();
+        SessionKey sessionKey = owner.getSessionKey();
+
+        // No session exists yet -- create one
+        if (session == null) {
+            try {
+                session = store.load(getKey(sessionKey));
+                session.postLoad();
+            } catch (IOException e) {
+                LOGGER.warn("Failed to load saved session", e);
+                session = new LocalSession();
+            }
+            Request.request().setSession(session);
+
+            session.setConfiguration(config);
+            session.setBlockChangeLimit(config.defaultChangeLimit);
+            session.setTimeout(config.calculationTimeout);
+            try {
+                String sessionItem = session.isWandItemDefault() ? null : session.getWandItem();
+                setDefaultWand(sessionItem, config.wandItem, session, new SelectionWand());
+            } catch (InvalidToolBindException e) {
+                if (warnedInvalidTool.add("selwand")) {
+                    LOGGER.warn("Invalid selection wand tool set in config. Tool will not be assigned: " + e.getItemType());
+                }
+            }
+            try {
+                String sessionItem = session.isNavWandItemDefault() ? null : session.getNavWandItem();
+                setDefaultWand(sessionItem, config.navigationWand, session, new NavigationWand());
+            } catch (InvalidToolBindException e) {
+                if (warnedInvalidTool.add("navwand")) {
+                    LOGGER.warn("Invalid navigation wand tool set in config. Tool will not be assigned: " + e.getItemType());
+                }
+            }
+            session.compareAndResetDirty();
+
+            // Remember the session regardless of if it's currently active or not.
+            // And have the SessionTracker FLUSH inactive sessions.
+            sessions.put(getKey(owner), new SessionHolder(sessionKey, session));
+        }
+
+        if (shouldBoundLimit(owner, "worldedit.limit.unrestricted", session.getBlockChangeLimit(), config.maxChangeLimit)) {
+            session.setBlockChangeLimit(config.maxChangeLimit);
+        }
+        if (shouldBoundLimit(owner, "worldedit.timeout.unrestricted", session.getTimeout(), config.maxCalculationTimeout)) {
+            session.setTimeout(config.maxCalculationTimeout);
+        }
+
+        // Have the session use inventory if it's enabled and the owner
+        // doesn't have an override
+        session.setUseInventory(config.useInventory
+                && !(config.useInventoryOverride
+                && (owner.hasPermission("worldedit.inventory.unrestricted")
+                || (config.useInventoryCreativeOverride && (!(owner instanceof Player) || ((Player) owner).getGameMode() == GameModes.CREATIVE)))));
+
+        // Force non-locatable actors to use placeAtPos1
+        if (!(owner instanceof Locatable)) {
+            session.setPlacement(new Placement(PlacementType.POS1, BlockVector3.ZERO));
+        }
+
+        return session;
+    }
+
+## 2. Location on the codebase:
+
+- **Package:** `com.sk89q.worldedit.session`
+- **Class:** `SessionManager`
+
+## 3. Explanation:
+
+The `get` method performs multiple responsibilities, including:
+- Checking and retrieving an existing session.
+- Loading session configurations and handling exceptions.
+- Configuring various session properties (inventory, permissions, tool settings).
+- Adding the session to a collection.
+
+This violates the **Single Responsibility Principle** because the `get` method is handling both session retrieval and session configuration. A long method like this also affects readability and maintainability.
+
+## 4. Proposal of a refactoring:
+
+Break down the `get` method into smaller, more focused private methods within `SessionManager`, such as:
+
+- `retrieveOrLoadSession(SessionOwner owner)`
+- `configureSessionSettings(LocalSession session, SessionOwner owner)`
+- `addSessionToCollection(LocalSession session, SessionOwner owner)`
+
+This would improve readability and make each method easier to understand and maintain.
