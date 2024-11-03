@@ -30,7 +30,7 @@ The boxplot chart outliers also suggest potential violations of the **Single Res
 
 ### Relation with code smell:
 
-TODO
+A WMC of 397 indicates that the `EditSession` class has a very high number of methods, contributing to its complexity and lack of cohesion. This high WMC score is typical of a **God Class** because it suggests that `EditSession` is doing too much on its own, handling numerous responsibilities that should ideally be distributed across multiple, smaller classes. <br>
 
 ## 2. Depth of Inheritance Tree:
 
@@ -105,8 +105,10 @@ Additionally, inherited methods are counted, but overridden methods are not, bec
 
 ### Potential trouble spots:
 
-**High RFC** values can lead to difficult maintenance and testing, as these classes are more interconnected and harder to isolate, indicating possible **God Class** or **Feature Envy** code smells. <br>
+**High RFC** values can lead to difficult maintenance and testing, as these classes are more interconnected and harder to isolate. <br>
 The worst case seem to be the `PaperweightAdapter` class, in the `com.sk89q.worldedit.bukkit.adapter.impl.v1_20_R4` package, with a RFC of 409. <br>
 The boxplot chart shows that the **Long Method** profile has the most outliers, with RFC values significantly exceeding the typical range. This indicates that classes associated with this profile tend to have a large number of method calls or complex interactions within methods, aligning with the characteristics of a long method code smell. Such high RFC values suggest that these methods are likely doing too much or interacting extensively with other components, which can lead to maintenance difficulties and reduced modularity.
 
+### Relation with code smell:
 
+The **high Response for Class (RFC) value of 194** in `LocalSession` suggests it's doing too much and relies heavily on methods from other classes, especially `EditSession`. This reliance reflects the **Feature Envy** smell, as `LocalSession` frequently accesses external methods, indicating it's overextended and lacks cohesion.
