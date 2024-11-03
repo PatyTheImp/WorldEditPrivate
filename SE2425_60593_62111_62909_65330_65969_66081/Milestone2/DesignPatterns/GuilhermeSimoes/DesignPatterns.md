@@ -170,7 +170,7 @@ type of direction conversion.
 
     public class EditSession implements Extent, AutoCloseable {
 
-        // Constructor, parameters, methods and other fields
+        // Constructor, methods and other fields
 
         public int deformRegion(final Region region, final Vector3 zero, final Vector3 unit, final Expression expression,
                             final int timeout) throws ExpressionException, MaxChangedBlocksException {
@@ -241,3 +241,187 @@ type of direction conversion.
 ## 4 - Discussion
 
 The `DoubleArrayList` class relates to the Iterator Pattern in several ways, particularly in how it allows iteration over its elements through the `ForwardEntryIterator` and `ReverseEntryIterator` classes. The `deformRegion` method effectively utilizes this pattern to manage and apply changes to a region.
+
+
+
+# Design Pattern 3 - Abstract Factory Pattern
+
+## 1 - Code Snippets:
+
+### AbstractFactory.java
+
+    public abstract class AbstractFactory<E> {
+    
+        protected final WorldEdit worldEdit;
+        private final List<InputParser<E>> parsers = new ArrayList<>();
+    
+        /**
+         * Create a new factory.
+         *
+         * @param worldEdit the WorldEdit instance
+         * @param defaultParser the parser to fall back to
+         */
+        protected AbstractFactory(WorldEdit worldEdit, InputParser<E> defaultParser) {
+            checkNotNull(worldEdit);
+            checkNotNull(defaultParser);
+            this.worldEdit = worldEdit;
+            this.parsers.add(defaultParser);
+        }
+        // Other methods and fields
+
+### PatternFactory.java
+
+    public final class PatternFactory extends AbstractFactory<Pattern> {
+    
+        /**
+         * Create a new instance.
+         *
+         * @param worldEdit the WorldEdit instance
+         */
+        public PatternFactory(WorldEdit worldEdit) {
+            super(worldEdit, new SingleBlockPatternParser(worldEdit));
+    
+            // split and parse each sub-pattern
+            register(new RandomPatternParser(worldEdit));
+    
+            // individual patterns
+            register(new ClipboardPatternParser(worldEdit));
+            register(new TypeOrStateApplyingPatternParser(worldEdit));
+            register(new RandomStatePatternParser(worldEdit));
+            register(new BlockCategoryPatternParser(worldEdit));
+        }
+    
+    }
+
+### MaskFactory.java
+    
+    public final class MaskFactory extends AbstractFactory<Mask> {
+    
+        /**
+         * Create a new mask registry.
+         *
+         * @param worldEdit the WorldEdit instance
+         */
+        public MaskFactory(WorldEdit worldEdit) {
+            super(worldEdit, new BlocksMaskParser(worldEdit));
+    
+            register(new ExistingMaskParser(worldEdit));
+            register(new AirMaskParser(worldEdit));
+            register(new ExposedMaskParser(worldEdit));
+            register(new SolidMaskParser(worldEdit));
+            register(new LazyRegionMaskParser(worldEdit));
+            register(new RegionMaskParser(worldEdit));
+            register(new OffsetMaskParser(worldEdit));
+            register(new NoiseMaskParser(worldEdit));
+            register(new BlockStateMaskParser(worldEdit));
+            register(new NegateMaskParser(worldEdit));
+            register(new ExpressionMaskParser(worldEdit));
+    
+            register(new BlockCategoryMaskParser(worldEdit));
+            register(new BiomeMaskParser(worldEdit));
+        }
+        // Other methods and fields
+
+### BlockFactory.java
+
+    public class BlockFactory extends AbstractFactory<BaseBlock> {
+    
+        /**
+         * Create a new instance.
+         *
+         * @param worldEdit the WorldEdit instance.
+         */
+        public BlockFactory(WorldEdit worldEdit) {
+            super(worldEdit, new DefaultBlockParser(worldEdit));
+        }
+        // Other methods and fields
+    }
+
+### ItemFactory.java
+
+    public class ItemFactory extends AbstractFactory<BaseItem> {
+    
+        /**
+         * Create a new instance.
+         *
+         * @param worldEdit the WorldEdit instance.
+         */
+        public ItemFactory(WorldEdit worldEdit) {
+            super(worldEdit, new DefaultItemParser(worldEdit));
+        }
+    
+    }
+
+### WorldEdit.java
+
+    public final class WorldEdit {
+        private final BlockFactory blockFactory = new BlockFactory(this);
+        private final ItemFactory itemFactory = new ItemFactory(this);
+        private final MaskFactory maskFactory = new MaskFactory(this);
+        private final PatternFactory patternFactory = new PatternFactory(this);
+
+        // Instances, constructors and methods... 
+    
+            /**
+         * Get the block factory from which new {@link BlockStateHolder}s can be
+         * constructed.
+         *
+         * @return the block factory
+         */
+        public BlockFactory getBlockFactory() {
+            return blockFactory;
+        }
+    
+        /**
+         * Get the item factory from which new {@link BaseItem}s can be
+         * constructed.
+         *
+         * @return the item factory
+         */
+        public ItemFactory getItemFactory() {
+            return itemFactory;
+        }
+    
+        /**
+         * Get the mask factory from which new {@link Mask}s
+         * can be constructed.
+         *
+         * @return the mask factory
+         */
+        public MaskFactory getMaskFactory() {
+            return maskFactory;
+        }
+    
+        /**
+         * Get the pattern factory from which new {@link Pattern}s
+         * can be constructed.
+         *
+         * @return the pattern factory
+         */
+        public PatternFactory getPatternFactory() {
+            return patternFactory;
+        }
+    }
+
+## 2 - Class Diagram
+
+![AbstractFactory](https://github.com/user-attachments/assets/77c3ebd9-31ab-43e5-b4a5-d2c171d25713)
+
+## 3 - Location on the codebase
+
+**Package: `WorldEdit.java`: `com.sk89q.worldedit`**
+
+**`MaskFactory.java`, `BlockFactory.java`, `ItemFactory.java`, `PatternFactory`: `com.sk89q.worldedit.extension.factory`** 
+
+**`AbstractFactory.java`: `com.sk89q.worldedit.internal.registry`**
+
+
+**Classes:**
+    - `WorldEdit.java` - Owns the factory instances and is responsible for their lifecycle.
+    - `AbstractFactory.java` - Serves as a generic base class for creating different types of factories.
+    - `MaskFactory.java`, `BlockFactory.java`, `ItemFactory.java`, `PatternFactory.java` - specialized types of `AbstractFactory` specifically designed to create `Mask`, `Block`, `Item` and `Pattern` objects, respectively.
+    
+## 4 - Discussion
+
+Given that the structure allows for the creation of various types of related objects through multiple parser methods (as seen in `AbstractFactory`), this design fits the Abstract Factory Pattern
+           
