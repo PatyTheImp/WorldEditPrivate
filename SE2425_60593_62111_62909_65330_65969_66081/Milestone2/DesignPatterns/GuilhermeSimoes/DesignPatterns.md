@@ -423,5 +423,5 @@ The `DoubleArrayList` class relates to the Iterator Pattern in several ways, par
     
 ## 4 - Discussion
 
-Given that the structure allows for the creation of various types of related objects through multiple parser methods (as seen in `AbstractFactory`), this design fits the Abstract Factory Pattern
+Given that the structure allows for the creation of various types of related objects through multiple parser methods (as seen in `AbstractFactory`), this design fits the Abstract Factory Pattern.
            
