@@ -75,3 +75,67 @@ To address the "**God Class**" smell in `EditSession`, the responsibilities can 
 5. **EditSession Class (Refactored):**
     - After moving these methods, `EditSession` will focus on managing basic block manipulation and session management (e.g., managing the session lifecycle and setting block limits).
     - **Benefit:** The refactored `EditSession` is now focused on managing the core editing session, with other responsibilities delegated to more specific classes.
+
+# Code Smell 1 (Feature Envy)
+
+## 1. Code snippet:
+
+`undo` Method:
+
+    public EditSession undo(@Nullable BlockBag newBlockBag, Actor actor) {
+        checkNotNull(actor);
+        --historyPointer;
+        if (historyPointer >= 0) {
+            EditSession editSession = history.get(historyPointer);
+            try (EditSession newEditSession =
+                        WorldEdit.getInstance().newEditSessionBuilder()
+                            .world(editSession.getWorld()).blockBag(newBlockBag).actor(actor)
+                            .build()) {
+                prepareEditingExtents(newEditSession, actor);
+                editSession.undo(newEditSession);
+            }
+            return editSession;
+        } else {
+            historyPointer = 0;
+            return null;
+        }
+    }
+
+`redo` Method:
+
+    public EditSession redo(@Nullable BlockBag newBlockBag, Actor actor) {
+        checkNotNull(actor);
+        if (historyPointer < history.size()) {
+            EditSession editSession = history.get(historyPointer);
+            try (EditSession newEditSession =
+                        WorldEdit.getInstance().newEditSessionBuilder()
+                            .world(editSession.getWorld()).blockBag(newBlockBag).actor(actor)
+                            .build()) {
+                prepareEditingExtents(newEditSession, actor);
+                editSession.redo(newEditSession);
+            }
+            ++historyPointer;
+            return editSession;
+        }
+
+        return null;
+    }
+
+## 2. Location on the codebase:
+
+- **Package:** `com.sk89q.worldedit`
+- **Class:** `LocalSession`
+
+## 3. Explanation:
+
+Both `undo` and `redo` methods are performing operations that involve extensive interaction with `EditSession`, such as creating new instances, setting up `EditSession` for undo/redo, and invoking methods like `undo` and `redo` directly on `EditSession`. This makes these methods dependent on the internal details of `EditSession`, demonstrating a **Feature Envy** smell, as they rely on behaviors that might logically belong closer to EditSession. <br>
+
+However, since `EditSession` is already a **God Class**, moving this logic there would worsen the design. Instead, we can improve the design by creating, the already proposed, helper class **HistoryManager** focused in managing history tracking and undo/redo functionality.
+
+The **high Response for Class (RFC) value of 194** in `LocalSession` suggests it's doing too much and relies heavily on methods from other classes, especially `EditSession`. This reliance reflects the **Feature Envy** smell, as `LocalSession` frequently accesses external methods, indicating it's overextended and lacks cohesion.
+
+## 4. Proposal of a refactoring:
+
+1. **Create, the already proposed, class** called `HistoryManager`, which will be responsible for handling undo and redo operations.
+2. **Encapsulate the logic** for undo and redo in this helper class, removing the need for `LocalSession` to directly manipulate `EditSession` instances for these operations.
+3. **Delegate** the undo and redo calls from `LocalSession` to `HistoryManager`, thereby reducing the dependency on `EditSession`.
