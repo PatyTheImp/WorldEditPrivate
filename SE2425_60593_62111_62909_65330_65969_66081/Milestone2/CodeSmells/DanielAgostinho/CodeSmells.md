@@ -237,6 +237,7 @@ of the class.
 
 Overall, the `PermissionsResolverManager` class is doing too much, 
 it needs heavy refactoring to improve maintainability and readability.
+The class should be divided into other smaller classes that divide it's responsabilities to make the implementation less convoluted.
 
 # Code Smell 2 - (Long Method)
 
