@@ -132,22 +132,84 @@ it can be modified for any other class. A better way would be to use a private c
 global variable for the instance field and create a method to access it, so we can control when the instance is
 created and who can access it.
 
-# Design Pattern 3 (...)
+# Design Pattern 3 (Proxy Pattern)
 
 ## 1. Code snippet:
 
-    ...
+### PlayerProxy.java
+
+    class PlayerProxy extends AbstractPlayerActor {
+
+        private final Player basePlayer;
+        private final Actor permActor;
+        private final Actor cuiActor;
+        private final World world;
+    
+        PlayerProxy(Player basePlayer, Actor permActor, Actor cuiActor, World world) {
+            checkNotNull(basePlayer);
+            checkNotNull(permActor);
+            checkNotNull(cuiActor);
+            checkNotNull(world);
+            this.basePlayer = basePlayer;
+            this.permActor = permActor;
+            this.cuiActor = cuiActor;
+            this.world = world;
+        }
+        
+        //...
+    }
+
+### PlatformManger.java
+
+    public class PlatformManager {
+
+        //...
+
+        public <T extends Actor> T createProxyActor(T base) {
+            checkNotNull(base);
+    
+            if (base instanceof Player player) {
+                Player permActor = queryCapability(Capability.PERMISSIONS).matchPlayer(player);
+                if (permActor == null) {
+                    permActor = player;
+                }
+    
+                Player cuiActor = queryCapability(Capability.WORLDEDIT_CUI).matchPlayer(player);
+                if (cuiActor == null) {
+                    cuiActor = player;
+                }
+    
+                return (T) new PlayerProxy(player, permActor, cuiActor, getWorldForEditing(player.getWorld()));
+            } else {
+                return base;
+            }
+        }
+
+        //...
+    }
 
 ## 2. Class diagram:
 
-    ...
+![Proxy Class Diagram](ProxyClassDiagram.png)
 
 ## 3. Location on the codebase:
 
-- **Package:** ...
-- **Class:** ...
-- **Fields and Methods:** ...
+- **Package:** `com.sl89q.worldedit.extension.platform`
+- **Classes:** 
+
+  - proxy class: `PlayerProxy`
+  - subject interface: `Player`
+  - abstract subject class: `AbstractPlayerActor`
+  - real subjects classes: `NeoForgePlayer`, `BukkitPlayer`, `SpongePlayer`, `FabricPlayer`
+  
+- **Fields and Methods:**
+
+  - `PlatformManager.createProxyActor()`: Creates a proxy for the base actor, in this case, the Player object.
 
 ## 4. Discussion:
 
-    ...
+The Proxy Pattern is demonstrated here by the PlayerProxy class that represents a real Actor and is used to control
+access to it. The PlatformManager class creates a proxy for the Player class, which is used to interact with the Player
+object. The proxy class PlayerProxy is used to check permissions and capabilities of the Player object before allowing
+access to it. This pattern is useful to add additional functionality to the real object, like checking permissions,
+logging, caching, etc. without modifying the real object.
