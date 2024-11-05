@@ -27,7 +27,7 @@
 
 ## 2. Class diagram:
 
-    ![Screenshot 2024-11-05 163836](https://github.com/user-attachments/assets/2860c0c2-9bdb-458e-9afd-25fc7d147749)
+![PermissionsResolverManager](PermissionsResolverManager.png)
 
 ## 3. Location on the codebase:
 
