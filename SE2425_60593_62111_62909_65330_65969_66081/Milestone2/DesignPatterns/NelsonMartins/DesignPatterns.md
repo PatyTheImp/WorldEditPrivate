@@ -1,6 +1,8 @@
 # Design Pattern 1 (Facade Pattern)
 
 ## 1. Code snippet:
+    
+    //...
 
     public class CLIWorldEdit {
 
@@ -52,35 +54,13 @@
     
         //...
     
-         public void run(InputStream inputStream) {
-            try (Scanner scanner = new Scanner(inputStream)) {
-                while (true) {
-                    System.err.print("> ");
-                    if (!scanner.hasNextLine()) {
-                        break;
-                    }
-                    String line = scanner.nextLine();
-                    if (line.isEmpty()) {
-                        continue;
-                    }
-                    if (line.equals("stop")) {
-                        commandSender.printInfo(TranslatableComponent.of("worldedit.cli.stopping"));
-                        break;
-                    }
-                    CommandEvent event = new CommandEvent(commandSender, line);
-                    WorldEdit.getInstance().getEventBus().post(event);
-                    if (!event.isCancelled()) {
-                        commandSender.printError(TranslatableComponent.of("worldedit.cli.unknown-command"));
-                    } else {
-                        saveAllWorlds(false);
-                    }
-                }
-            } finally {
-                saveAllWorlds(false);
-            }
+        public void saveAllWorlds(boolean force) {
+            platform.getWorlds().stream()
+                .filter(world -> world instanceof CLIWorld)
+                .forEach(world -> ((CLIWorld) world).save(force));
         }
 
-        /...
+        //...
     }
 
 ## 2. Class diagram:
@@ -93,12 +73,17 @@
 
 **Class:** `CLIWorldEdit`
 
-**Fields and Methods:** ...
+**Fields and Methods:** 
+
+- `void onInitialized()`: Initialize the command sender and platform and logs the initialization of the CLIWorldEdit.
+- `void setupPlatform()`: Register the platform, commands, configuration, fire the `PlatformsRegisteredEvent` and load the data files into file registries.
+- `void registerCommands()`: Register the CLI-specific commands with the `PlatformCommandManager`.
+- `void saveAllWorlds(boolean force)`: Save all the worlds managed by the platform, with an option to force the save.
 
 ## 4. Discussion:
 
-The facade pattern is used to simplify interactions with the WorldEdit
-subsystem and hide his complexity. Simplify operations like initialization and setup,
+The facade pattern is used here to simplify interactions with the WorldEdit CLI
+subsystem and hide his complexity. it simplifies operations like initialization and setup,
 command registration, event handling and subsystem management.
 
 # Design Pattern 2 (...)
