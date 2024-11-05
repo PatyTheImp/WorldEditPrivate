@@ -33,14 +33,20 @@
 
 - **Package:** `com.sk89q.wepif`
 - **Class:** `PermissionsResolverManager`
-- **Fields and Methods:**+
+- **Fields and Methods:**
     - `private static PermissionsResolverManager instance` : Singleton instance.
     - `public static void initialize(Plugin plugin)` : Initializes the singleton instance.
     - `public static boolean isInitialized()` : Checks if the class is initialized.
 
 ## 4. Discussion:
 
-    ...
+This implementation demonstrates the **Singleton pattern** by ensuring that only one instance of
+`PermissionsResolverManager` exists throughout the application. The `PermissionsResolverManager`
+class contains a private static variable `instance` that holds the single instance of the class.
+The `initialize` method checks if the instance is already created using the `isInitialized` method,
+and if not, it creates a new instance. This prevents the creation of multiple instances and ensures
+that the same instance is used across the application. This design pattern is useful for managing shared
+resources or configurations in a centralized manner.
 
 # Design Pattern 2 ...)
 
