@@ -62,8 +62,6 @@
 
 ![Iterator Class Diagram](2Diagram.png)
 
-The TransformRegionIterator class is an anonymous class.
-
 ## 3. Location on the codebase:
 
 - **Package:** `com.sk89q.worldedit.regions`
