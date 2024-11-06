@@ -1,4 +1,4 @@
-# Lorenz-Kidd metrics set (Class level metrics)
+# Li-Henry metrics set (Class level metrics)
 
 1. [NOM: Number of Methods](#1-number-of-methods)
 2. [SIZE2: Number of Attributes and Methods](#2-number-of-attributes-and-methods)
