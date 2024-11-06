@@ -245,21 +245,45 @@ to find some functionality in the class. It has a total of 1036 lines of code.
 To refactor this class we should split it into smaller classes, each one with a single responsibility. For example,
 we could create a class for the configuration, another for the selector, and so on.
 
-# Code Smell 3 (...)
+# Code Smell 3 (Feature Envy)
 
 ## 1. Code snippet:
 
-    ...
+    public class CLIWorldEdit {
+        
+        //...
+
+        public void onStarted() {
+            setupPlatform();
+    
+            setupRegistries();
+            WorldEdit.getInstance().loadMappings();
+    
+            config.load();
+    
+            WorldEdit.getInstance().getEventBus().post(new PlatformReadyEvent(platform));
+        }
+    
+        public void onStopped() {
+            WorldEdit worldEdit = WorldEdit.getInstance();
+            worldEdit.getSessionManager().unload();
+            worldEdit.getPlatformManager().unregister(platform);
+        }
+        
+        //...
+    }
 
 ## 2. Location on the codebase:
 
-- **Package:** `...`
-- **Class:** `...`
+- **Package:** `com.sk89q.worldedit.cli`
+- **Class:** `CLIWorldEdit`
 
 ## 3. Explanation:
 
-...
+In this class, the methods `onStarted` and `onStopped` are using a lot of methods from the `WorldEdit` class.
+This suggests that some of this logic should be moved to the `WorldEdit` class, as it seems to be more related to
+the `WorldEdit` class than to the `CLIWorldEdit` class.
 
 ## 4. Proposal of a refactoring:
 
-...
+Create methods `onStarted` and `onStopped` in the `WorldEdit` class to handle the logic that is currently in the `CLIWorldEdit` class.
