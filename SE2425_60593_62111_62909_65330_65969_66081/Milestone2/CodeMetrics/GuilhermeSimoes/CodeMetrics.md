@@ -71,8 +71,17 @@ A high CF can also lead to **Feature Envy**, as classes excessively rely on each
 
 ## 4. Attribute Hiding Factor
 
-### Charts
+AHF is defined as the ratio of the sum of the invisibilities of all attributes defined in all classes to the total number of attributes defined in the system under consideration.
+
+### Chart
+
+![imagem](https://github.com/user-attachments/assets/9864553a-1628-48af-9b71-73367902cdc5)
 
 ### Potential trouble spots
 
+Low AHF suggests that too many attributes are directly accessible, which can lead to undesirable consequences such as increased complexity, reduced encapsulation, and a higher risk of creating bugs or unintended behavior due to uncontrolled access to the class’s internals.
+An AHF of 38% indicates that the project is applying relatively low information hiding, which could lead to several potential issues in terms of software design and maintainability.
+
 ### Relation with code smells
+
+A low AHF exposes related attributes without encapsulating them properly within their own class. This may lead to **Data Clumps**, where the same set of attributes is passed around or manipulated across multiple places in the code. A low AHF also leads to the excessive creation of getter and setter methods because more attributes are exposed, which may lead to **Data Classes**

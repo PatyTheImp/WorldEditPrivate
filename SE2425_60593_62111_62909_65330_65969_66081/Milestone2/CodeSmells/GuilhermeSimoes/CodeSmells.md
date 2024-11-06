@@ -87,7 +87,7 @@ The following code from the `BaseItem` class illustrates how the class's only pu
 ## 2. Location on the codebase
 
 - **Package:** `com.sk89q.worldedit.blocks`
-- **Class:** `BaseItem`
+- **Class:** `BaseItem.java`
 
 ## 3. Explanation
 
@@ -95,7 +95,69 @@ The `BaseItem` class' functionality is centered around managing data rather than
 
 ## 4. Refactoring Proposal
 
-To mitigate the data class smell, we can consider:
+To mitigate the data class smell, we can consider introducing more methods that operate on the `BaseItem`'s state to enrich its functionality. For example, methods that manipulate item data, validate item properties, or interact with game mechanics to add significant value.
 
-  - Adding More Behavior: Introducing more methods that operate on the `BaseItem`'s state to enrich its functionality. For example, methods that manipulate item data, validate item properties, or interact with game mechanics to add significant value.
+# Code Smell 2 - Lazy Class
+
+## 1. Code snippet    
+
+    package com.sk89q.worldedit.extension.platform;
+    
+    import com.google.auto.value.AutoAnnotation;
+    import com.sk89q.worldedit.internal.annotation.Radii;
+    
+    /**
+     * Holder for generated annotation classes.
+     */
+    class Annotations {
+    
+        @AutoAnnotation
+        static Radii radii(int value) {
+            return new AutoAnnotation_Annotations_radii(value);
+        }
+    
+        private Annotations() {
+        }
+    
+    }
+
+## 2. Location on the codebase
+
+- **Package:** `com.sk89q.worldedit.extension.platform;`
+- **Class:** `Annotations.java`
+
+## 3. Explanation
+
+The `Annotations` class is minimal in its functionality — it doesn’t manage state, hold data, or perform significant logic. It merely serves to generate an annotation with a single method. It doesn't provide much functionality beyond the single method since it only has a single usage, so it might be considered under-utilized.
+
+## 4. Refactoring Proposal
+
+To mitigate the data class smell, we can consider refactoring to be simply an auxiliary method in the class where it is used, removing the need for a separate `Annotations` class altogether:
+    
+    private Radii radii(int value) {
+        return new AutoAnnotation_Annotations_radii(value);
+    }
+    
+    private void registerArgumentConverters() {
+        // Direct use of the radii method
+        commandManager.registerConverter(Key.of(double.class, radii(count)),
+            CommaSeparatedValuesConverter.wrapAndLimit(ArgumentConverters.get(
+                TypeToken.of(double.class)
+            ), count)
+        );
+    }
+
+# Code Smell 1 - Data Class
+
+## 1. Code snippet   
+
+## 2. Location on the codebase
+
+- **Package:** 
+- **Class:** 
+
+## 3. Explanation
+
+## 4. Refactoring Proposal
+
 
