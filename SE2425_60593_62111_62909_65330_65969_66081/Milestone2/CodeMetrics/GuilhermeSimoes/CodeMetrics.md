@@ -10,10 +10,6 @@
 MHF is defined as the ratio of the sum of the invisibilities of all methods defined in all classes 
 to the total number of methods defined in the system. 
 The invisibility of a method is the percentage of the total classes from which this method is not visible.
-Low MHF could signal that too many methods are publicly accessible,
-potentially exposing the internal state or implementation unnecessarily.
-High MHF could signal that too few methods are publicly accessible, 
-potentially making classes underutilized or redundant.
 
 ### Chart
 
@@ -21,6 +17,10 @@ potentially making classes underutilized or redundant.
 
 ### Potential trouble spots
 
+Low MHF could signal that too many methods are publicly accessible,
+potentially exposing the internal state or implementation unnecessarily.
+High MHF could signal that too few methods are publicly accessible, 
+potentially making classes underutilized or redundant.
 An MHF value of around 32% lies within the recommended range of 9.5% to 36.9%, which is generally considered an optimal interval according to studies.
 This suggests a balanced approach in terms of method visibility and encapsulation within the project.
 
