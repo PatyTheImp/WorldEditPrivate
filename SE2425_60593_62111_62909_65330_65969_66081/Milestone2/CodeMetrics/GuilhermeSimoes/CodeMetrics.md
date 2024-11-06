@@ -53,12 +53,21 @@ A high PF might lead to Inappropriate Intimacy, where subclasses know too much a
 
 ## 3. Coupling Factor
 
+Coupling Factor (CF) measures the coupling between classes excluding coupling due to inheritance. It is the ratio between the number of actually coupled pairs of classes in a scope (e.g., package) and the possible number of coupled pairs of classes.
 
-### Charts
+### Chart
+
+![imagem](https://github.com/user-attachments/assets/72991fdd-0c08-4d7d-ab2d-618dc34c8773)
 
 ### Potential trouble spots
 
+High coupling indicates excessive dependency among classes, which can reduce the software's quality by making it harder to understand, modify, and test.
+A coupling factor of around 0.4% indicates that each class is interacting with only a very small proportion of the other classes in the system. This is typically seen in well-encapsulated and modular designs where the classes are self-contained and don't depend heavily on each other.
+
 ### Relation with code smells
+
+A high CF can cause classes to become overly dependent on each other's internal details, leading to **Inappropriate Intimacy**.
+A high CF can also lead to **Feature Envy**, as classes excessively rely on each other's internals.
 
 ## 4. Attribute Hiding Factor
 
