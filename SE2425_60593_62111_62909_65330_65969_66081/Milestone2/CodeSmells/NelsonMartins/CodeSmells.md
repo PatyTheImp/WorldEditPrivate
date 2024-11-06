@@ -175,26 +175,75 @@ It should be something like this:
                     }
                 };
             }
+            return es;
         }
 
-# Code Smell 2 (...)
+# Code Smell 2 (God Class)
 
 ## 1. Code snippet:
     
-    ...
+    public class LocalSession {
+
+        private static final transient int CUI_VERSION_UNINITIALIZED = -1;
+        public static transient int MAX_HISTORY_SIZE = 15;
+
+        // total of 37 atributtes
+
+        /**
+         * Construct the object.
+         *
+         * <p>{@link #setConfiguration(LocalConfiguration)} should be called
+         * later with configuration.</p>
+         */
+        public LocalSession() {
+        }
+    
+        /**
+         * Construct the object.
+         *
+         * @param config the configuration
+         */
+        public LocalSession(@Nullable LocalConfiguration config) {
+            this.config = config;
+        }
+    
+        /**
+         * Set the configuration.
+         *
+         * @param config the configuration
+         */
+        public void setConfiguration(LocalConfiguration config) {
+            checkNotNull(config);
+            this.config = config;
+        }
+    
+        /**
+         * Called on post load of the session from persistent storage.
+         */
+        public void postLoad() {
+            if (defaultSelector != null) {
+                this.selector = defaultSelector.createSelector();
+            }
+        }
+
+        // total of 94 methods
+    }
+    // total of 1036 lines of code
 
 ## 2. Location on the codebase:
 
-- **Package:** `...`
-- **Class:** `...`
+- **Package:** `com.sk89q.worldedit`
+- **Class:** `LocalSession`
 
 ## 3. Explanation:
 
-...
+This class is a god class because it has a large number of attributes (37) and methods (94), which makes it difficult
+to find some functionality in the class. It has a total of 1036 lines of code.
 
 ## 4. Proposal of a refactoring:
 
-...
+To refactor this class we should split it into smaller classes, each one with a single responsibility. For example,
+we could create a class for the configuration, another for the selector, and so on.
 
 # Code Smell 3 (...)
 
