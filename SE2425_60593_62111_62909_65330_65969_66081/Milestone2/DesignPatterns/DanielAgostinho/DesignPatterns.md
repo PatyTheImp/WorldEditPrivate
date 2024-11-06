@@ -21,6 +21,21 @@
         return instance != null;
     }
 
+    public static PermissionsResolverManager getInstance() {
+      if (!isInitialized()) {
+        throw new WEPIFRuntimeException("WEPIF has not yet been initialized!");
+      }
+      return instance;
+    }
+
+    protected PermissionsResolverManager(Plugin plugin) {
+        this.server = plugin.getServer();
+        (new ServerListener()).register(plugin); // Register the events
+
+        loadConfig(new File("wepif.yml"));
+        findResolver();
+    }
+
     // Other methods
 
     }
@@ -37,15 +52,19 @@
     - `private static PermissionsResolverManager instance` : Singleton instance.
     - `public static void initialize(Plugin plugin)` : Initializes the singleton instance.
     - `public static boolean isInitialized()` : Checks if the class is initialized.
+    - `public static PermissionsResolverManager getInstance()` : Returns the singleton instance.
+    - `protected PermissionsResolverManager(Plugin plugin)` : Constructor that initializes the singleton instance.
 
 ## 4. Discussion:
 
-This implementation demonstrates the **Singleton pattern** by ensuring that only one instance of
-`PermissionsResolverManager` exists throughout the application. The `PermissionsResolverManager`
-class contains a private static variable `instance` that holds the single instance of the class.
-The `initialize` method checks if the instance is already created using the `isInitialized` method,
-and if not, it creates a new instance. This prevents the creation of multiple instances and ensures
-that the same instance is used across the application. This design pattern is useful for managing shared
+This implementation demonstrates the \*\*Singleton pattern\*\* by ensuring that only one instance of
+`PermissionsResolverManager` exists throughout the application. The `PermissionsResolverManager` 
+class contains a private static variable `instance` that holds the single instance of the class. 
+The `initialize` method checks if the instance is already created using the `isInitialized` method, 
+and if not, it creates a new instance. The `getInstance` method provides access to the single instance, 
+throwing an exception if it has not been initialized. The protected constructor `PermissionsResolverManager` 
+ensures that the class cannot be instantiated from outside. This prevents the creation of multiple instances and 
+ensures that the same instance is used across the application. This design pattern is useful for managing shared 
 resources or configurations in a centralized manner.
 
 # Design Pattern 2 (Adapter)
