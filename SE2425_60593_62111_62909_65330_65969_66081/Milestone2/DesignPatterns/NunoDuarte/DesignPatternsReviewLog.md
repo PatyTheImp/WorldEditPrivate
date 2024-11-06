@@ -1,5 +1,3 @@
-# Design Pattern 2 - Iterator Pattern
-
 **Reviewer:** Miguel Flor
 
 **Comments:**
