@@ -147,17 +147,75 @@ To mitigate the data class smell, we can consider refactoring to be simply an au
         );
     }
 
-# Code Smell 1 - Data Class
+# Code Smell 1 - Speculative Generality
 
 ## 1. Code snippet   
 
+### BlockBag.java
+
+    /**
+     * Represents a source to get blocks from and store removed ones.
+     */
+    public abstract class BlockBag {
+    
+        /**
+         * Checks to see if a block exists without removing it.
+         *
+         * @param blockState the block state
+         * @return whether the block exists
+         */
+        public boolean peekBlock(BlockState blockState) {
+            try {
+                fetchBlock(blockState);
+                storeBlock(blockState);
+                return true;
+            } catch (BlockBagException e) {
+                return false;
+            }
+        }
+        /**
+         * Adds a position to be used a source.
+         *
+         * @param pos the position
+         */
+        public abstract void addSourcePosition(Location pos);
+    
+        /**
+         * Adds a position to be used a source.
+         *
+         * @param pos the position
+         */
+        public abstract void addSingleSourcePosition(Location pos);
+    }
+
+### BukkitPlayerBlockBag.java
+
+    @Override
+    public void addSourcePosition(Location pos) {
+    }
+
+    @Override
+    public void addSingleSourcePosition(Location pos) {
+    }
+    
 ## 2. Location on the codebase
 
-- **Package:** 
-- **Class:** 
+- **Class:** BlockBag.java
+- **Package:** com.sk89q.worldedit.extent.inventory
+
+- **Class:** BukkitPlayerBlockBag
+- **Package:** com.sk89q.worldedit.bukkit
+
 
 ## 3. Explanation
 
+Speculative generality occurs when code includes abstractions or methods in anticipation of future needs, but without a clear, immediate use case. 
+Since neither the base `BlockBag` class nor its subclass `BukkitPlayerBlockBag` currently make use of these methods, it suggests they were added with potential, but unfounded, future needs in mind.
+Currently they add extra complexity without delivering any direct benefit. Unused methods can create confusion for developers, who may assume they have a specific purpose or wonder if they’re needed for some functionality.
+
 ## 4. Refactoring Proposal
 
+Reducing speculative generality helps keep the codebase focused, cleaner, and easier to understand. In this case we can:
 
+ - Document as optional and make them protected: If these methods could potentially be useful in some contexts (e.g., by future subclasses), they could be documented as “optional” and changed from public to protected. This would limit their visibility to subclasses within the same package and indicate that they aren’t core methods of `BlockBag`.
+ - Remove them entirely: Deleting these methods from both `BlockBag` and `BukkitPlayerBlockBag` where they are implemented, which reduces the class size and complexity, making it easier to read and maintain.
