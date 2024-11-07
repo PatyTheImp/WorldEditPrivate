@@ -1,3 +1,13 @@
+# Design Pattern 1 - Factory Pattern
+
+**Reviewer:** Nuno Duarte
+
+**Comments:**
+Factory Method is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. The code resembles the factory pattern because of the 'createProperty' method hides the instantiation logic of various Property subclasses and because of how the method can create multiple types of Property objects (IntegerProperty, BooleanProperty, etc.) based on the provided type. But is not a full factory method because the class doesn't have a sole purpose.
+
+The pattern is well identified but not well implemented. 
+
+
 # Design Pattern 2 - Iterator Pattern
 
 **Reviewer:** Patrícia Costa
