@@ -351,7 +351,7 @@ The other classes extend AbstractRegion, implementing these specific methods.
 
 ## 2. Class diagram:
 
-![Adapter Diagram](AdapterDiagram.jpeg)
+![Adapter Diagram](AdapterDiagram.png)
 
 ## 3. Location on the codebase:
 
