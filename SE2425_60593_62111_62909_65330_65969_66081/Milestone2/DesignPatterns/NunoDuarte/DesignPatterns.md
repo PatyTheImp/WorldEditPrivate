@@ -362,23 +362,160 @@ The other classes extend AbstractRegion, implementing these specific methods.
 ## 4. Discussion:
     An adapter to Minecraft worlds for WorldEdit. The FabricAdapter class provides methods to adapt various objects from one API to another, such as World, Biome, Vector3, BlockState, and more. These methods convert objects between WorldEdit representations (e.g., World, BlockState, Vector3) and Minecraft’s Fabric API representations
 
-# Design Pattern 3 (...)
+# Design Pattern 3 (Command)
 
 ## 1. Code snippet:
+### Tool.java
+    /**
+     * Represents a tool. This interface alone defines nothing. A tool also
+     * has to implement {@code BlockTool} or {@code TraceTool}.
+     */
+    public interface Tool {
+    
+        /**
+         * Checks to see if the player can still be using this tool (considering
+         * permissions and such).
+         *
+         * @param actor the actor
+         * @return true if use is permitted
+         */
+        boolean canUse(Actor actor);
+    }
 
-    ...
+### BlockTool.java
+    public interface BlockTool extends Tool {
+    
+        /**
+         * Perform the primary action of this tool.
+         *
+         * @return true to cancel the original event which triggered this action (if possible)
+         * @deprecated New subclasses should override {@link #actPrimary(Platform, LocalConfiguration, Player, LocalSession,
+         *     Location, Direction)} instead
+         */
+        @Deprecated
+        default boolean actPrimary(Platform server, LocalConfiguration config, Player player, LocalSession session, Location clicked) {
+            return actPrimary(server, config, player, session, clicked, null);
+        }
+    
+        /**
+         * Perform the primary action of this tool.
+         *
+         * @param server The platform
+         * @param config The config instance
+         * @param player The player
+         * @param session The local session
+         * @param clicked The location that was clicked
+         * @param face The face that was clicked
+         * @return true to cancel the original event which triggered this action (if possible)
+         * @apiNote This must be overridden by new subclasses. See {@link NonAbstractForCompatibility}
+         *          for details
+         */
+        @NonAbstractForCompatibility(
+            delegateName = "actPrimary",
+            delegateParams = { Platform.class, LocalConfiguration.class, Player.class, LocalSession.class, Location.class }
+        )
+        default boolean actPrimary(Platform server, LocalConfiguration config, Player player, LocalSession session, Location clicked, @Nullable Direction face) {
+            DeprecationUtil.checkDelegatingOverride(getClass());
+            return actPrimary(server, config, player, session, clicked);
+        }
+    }
+
+### DoubleActionBlockTool.java
+    public interface DoubleActionBlockTool extends BlockTool {
+    
+        /**
+         * Perform the secondary action of this block tool.
+         *
+         * @return true to cancel the original event which triggered this action (if possible)
+         * @deprecated New subclasses must override {@link #actSecondary(Platform, LocalConfiguration, Player, LocalSession,
+         *     Location, Direction)} instead
+         */
+        @Deprecated
+        default boolean actSecondary(Platform server, LocalConfiguration config, Player player, LocalSession session, Location clicked) {
+            return actSecondary(server, config, player, session, clicked, null);
+        }
+    
+        /**
+         * Perform the secondary action of this block tool.
+         *
+         * @param server The platform
+         * @param config The config instance
+         * @param player The player
+         * @param session The local session
+         * @param clicked The location that was clicked
+         * @param face The face that was clicked
+         * @return true to cancel the original event which triggered this action (if possible)
+         * @apiNote This must be overridden by new subclasses. See {@link NonAbstractForCompatibility}
+         *          for details
+         */
+        @NonAbstractForCompatibility(
+            delegateName = "actSecondary",
+            delegateParams = { Platform.class, LocalConfiguration.class, Player.class, LocalSession.class, Location.class }
+        )
+        default boolean actSecondary(Platform server, LocalConfiguration config, Player player, LocalSession session, Location clicked, @Nullable Direction face) {
+            DeprecationUtil.checkDelegatingOverride(getClass());
+            return actSecondary(server, config, player, session, clicked);
+        }
+    
+    }
+
+### QueryTool.java
+    /**
+    * Looks up information about a block.
+    */
+    public class QueryTool implements BlockTool {
+    
+    @Override
+    public boolean canUse(Actor player) {
+        return player.hasPermission("worldedit.tool.info");
+    }
+    
+    @Override
+    public boolean actPrimary(Platform server, LocalConfiguration config, Player player, LocalSession session, Location clicked, @Nullable Direction face) {
+    
+        World world = (World) clicked.getExtent();
+        BlockVector3 blockPoint = clicked.toVector().toBlockPoint();
+        BaseBlock block = world.getFullBlock(blockPoint);
+    
+        TextComponent.Builder builder = TextComponent.builder();
+        builder.append(TextComponent.of("@" + clicked.toVector().toBlockPoint() + ": ", TextColor.BLUE));
+        builder.append(block.getBlockType().getRichName().color(TextColor.YELLOW));
+        builder.append(TextComponent.of(" (" + block + ") ", TextColor.GRAY)
+            .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, TranslatableComponent.of("worldedit.tool.info.blockstate.hover"))));
+        final int internalId = BlockStateIdAccess.getBlockStateId(block.toImmutableState());
+        if (BlockStateIdAccess.isValidInternalId(internalId)) {
+            builder.append(TextComponent.of(" (" + internalId + ") ", TextColor.DARK_GRAY)
+                .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, TranslatableComponent.of("worldedit.tool.info.internalid.hover"))));
+        }
+        final int[] legacy = LegacyMapper.getInstance().getLegacyFromBlock(block.toImmutableState());
+        if (legacy != null) {
+            builder.append(TextComponent.of(" (" + legacy[0] + ":" + legacy[1] + ") ", TextColor.DARK_GRAY)
+                .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, TranslatableComponent.of("worldedit.tool.info.legacy.hover"))));
+        }
+    
+        builder.append(TextComponent.of(" (" + world.getBlockLightLevel(blockPoint) + "/"
+            + world.getBlockLightLevel(blockPoint.add(0, 1, 0)) + ")", TextColor.WHITE)
+            .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, TranslatableComponent.of("worldedit.tool.info.light.hover"))));
+    
+        player.print(builder.build());
+    
+        return true;
+    }
+    
+    }
 
 ## 2. Class diagram:
 
-    ...
+ ![Composite Diagram](CompositeDiagram.png)
 
 ## 3. Location on the codebase:
 
-- **Package:** ...
-- **Class:** ...
-- **Fields and Methods:** ...
+- **Package:** com.sk89q.worldedit.command.tool
+- **Class:** Tool, BlockTool, DoubleActionBlockTool, QueryTool
+- **Fields and Methods:** actPrimary (BlockTool), actSecondary(DoubleActionBlockTool)
 
 ## 4. Discussion:
 
-    ...
+Each Tool action method ('actPrimary' and 'actSecondary') encapsulates a command that can be executed independently.
+The Tool hierarchy is designed to perform specific commands/actions (such as acting on a block). Each 'actPrimary' and 'actSecondary' call represents a command being executed on a target location.
 
