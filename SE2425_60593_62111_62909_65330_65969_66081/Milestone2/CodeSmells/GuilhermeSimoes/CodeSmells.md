@@ -147,7 +147,7 @@ To mitigate the data class smell, we can consider refactoring to be simply an au
         );
     }
 
-# Code Smell 1 - Speculative Generality
+# Code Smell 3 - Speculative Generality
 
 ## 1. Code snippet   
 
