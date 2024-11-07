@@ -1,4 +1,4 @@
-# Design Pattern 1 (...)
+# Design Pattern 1 (Template)
 
 ## 1. Code snippet:
 
@@ -351,7 +351,7 @@ The other classes extend AbstractRegion, implementing these specific methods.
 
 ## 2. Class diagram:
 
-![Template Diagram](Diagram1.jpeg)
+![Adapter Diagram](AdapterDiagram.jpeg)
 
 ## 3. Location on the codebase:
 
