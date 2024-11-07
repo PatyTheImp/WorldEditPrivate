@@ -1,4 +1,4 @@
-# Design Pattern 1 (...)
+# Design Pattern 1 (Template Pattern)
 
 ## 1. Code snippet:
 
