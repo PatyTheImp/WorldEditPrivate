@@ -35,5 +35,4 @@ public interface Tool {
      * @return true if use is permitted
      */
     boolean canUse(Actor actor);
-
 }

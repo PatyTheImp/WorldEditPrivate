@@ -506,7 +506,7 @@ The other classes extend AbstractRegion, implementing these specific methods.
 
 ## 2. Class diagram:
 
- ![Composite Diagram](CompositeDiagram.png)
+ ![Composite Diagram](CommandDiagram.png)
 
 ## 3. Location on the codebase:
 
