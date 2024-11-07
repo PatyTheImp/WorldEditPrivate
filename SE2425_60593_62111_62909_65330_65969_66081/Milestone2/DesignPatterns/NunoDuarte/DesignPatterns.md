@@ -511,11 +511,13 @@ The other classes extend AbstractRegion, implementing these specific methods.
 ## 3. Location on the codebase:
 
 - **Package:** com.sk89q.worldedit.command.tool
-- **Class:** Tool, BlockTool, DoubleActionBlockTool, QueryTool
+- **Class:** Tool, BlockTool, DoubleActionBlockTool, QueryTool, ToolCommand
 - **Fields and Methods:** actPrimary (BlockTool), actSecondary(DoubleActionBlockTool)
 
 ## 4. Discussion:
 
 Each Tool action method ('actPrimary' and 'actSecondary') encapsulates a command that can be executed independently.
 The Tool hierarchy is designed to perform specific commands/actions (such as acting on a block). Each 'actPrimary' and 'actSecondary' call represents a command being executed on a target location.
+Invoker: ToolCommand class in package com.sk89q.worldedit.command.
+Receiver: Platform, Player, and World, which handle the requested operations and provide contextual information.
 
