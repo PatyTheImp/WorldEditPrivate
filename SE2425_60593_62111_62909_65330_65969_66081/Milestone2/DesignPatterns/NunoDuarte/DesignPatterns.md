@@ -1,4 +1,4 @@
-# Design Pattern 1 (Template Pattern)
+# Design Pattern 1 (...)
 
 ## 1. Code snippet:
 
@@ -243,25 +243,124 @@
 The AbstractRegion class provides a base implementation for Region objects, establishing common behaviors and methods like getCenter, iterator, getVolume, and getChunks.
 The other classes extend AbstractRegion, implementing these specific methods.
 
-# Design Pattern 2 ...)
+# Design Pattern 2 (Adapter)
 
 ## 1. Code snippet:
+    
+### FabricWorld.java
+    public class FabricWorld extends AbstractWorld {
 
-    ...
+    private static final RandomSource random = RandomSource.create();
+
+    private static ResourceLocation getDimensionRegistryKey(Level world) {
+        return Objects.requireNonNull(world.getServer(), "server cannot be null")
+            .registryAccess()
+            .registryOrThrow(Registries.DIMENSION_TYPE)
+            .getKey(world.dimensionType());
+    }
+
+    private final WeakReference<Level> worldRef;
+    private final FabricWorldNativeAccess worldNativeAccess;
+
+    /**
+     * Construct a new world.
+     *
+     * @param world the world
+     */
+    FabricWorld(Level world) {
+        checkNotNull(world);
+        this.worldRef = new WeakReference<>(world);
+        this.worldNativeAccess = new FabricWorldNativeAccess(worldRef);
+    }
+
+    /**
+     * Get the underlying handle to the world.
+     *
+     * @return the world
+     * @throws RuntimeException thrown if a reference to the world was lost (i.e. world was unloaded)
+     */
+    public Level getWorld() {
+        Level world = worldRef.get();
+        if (world != null) {
+            return world;
+        } else {
+            throw new RuntimeException("The reference to the world was lost (i.e. the world may have been unloaded)");
+        }
+    }
+
+    //other methods and fields
+
+    @Override
+    public int getBlockLightLevel(BlockVector3 position) {
+        checkNotNull(position);
+        return getWorld().getMaxLocalRawBrightness(FabricAdapter.toBlockPos(position));
+    }
+
+    @Override
+    public boolean clearContainerBlockContents(BlockVector3 position) {
+        checkNotNull(position);
+
+        BlockEntity tile = getWorld().getBlockEntity(FabricAdapter.toBlockPos(position));
+        if ((tile instanceof Clearable)) {
+            ((Clearable) tile).clearContent();
+            return true;
+        }
+        return false;
+    }
+    //other methods and fields
+    
+### FabricAdapter.java
+
+    public final class FabricAdapter {
+
+    private FabricAdapter() {
+    }
+
+    public static World adapt(net.minecraft.world.level.Level world) {
+        return new FabricWorld(world);
+    }
+
+    /**
+     * Create a Fabric world from a WorldEdit world.
+     *
+     * @param world the WorldEdit world
+     * @return a Fabric world
+     */
+    public static net.minecraft.world.level.Level adapt(World world) {
+        checkNotNull(world);
+        if (world instanceof FabricWorld) {
+            return ((FabricWorld) world).getWorld();
+        } else {
+            // TODO introduce a better cross-platform world API to match more easily
+            throw new UnsupportedOperationException("Cannot adapt from a " + world.getClass());
+        }
+    }
+
+    public static Biome adapt(BiomeType biomeType) {
+        return FabricWorldEdit.getRegistry(Registries.BIOME)
+            .get(ResourceLocation.parse(biomeType.id()));
+    }
+
+    public static BiomeType adapt(Biome biome) {
+        ResourceLocation id = FabricWorldEdit.getRegistry(Registries.BIOME).getKey(biome);
+        Objects.requireNonNull(id, "biome is not registered");
+        return BiomeTypes.get(id.toString());
+    }
+    //other methods and fields
+
 
 ## 2. Class diagram:
 
-    ...
+![Template Diagram](Diagram1.jpeg)
 
 ## 3. Location on the codebase:
 
-- **Package:** ...
-- **Class:** ...
-- **Fields and Methods:** ...
+- **Package:** com.sk89q.worldedit.fabric
+- **Class:** FabricWorld, FabricAdapter
+- **Fields and Methods:** adapt(World world) adapts a WorldEdit World object to a Fabric Level object...
 
 ## 4. Discussion:
-
-    ...
+    An adapter to Minecraft worlds for WorldEdit. The FabricAdapter class provides methods to adapt various objects from one API to another, such as World, Biome, Vector3, BlockState, and more. These methods convert objects between WorldEdit representations (e.g., World, BlockState, Vector3) and Minecraft’s Fabric API representations
 
 # Design Pattern 3 (...)
 
