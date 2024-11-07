@@ -230,7 +230,7 @@
 
 ## 2. Class diagram:
 
-![Template Diagram](Diagram1.jpeg)
+![Template Diagram](TemplateDiagram.jpeg)
 
 ## 3. Location on the codebase:
 
