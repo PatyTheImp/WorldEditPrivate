@@ -2,7 +2,7 @@
 
 **Reviewer -** Guilherme Simões
 
-**Comments**
+**Comments -**
 This refactor proposal is a SOLID solution to the Long Parameter List code smell since it adheres to the Single Responsibility Principle (SRP) by keeping the context management within a dedicated class,
 and it improves the Open/Closed Principle (OCP) by allowing the method signature to remain unchanged even when adding new parameters.
 It simplifies method signatures, improves maintainability, and groups logically related parameters into a cohesive object.
