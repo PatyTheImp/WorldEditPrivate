@@ -42,7 +42,7 @@
 
 ## 2. Class diagram:
 
-![PermissionsResolverManager](PermissionsResolverManager.png)
+![PermissionsResolverManager](img/PermissionsResolverManager.png)
 
 ## 3. Location on the codebase:
 
@@ -97,7 +97,7 @@ resources or configurations in a centralized manner.
 
 ## 2. Class diagram:
 
-![WorldEditFakePlayer](WorldEditFakePlayer.png)
+![WorldEditFakePlayer](img/WorldEditFakePlayer.png)
 
 ## 3. Location on the codebase:
 
@@ -154,7 +154,7 @@ and extend the application.
 
 ## 2. Class diagram:
 
-![FeatureGeneratorFactory](FeatureGeneratorFactory.png)
+![FeatureGeneratorFactory](img/FeatureGeneratorFactory.png)
 
 ## 3. Location on the codebase:
 
