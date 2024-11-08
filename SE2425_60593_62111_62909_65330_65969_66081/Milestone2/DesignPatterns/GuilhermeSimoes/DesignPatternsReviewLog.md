@@ -6,7 +6,7 @@
 - The pattern seems to be well identified.
 - Maybe in the discussion, you should identify the `EditSession` as the client class. Also point how that class creates the iterator (in this case, through a for each loop).
 
-# Design Pattern 1 - Observer Pattern
+# Design Pattern 1 - Template Method Pattern
 **Reviewer:** Miguel Flor
 
 **Comments:**
