@@ -60,7 +60,7 @@ legend for the x-axis:<br>
 
 ### Potential trouble spots:
 
-AS we can see in the graph only the metric profiles **Brain Class**,**Feature Envy**, **God Class (type 1,3,4)** and **High Coupling** are the only ones that have almost non outliers.<br>
+As we can see in the graph only the metric profiles **Brain Class**,**Feature Envy** and **God Class (type 1,3,4)** are the only ones that have almost non outliers.<br>
 And the rest of the metric profiles have a high number of outliers, this is because this metrics profiles rely mostly on the field, parameters and method counting and method content analysis in which the DAC does not measure.<br>
 
 ### Code Smells:
