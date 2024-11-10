@@ -21,13 +21,13 @@ The pattern is well identified but not well implemented.
 
 # Design Pattern 3 - Decorator Pattern
 
-**Reviewer:** Daniel Agostinho
+**Reviewer:** Nelson Martins
 
 **Comments:**
 
-- The pattern is well identified, but the class diagram has `methods missing`, namely: `FlatRegionMaskingFilter` and `apply`.
-- In the fields and methods section there are `2 typos` in **apply(BloackVector2 position) throws WolrdEditException**,
-  namely: BloackVector2 and WolrdEditException should be BlockVector2 and WorldEditException.
+- The pattern is well identified, but the class diagram has methods missing, namely: `FlatRegionMaskingFilter` and `apply`.
+- In the fields and methods section there are **2 typos** in `apply(BloackVector2 position) throws WolrdEditException`,
+  namely: `BloackVector2` and `WolrdEditException` should be `BlockVector2` and `WorldEditException`.
 - The discussion `should be more detailed`. It would be nice to explain how the pattern is used and
   how it benefits the codebase.
-- The discussion has a `random <br> tag` at the end of the text.
+- The discussion has a random `<br>` tag at the end of the text.
