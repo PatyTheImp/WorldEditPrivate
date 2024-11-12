@@ -3,8 +3,9 @@
 
 **Comments:**
 
-- The Design 2 and Design 3 are missing
-- In the title of the Design 1, is missing the name of the Design pattern
+- The pattern seems to be well identified.
+- The diagram seems to be well-made.
+- In the discussion it's only addressed why the pattern is referred, but would be good to explain how this pattern is beneficial to the project.   
 
 # Design Pattern 2 (Adapter Pattern)
 **Reviewer:** Nelson Martins
