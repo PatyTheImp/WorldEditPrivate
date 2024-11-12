@@ -1,27 +1,25 @@
 # Code Metrics Report: 
 ## 1. Lines of Code (LOC)
-### Project Level
-**Calculated Metric**: 73,383 LOC
-### Package Level (com.sk89q.worldedit)
-> Note that these values do not include the contents of sub-packages within this package.
-
-**Calculated Metric:** 4,592 LOC
-
 **Definition**: LOC measures the total number of code lines in a project or package. Blank lines and comments are included, reflecting the full volume of the source code.
 
 **Importance:** This metric provides an overview of the project’s size, helping estimate the required effort and future maintenance needs.
 
 **Potential Issues:** Projects with high LOC may indicate a complex system that could be challenging to maintain.
 High LOC may signal large classes or methods, which makes understanding and testing harder.
+<img width="529" alt="Captura de ecrã 2024-11-12, às 14 29 59" src="https://github.com/user-attachments/assets/75b379ef-be64-4eda-9122-e262369ed845">
 
-## 1.2 Non-Commenting Source Statements (NCSS) (Project Level)
 ### Project Level
-**Calculated Metric**: 41,753 NCSS
+*Calculated Metric*: 73,383 LOC
 ### Package Level (com.sk89q.worldedit)
 > Note that these values do not include the contents of sub-packages within this package.
 
-**Calculated Metric**: 1,993 NCSS
+*Calculated Metric:* 4,592 LOC
+### Class Level (EditSession)
+*Calculated Metric*: 2,440 LOC
 
+
+
+## 1.2 Non-Commenting Source Statements (NCSS) (Project Level)
 **Definition:** NCSS counts only executable lines of code, excluding comments and blank statements. This metric closely tracks the points where executable code appears, offering a more precise view of logical complexity.
 
 **Importance**: NCSS can indicate the effort required to understand critical parts of the code and helps identify where potential simplification can reduce complexity.
@@ -29,20 +27,30 @@ High LOC may signal large classes or methods, which makes understanding and test
 **Potential Issues:** High NCSS in specific classes may indicate long methods or overloaded classes.
 The metric may also indicate code smells, such as methods or classes with multiple responsibilities.
 
-## 1.3 Number of Concrete Classes (NOCC) (Project Level)
+<img width="486" alt="Captura de ecrã 2024-11-12, às 14 35 48" src="https://github.com/user-attachments/assets/e4a6bd66-d4fe-41d6-946e-4942314cca7e">
+
 ### Project Level
-**Calculated Metric:** 1,513 Concrete Classes
+*Calculated Metric*: 41,753 NCSS
 ### Package Level (com.sk89q.worldedit)
 > Note that these values do not include the contents of sub-packages within this package.
 
-**Calculated Metric:** 18 Concrete Classes
-
+*Calculated Metric*: 1,993 NCSS
+### Class Level (EditSession)
+*Calculated Metric*: 1,266 NCSS
+## 1.3 Number of Concrete Classes (NOCC) (Project Level)
 **Definition:** Counts all concrete (non-abstract) classes in the project or package. This metric helps measure the system's extensibility and modularity.
 
 **Importance:** A high number of concrete classes can signal a project with low code reuse, highlighting the need for improvements in abstraction and reuse of common functionalities.
 
 **Potential Issues:**
 A high number of concrete classes can complicate the project structure, making it harder to understand and increasing the likelihood of duplicated logic. It indicates a potential increase in the need for unit and integration tests.
+
+### Project Level
+*Calculated Metric:* 1,513 Concrete Classes
+### Package Level (com.sk89q.worldedit)
+> Note that these values do not include the contents of sub-packages within this package.
+
+*Calculated Metric:* 18 Concrete Classes
 
 ## 1.4 Relationship with Code Smells (Project Level)
 These metrics may reflect the presence of classic code smells, such as:
