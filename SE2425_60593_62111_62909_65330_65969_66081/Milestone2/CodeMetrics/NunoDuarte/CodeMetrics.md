@@ -62,6 +62,8 @@ These metrics may reflect the presence of classic code smells, such as:
 
 **Duplicated Code:** Identifying and refactoring duplicate blocks of code reduce the LOC and NCSS.
 
+**Lazy Class:** Classes with low LOC and NCSS may be lazy classes. 
+
 ## 2. Cognitive Complexity
 
 <img width="847" alt="Captura de ecrã 2024-11-12, às 15 18 33" src="https://github.com/user-attachments/assets/cbbbdfbf-7b64-4951-8570-5cab30a95fb3">
