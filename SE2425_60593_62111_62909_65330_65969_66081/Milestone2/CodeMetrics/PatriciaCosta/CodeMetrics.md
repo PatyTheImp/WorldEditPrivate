@@ -68,7 +68,7 @@ On the other hand, as NOC increases, the amount of testing will also increase be
 ### Potential trouble spots:
 
 **Extremely high NOC** values may indicate over-reliance on a single base class, which could make maintenance more challenging. The tables shows some extreme values, being the worst one the `WorldEditException` abstract class located in the `com.sk89q.worldedit` package, with a NOC of 18. <br>
-In the donut chart, the **High Coupling** profile, having the most highest outliers, aligns with the idea that high coupling can result in complex interdependencies, potentially leading to a sprawling inheritance structure where classes depend on numerous other classes. This can make the system harder to maintain and increase the risk of rigidity, as changes in one class may propagate across many child classes.
+In the boxplot chart, the **High Coupling** profile, having the most highest outliers, aligns with the idea that high coupling can result in complex interdependencies, potentially leading to a sprawling inheritance structure where classes depend on numerous other classes. This can make the system harder to maintain and increase the risk of rigidity, as changes in one class may propagate across many child classes.
 
 ## 4. Coupling between object classes:
 
