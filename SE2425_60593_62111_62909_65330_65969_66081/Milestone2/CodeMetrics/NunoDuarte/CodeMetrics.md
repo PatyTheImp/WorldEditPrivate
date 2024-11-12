@@ -54,9 +54,70 @@ A high number of concrete classes can complicate the project structure, making i
 
 ## 1.4 Relationship with Code Smells (Project Level)
 These metrics may reflect the presence of classic code smells, such as:
-
 **God Class/Method:** Classes and methods with many LOC or NCSS are typical indicators of responsibility overload.
 
 **Long Method:** Extensive methods indicate low modularity and are difficult to test individually.
 
 **Large Class:** Many concrete classes or classes with high LOC suggest a lack of abstraction and poor separation of responsibilities.
+
+**Duplicated Code:** Identifying and refactoring duplicate blocks of code reduce the LOC and NCSS.
+
+## 2. Cognitive Complexity
+
+<img width="847" alt="Captura de ecrã 2024-11-12, às 15 18 33" src="https://github.com/user-attachments/assets/cbbbdfbf-7b64-4951-8570-5cab30a95fb3">
+
+**Definition:** Measures how understandable a piece of code is by evaluating control flow structures such as loops, conditionals, and nesting levels. It focuses on the mental effort required to understand the code, rather than the number of possible paths.
+
+**Importance:** High Cognitive Complexity increases the difficulty of reading, understanding, and maintaining code, leading to a higher likelihood of bugs and issues during development. Lower complexity helps keep code readable, making it easier to debug, refactor, and test.
+
+**Potential Issues:**
+Code with high Cognitive Complexity can be challenging to maintain, as developers may struggle to understand the logic.
+High complexity increases the risk of errors and the time required to make updates or fix issues.
+
+**Code Smells:**
+
+**- Long Method:** Methods that are overly long tend to be more complex, often indicating that the function is handling too much logic and should be broken down.
+
+**- Deeply Nested Conditionals:** Extensive nesting (e.g., if statements within loops or other conditionals) increases Cognitive Complexity and makes the code harder to follow.
+
+**- Duplicated Code:** Duplicate blocks of code lead to redundancy, making maintenance more difficult, especially when complex logic is repeated across different areas.
+
+**Metric values:**
+
+Class `EditSession` (`com.sk89q.worldedit.world`) - Cognitive Complexity: 381
+
+Class `SelectionCommands` (`com.sk89q.worldedit.command`) - Cognitive Complexity: 202
+
+## 3. Dependency Metrics
+### 3.1 Afferent and Efferent Coupling
+**Definition:**
+
+*Afferent Coupling (Ca):* The number of other modules that depend on a specific module, indicating how central or critical the module is to the rest of the system.
+
+<img width="584" alt="Captura de ecrã 2024-11-12, às 15 41 54" src="https://github.com/user-attachments/assets/869996aa-4ac1-478f-b945-238cb674a159">
+
+*Efferent Coupling (Ce):* The number of modules that a specific module depends on, indicating how much the module relies on external components or other modules.
+
+**Importance:** Managing dependencies is crucial for maintainability and stability. High afferent coupling can create bottlenecks where a change in one module affects many others. High efferent coupling suggests that a module may be too reliant on external components, increasing the risk of breaking changes.
+
+**Potential Issues:**
+High afferent coupling (Ca) means the module is critical, making changes risky because many other modules depend on it.
+High efferent coupling (Ce) indicates that the module is fragile, as it depends heavily on other parts of the codebase.
+
+**Code Smells:**
+
+**- God Class:** Modules with very high afferent coupling often contain too much functionality, leading to a God Class that centralizes too many responsibilities.
+**- Cyclic Dependencies:** Cycles occur when modules depend on each other, either directly or indirectly, creating a tightly coupled structure that makes refactoring difficult and can lead to unexpected bugs.
+
+**- Feature Envy:** Modules with high efferent coupling often have logic that would be better suited elsewhere, leading to excessive reliance on other modules’ data and functions.
+
+**Metric Values:**
+
+
+Package `worldedit` - Afferent Coupling: 320 (highly depended upon by many modules)
+
+Package `worldedit` - Efferent Coupling: 107 (relies heavily on multiple external services)
+
+This combination can indicate a God Class or a Cyclic Dependency issue. Such a module both depends on and is depended upon by many other modules, making it hard to maintain.
+
+
