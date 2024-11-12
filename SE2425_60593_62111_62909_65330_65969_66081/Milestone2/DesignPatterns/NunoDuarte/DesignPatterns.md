@@ -360,7 +360,7 @@ The other classes extend AbstractRegion, implementing these specific methods.
 - **Fields and Methods:** adapt(World world), adaptPlayer(ServerPlayer player), adapt(ItemType itemType), adapt(Vec3 vector) ...
 
 ## 4. Discussion:
-    An adapter to Minecraft worlds for WorldEdit. The FabricAdapter class provides methods to adapt various objects from one API to another, such as World, Biome, Vector3, BlockState, and more. These methods convert objects between WorldEdit representations (e.g., World, BlockState, Vector3) and Minecraft’s Fabric API representations
+    An adapter to Minecraft worlds for WorldEdit. The FabricAdapter class provides methods to adapt various objects from one API to another,such as World, Biome, Vector3, BlockState, and more. These methods convert objects between WorldEdit representations (e.g., World, BlockState,Vector3) and Minecraft’s Fabric API representations
 
 # Design Pattern 3 (Command)
 
