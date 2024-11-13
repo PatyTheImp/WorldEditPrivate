@@ -24,7 +24,6 @@
 - **Primary Actor:** Player
 
 - **Secondary Actor:** Game Server
-  
 
 # Brush Listing
 
@@ -43,3 +42,5 @@
 - **Primary Actor:** Player
 
 - **Secondary Actor:** Game Server
+
+<img width="589" alt="Captura de ecrã 2024-11-13, às 17 59 05" src="https://github.com/user-attachments/assets/684befef-f4d9-4b91-87e7-7146ebd036ce">
