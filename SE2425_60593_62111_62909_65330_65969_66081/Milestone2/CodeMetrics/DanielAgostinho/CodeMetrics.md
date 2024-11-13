@@ -6,6 +6,12 @@
 
 ## 1. Number of Attributes:
 
+NOA measures the total count of attributes (or properties) in a class within object-oriented programming. 
+This metric is used to assess the complexity of a class, as a higher number of attributes often indicates increased 
+complexity, potential for higher memory usage, and potential challenges in maintenance and testing. It provides insight 
+into the data structure and modularization within a codebase, helping to identify classes that may benefit from 
+refactoring or simplification.
+
 ### Charts:
 
 ![NOA_Metrics_values](./img/NOA_Metrics_values.png) <br>
@@ -26,7 +32,8 @@ fig5 - NOA distribution chart table
 ### Potential trouble spots:
 
 - In figure 1 we can observe that the last two (TooManyFields and TooManyMethods) have the highest number and largest 
-  spread of outliers, thus we can conclude that this metric is unreliable for identifying those code smells.
+  spread of outliers, thus we can conclude that this metric is unreliable for identifying those code smells, as it can
+  indicate that there is and inconsistency in measurement and a lack of specific which can lead to false positives.
 
 ### Relation with code smell:
 
@@ -44,6 +51,11 @@ fig5 - NOA distribution chart table
 
 ## 2. Number of Operations:
 
+NOO represents the total count of methods or functions defined in a class. 
+This metric evaluates the behavioral complexity of a class, where a higher NOO indicates more functionality within a 
+single class. A high NOO may suggest that a class is handling too many responsibilities, potentially violating 
+principles like single-responsibility and leading to issues in maintainability, readability, and testing.
+
 ### Charts:
 
 ![NOO_Metrics_values](./img/NOO_Metrics_values.png) <br>
@@ -53,7 +65,8 @@ fig6 - NOO metric values
 
 - In figure 6 we can see that most code smells have a lot of outliers, this can indicate that this metric is unreliable
   for identifying those code smells, except `God Class type 1` and `Feature Envy` which have a low number of outliers
-  along with a low dispersion of values.
+  along with a low dispersion of values. The reasons for the unreliability is an inconsistent detection and a lack of
+  correlation with code smells which leads to false alarms and possibly even missed detections.
 
 ### Relation with code smell:
 - In figure 6 we can see that `God Class type 1` and `Feature Envy` are at the bottom of the chart this can indicate 
@@ -62,6 +75,11 @@ fig6 - NOO metric values
   is too reliant on other classes (Feature Envy).
 
 ## 3. Number of Added Methods:
+
+NOAM counts the number of getter and setter methods in a class. This metric reflects how much of a class’s data is 
+exposed or modifiable, which can impact encapsulation. A high NOAM suggests that a class has many publicly accessible 
+fields, possibly indicating weaker data hiding and encapsulation, which may lead to tighter coupling and increased 
+dependencies in the codebase.
 
 ### Charts:
 
@@ -72,7 +90,9 @@ fig7 - NOAM metric values
 
 - In figure 7 we can see that most code smells have a lot of outliers, this can indicate that this metric is unreliable
   for identifying most code smells, however we can see some exceptions, namely: `Brain Class`, `Feature Envy` and
-    `God Class type 1 and 3` which have a low number of outliers.
+  `God Class type 1 and 3` which have a low number of outliers. The reasons for the unreliability are an inconsistent
+  detection and a high sensitivity to irrelevant code aspects, so due to the high variability of the metric, it can
+  lead to false alarms and possibly even missed detections.
 
 ### Relation with code smell:
 
