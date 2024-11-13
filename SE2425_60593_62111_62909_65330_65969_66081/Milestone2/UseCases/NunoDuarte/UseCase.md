@@ -43,11 +43,3 @@
 - **Primary Actor:** Player
 
 - **Secondary Actor:** Game Server
-
-## Set Brush
-
-- **Description:** Creates a shape (sphere, cylinder, or cuboid) at the target location with a specified pattern and size.
-
-- **Primary Actor:** Player
-
-- **Secondary Actor:** Game Server
