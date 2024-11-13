@@ -1,3 +1,12 @@
+# Code Smell 3 - Feature Envy
+
+**Reviewer -** Nuno Duarte
+
+**Comments**
+- The code smell was well identified.
+- With the explanation and the proposal for refactoring I can get an idea of what it is and how to solve it, although it is a bit vague.
+
+
 # Code Smell 2 (God Class)
 
 **Reviewer -** Patrícia Costa
