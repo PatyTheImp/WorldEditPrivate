@@ -21,3 +21,13 @@ It simplifies method signatures, improves maintainability, and groups logically 
 Although it adds a small amount of complexity with the introduction of the `ActionContext` class, the benefits far outweigh the drawbacks,
 especially in a large and complex system where maintaining clean method signatures is crucial.
 This refactoring enhances code quality and aligns well with object-oriented principles like encapsulation and abstraction.
+
+# Code Smell 3 - Duplicate Code
+
+**Reviewer -** Nelson Martins
+
+**Comments -**
+- The code smell is well identified, there is indeed duplicate code in the location specified.
+- The refactoring proposal is clear and concise, it's easy to understand how the code could be refactored to avoid the 
+  duplication.
+- Overall, everything seems well done.
