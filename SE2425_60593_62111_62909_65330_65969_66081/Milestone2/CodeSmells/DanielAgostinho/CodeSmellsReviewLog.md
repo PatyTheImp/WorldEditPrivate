@@ -1,3 +1,11 @@
+# Code Smell 3 - Feature Envy
+
+**Reviewer -** Nuno Duarte
+
+**Comments**
+- The code smell was well identified but the explanation could have been a little more specific.
+- The refactoring proposal is too generic, a little detail would have been better, for example, how the method could look or in which class it should be.
+
 # Code Smell 2 - Long Method
 
 **Reviewer -** Guilherme Simões
