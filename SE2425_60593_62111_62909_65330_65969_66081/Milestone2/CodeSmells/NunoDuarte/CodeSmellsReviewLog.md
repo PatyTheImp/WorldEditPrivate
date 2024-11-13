@@ -16,4 +16,16 @@
 **Comments:**
 
 - The smell seems to be well identified since the class aparently is not being used anywhere.
-- The refactoring looks appropriate. 
+- The refactoring looks appropriate.
+
+# Code Smell 3 - Primitive Obsession
+
+**Reviewer:** Daniel Agostinho
+
+**Comments:**
+
+- The smell is well identified and explained.
+- The refactoring proposal is appropriate and would improve the code by encapsulating the primitive data types into a 
+  new class, thus making the code more maintainable and easier to understand, which is also explained, thus making the
+  refactoring proposal clear and easy to understand.
+- Needs no corrections, it's fundamentally correct.
