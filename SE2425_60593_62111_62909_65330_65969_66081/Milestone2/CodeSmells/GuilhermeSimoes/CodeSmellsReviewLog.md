@@ -1,3 +1,13 @@
+# Code Smell 1 - Data Class
+
+**Reviewer:** Nelson Martins
+
+**Comments:**
+
+- The code smell was well identified and the explanation is clear, the purpose of the `BaseItem` class seems to be only to store data.
+- The proposed refactoring is a good approach to solve the problem.
+- Overall, the identification is well done.
+
 # Code Smell 2 - Lazy Class
 
 **Reviewer:** Patrícia Costa
