@@ -7,8 +7,8 @@ Guilherme Simões
 ## Management info
 Burndown chart:
 
-![Graph](GraphWeek5.jpg)
+![Graph](GraphWeek5.png)
 
 Scrum board:
 
-![Scrum Board](ScrumBoardWeek5.jpg)
+![Scrum Board](ScrumBoardWeek5.png)
