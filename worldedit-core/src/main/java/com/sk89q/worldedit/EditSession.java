@@ -127,15 +127,7 @@ import com.sk89q.worldedit.world.block.BlockTypes;
 import com.sk89q.worldedit.world.registry.LegacyMapper;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nullable;
 
@@ -2697,6 +2689,23 @@ public class EditSession implements Extent, AutoCloseable {
             vset = getHollowed(vset);
         }
         return setBlocks(vset, pattern);
+    }
+
+    /**
+     * Raises blocks in a region, by a certain height.
+     * @param region the region
+     * @param height the height to raise the blocks
+     * @param block the block to raise
+     * @return number of blocks affected
+     */
+    public int raiseBlocks(Region region, int height, BlockType block) {
+        // TO-DO
+        BlockState state = block.getDefaultState();
+        Collection<BaseBlock> blocks = new ArrayList<>();
+        blocks.add(state.toBaseBlock());
+        Mask mask = new BlockMask(this, blocks);
+
+        return 0;
     }
 
     private static Set<BlockVector3> getBallooned(Set<BlockVector3> vset, double radius) {
