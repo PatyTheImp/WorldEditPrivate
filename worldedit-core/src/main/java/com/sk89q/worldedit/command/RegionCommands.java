@@ -120,6 +120,23 @@ public class RegionCommands {
     }
 
     @Command(
+            name = "/animal",
+            desc = "Creates an animal in the center of the selection"
+    )
+    @CommandPermissions("worldedit.region.animal")
+    @Logging(REGION)
+    public void animal(Actor actor, EditSession editSession,
+                   @Selection Region region,
+                   @Arg(desc = "The animal type")
+                       String type) {
+        Vector3 pos =  editSession.makeAnimal(region, type);
+        if (pos == null)
+            actor.printInfo(TranslatableComponent.of("Invalid parameter"));
+        else
+            actor.printInfo(TranslatableComponent.of("Animal created in " + pos));
+    }
+
+    @Command(
         name = "/line",
         desc = "Draws line segments between cuboid selection corners or convex polyhedral selection vertices",
         descFooter = "Can only be used with a cuboid selection or a convex polyhedral selection"

@@ -22,6 +22,7 @@ package com.sk89q.worldedit;
 import com.google.common.collect.ImmutableList;
 import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.entity.Entity;
+import com.sk89q.worldedit.entity.metadata.EntityProperties;
 import com.sk89q.worldedit.event.extent.EditSessionEvent;
 import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.extension.platform.Capability;
@@ -107,10 +108,7 @@ import com.sk89q.worldedit.regions.shape.ArbitraryBiomeShape;
 import com.sk89q.worldedit.regions.shape.ArbitraryShape;
 import com.sk89q.worldedit.regions.shape.RegionShape;
 import com.sk89q.worldedit.regions.shape.WorldEditExpressionEnvironment;
-import com.sk89q.worldedit.util.Countable;
-import com.sk89q.worldedit.util.Direction;
-import com.sk89q.worldedit.util.SideEffectSet;
-import com.sk89q.worldedit.util.TreeGenerator;
+import com.sk89q.worldedit.util.*;
 import com.sk89q.worldedit.util.collection.BlockMap;
 import com.sk89q.worldedit.util.collection.DoubleArrayList;
 import com.sk89q.worldedit.util.eventbus.EventBus;
@@ -124,6 +122,7 @@ import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
 import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.block.BlockTypes;
+import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldedit.world.registry.LegacyMapper;
 import org.apache.logging.log4j.Logger;
 
@@ -842,6 +841,21 @@ public class EditSession implements Extent, AutoCloseable {
     @Nullable
     public Entity createEntity(com.sk89q.worldedit.util.Location location, BaseEntity entity) {
         return bypassNone.createEntity(location, entity);
+    }
+
+    public Vector3 makeAnimal(Region region, String type) {
+        Vector3 pos = region.getCenter();
+        com.sk89q.worldedit.util.Location location = new Location(bypassNone, pos);
+        BaseEntity base = new BaseEntity(new EntityType(type));
+        Entity entity = bypassNone.createEntity(location, base);
+        if (entity == null)
+            return null;
+        EntityProperties entityType = entity.getFacet(EntityProperties.class);
+        if (entityType == null || !entityType.isAnimal()) {
+            entity.remove();
+            return null;
+        }
+        return pos;
     }
 
     /**
