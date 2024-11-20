@@ -1,8 +1,9 @@
 # User story 2
 ## Author(s)
-Guilherme Simões
+Miguel Flor
 ## Reviewer(s)
 Todos os membros do grupo
 # User story
 As a builder,
-I want to have a tool that chooses a random build from a set of schematics so that I have more diversity and naturality on my builds.
+I want to have a tool that allows me to raise blocks to a certain height, in a given area, so that I can build
+walls and other structures more efficiently.
