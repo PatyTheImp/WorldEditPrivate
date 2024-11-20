@@ -87,10 +87,7 @@ import com.sk89q.worldedit.internal.expression.ExpressionException;
 import com.sk89q.worldedit.internal.expression.ExpressionTimeoutException;
 import com.sk89q.worldedit.internal.expression.LocalSlot.Variable;
 import com.sk89q.worldedit.internal.util.LogManagerCompat;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.math.MathUtils;
-import com.sk89q.worldedit.math.Vector2;
-import com.sk89q.worldedit.math.Vector3;
+import com.sk89q.worldedit.math.*;
 import com.sk89q.worldedit.math.interpolation.Interpolation;
 import com.sk89q.worldedit.math.interpolation.KochanekBartelsInterpolation;
 import com.sk89q.worldedit.math.interpolation.Node;
@@ -2698,14 +2695,36 @@ public class EditSession implements Extent, AutoCloseable {
      * @param block the block to raise
      * @return number of blocks affected
      */
-    public int raiseBlocks(Region region, int height, BlockType block) {
+    public int raiseBlocks(Region region, int height, BlockType block) throws MaxChangedBlocksException {
         // TO-DO
         BlockState state = block.getDefaultState();
         Collection<BaseBlock> blocks = new ArrayList<>();
         blocks.add(state.toBaseBlock());
         Mask mask = new BlockMask(this, blocks);
+        int affected = 0;
+        BlockVector3 max = region.getMaximumPoint();
+        BlockVector3 min = region.getMinimumPoint();
 
-        return 0;
+        BlockVector2 start = BlockVector2.at(min.x(),min.z());
+        BlockVector2 end = BlockVector2.at(max.x(),max.z());
+        for (int x = start.x(); x <=end.x() ; x++){
+            for (int z = 0; z <=end.z(); z++) {
+
+                int y = getHighestTerrainBlock(x, z, min.y(), max.y(), mask);
+
+                if (y > min.y() || getBlock(BlockVector3.at(x, y, z)).getBlockType().equals(block)) {
+                    System.out.println("enter");
+                    for (int i = 0; i < height; i++) {
+                        y++;
+                        affected += setBlock(BlockVector3.at(x, y, z), state) ? 1 : 0;
+                        System.out.println("x: " + x + " y: " + y + " z: " + z + " affected: " + affected);
+
+                    }
+                }
+            }
+        }
+
+        return affected;
     }
 
     private static Set<BlockVector3> getBallooned(Set<BlockVector3> vset, double radius) {

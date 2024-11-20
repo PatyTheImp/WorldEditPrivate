@@ -21,10 +21,7 @@ package com.sk89q.worldedit.command;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.*;
 import com.sk89q.worldedit.command.util.CommandPermissions;
 import com.sk89q.worldedit.command.util.CommandPermissionsConditionGenerator;
 import com.sk89q.worldedit.command.util.Logging;
@@ -453,7 +450,16 @@ public class RegionCommands {
         checkCommandArgument(height >= 1, "Height must be >= 1");
         checkCommandArgument(block!=null, "Must choose a block type");
 
-        return editSession.raiseBlocks(region, height, block);
+        int affected = 0;
+        try{
+            affected = editSession.raiseBlocks(region, height, block);
+        } catch (MaxChangedBlocksException e){
+            actor.printError(e.getRichMessage());
+        }
+
+        actor.printInfo(TranslatableComponent.of("worldedit.raise.changed", TextComponent.of(affected)));
+
+        return affected;
     }
 
     @Command(
