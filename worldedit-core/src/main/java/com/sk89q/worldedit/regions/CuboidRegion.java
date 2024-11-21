@@ -192,8 +192,8 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
     private void addCuboidEdges(Set<Region> edges, boolean[] flags, BlockVector3 min, BlockVector3 max) {
         if (flags[0]) // West face
             edges.add(new CuboidRegion(
-                    min.withX(min.x() + 1).withY(min.y() + 1).withZ(min.z() + 1),
-                    max.withX(min.x() + 1).withY(max.y() - 1).withZ(max.z() - 1)
+                    min.withX(min.x()).withY(min.y() + 1).withZ(min.z() + 1),
+                    max.withX(min.x()).withY(max.y() - 1).withZ(max.z() - 1)
             ));
         if (flags[1]) // East face
             edges.add(new CuboidRegion(
