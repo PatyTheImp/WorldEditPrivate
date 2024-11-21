@@ -121,7 +121,7 @@ public class RegionCommands {
 
     @Command(
             name = "/animal",
-            desc = "Creates an animal in the center of the selection"
+            desc = "Creates a number of a given animal in the selection"
     )
     @CommandPermissions("worldedit.region.animal")
     @Logging(REGION)
@@ -129,7 +129,7 @@ public class RegionCommands {
                    @Selection Region region,
                    @Arg(desc = "The animal type")
                        String type,
-                       @Arg(desc = "The animal count", def = "1")
+                   @Arg(desc = "The animal count", def = "1")
                        int count) {
         for (int i = 0; i < count; i++) {
             Vector3 pos = editSession.makeAnimal(region, type);
