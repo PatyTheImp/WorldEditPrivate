@@ -237,7 +237,14 @@ of the class.
 
 Overall, the `PermissionsResolverManager` class is doing too much, 
 it needs heavy refactoring to improve maintainability and readability.
-The class should be divided into other smaller classes that divide it's responsabilities to make the implementation less convoluted.
+The class should be divided into other smaller classes that divide its responsibilities to make the implementation less convoluted.
+
+To address the "Large Class" code smell in the PermissionsResolverManager class, we can refactor it by dividing 
+its responsibilities into smaller, more focused classes:
+
+- **Configuration Management:** Extract the configuration-related methods into a separate class.
+- **Resolver Management:** Extract the resolver-related methods into another class.
+- **Permissions Management:** Extract the permissions-related methods into another class.
 
 # Code Smell 2 - (Long Method)
 

@@ -1,10 +1,14 @@
-# Sprint 5
+# Sprint 3
 ## Dates
-2024-11-11 - 2024-11-15
+2024-11-10 - 2024-11-14
 
 ## Scrum master
-Student name
-
+Guilherme Simões
 ## Management info
-Burndown chart
-Scrum board
+Burndown chart:
+
+![Graph](GraphWeek5.png)
+
+Scrum board:
+
+![Scrum Board](ScrumBoardWeek5.png)
