@@ -133,6 +133,139 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
                 new CuboidRegion(pos1.withY(max.y()), pos2.withY(max.y())));
     }
 
+
+
+
+
+
+    /**
+     * Get a set of regions that contains the edges or faces of this cuboid.
+     * @param flags:
+     * 0 - fillWest,
+     * 1 - fillEast,
+     * 2 - fillNorth,
+     * 3 - fillSouth,
+     * 4 - fillCeiling,
+     * 5 - fillFloor.
+     *
+     * @return a new set of regions
+     */
+    public Set<Region> getEdges(boolean[] flags) {
+        Set<Region> edges = new HashSet<>();
+        BlockVector3 min = getMinimumPoint();
+        BlockVector3 max = getMaximumPoint();
+
+        if (min.equals(max)) {
+            edges.add(new CuboidRegion(min, min));
+        } else if (isLine(pos1.z(), pos2.z(), pos1.y(), pos2.y())) {
+            edges.add(createHorizontalLineEdge(min, max));
+        } else if (isLine(pos1.x(), pos2.x(), pos1.z(), pos2.z())) {
+            edges.add(createVerticalLineEdge(min, max));
+        } else if (isLine(pos1.x(), pos2.x(), pos1.y(), pos2.y())) {
+            edges.add(createDepthLineEdge(min, max));
+        } else {
+            addCuboidEdges(edges, flags, min, max);
+            getHorizontalEdges(edges, min, max, min.y()); // Bottom face edges
+            getHorizontalEdges(edges, min, max, max.y()); // Top face edges
+            getVerticalEdges(edges, min, max);           // Vertical face edges
+        }
+
+        return edges;
+    }
+
+    private Region createHorizontalLineEdge(BlockVector3 min, BlockVector3 max) {
+        return new CuboidRegion(min.withX(min.x()), max.withX(max.x()));
+    }
+
+    private Region createVerticalLineEdge(BlockVector3 min, BlockVector3 max) {
+        return new CuboidRegion(min.withY(min.y()), max.withY(max.y()));
+    }
+
+    /**
+     * Checks if the pairs of coordinates are equal
+     * @param c1 - first coordinate of the first point
+     * @param c2 - first coordinate of the second point
+     * @param c3 - second coordinate of the first point
+     * @param c4 - second coordinate of the second point
+     * @return true if equal; false otherwise
+     */
+    private boolean isLine(int c1, int c2, int c3, int c4) {
+        return c1 == c2 && c3 == c4;
+    }
+
+    private Region createDepthLineEdge(BlockVector3 min, BlockVector3 max) {
+        return new CuboidRegion(min.withZ(min.z()), max.withZ(max.z()));
+    }
+
+    private void addCuboidEdges(Set<Region> edges, boolean[] flags, BlockVector3 min, BlockVector3 max) {
+        if (flags[0]) { // West face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(min.y() + 1).withZ(min.z() + 1),
+                    max.withX(min.x() + 1).withY(max.y() - 1).withZ(max.z() - 1)
+            ));
+        }
+        if (flags[1]) { // East face
+            edges.add(new CuboidRegion(
+                    min.withX(max.x()).withY(min.y() + 1).withZ(min.z() + 1),
+                    max.withX(max.x()).withY(max.y() - 1).withZ(max.z() - 1)
+            ));
+        }
+        if (flags[2]) { // North face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(min.y() + 1).withZ(min.z()),
+                    max.withX(max.x() - 1).withY(max.y() - 1).withZ(min.z())
+            ));
+        }
+        if (flags[3]) { // South face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(min.y() + 1).withZ(max.z()),
+                    max.withX(max.x() - 1).withY(max.y() - 1).withZ(max.z())
+            ));
+        }
+        if (flags[4]) { // Top face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(max.y()).withZ(min.z() + 1),
+                    max.withX(max.x() - 1).withY(max.y()).withZ(max.z() - 1)
+            ));
+        }
+        if (flags[5]) { // Bottom face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(min.y()).withZ(min.z() + 1),
+                    max.withX(max.x() - 1).withY(min.y()).withZ(max.z() - 1)
+            ));
+        }
+    }
+
+
+    /**
+     * Draws the vertical edges
+     * @param edges - set of edges to add the edges drawn
+     * @param min - min point
+     * @param max - max point
+     */
+    private void getVerticalEdges(Set<Region> edges, BlockVector3 min, BlockVector3 max) {
+        edges.add(new CuboidRegion(pos1.withY(min.y()).withZ(min.z()).withX(min.x()), pos2.withY(max.y()).withZ(min.z()).withX(min.x())));
+        edges.add(new CuboidRegion(pos1.withY(min.y()).withZ(min.z()).withX(max.x()), pos2.withY(max.y()).withZ(min.z()).withX(max.x())));
+        edges.add(new CuboidRegion(pos1.withY(min.y()).withZ(max.z()).withX(min.x()), pos2.withY(max.y()).withZ(max.z()).withX(min.x())));
+        edges.add(new CuboidRegion(pos1.withY(min.y()).withZ(max.z()).withX(max.x()), pos2.withY(max.y()).withZ(max.z()).withX(max.x())));
+    }
+
+    /**
+     * Draws the horizontal edges
+     * @param edges - set of edges to add the edges drawn
+     * @param min - min point
+     * @param max - max point
+     * @param y - y correspondent to the top or bottom face
+     */
+    private void getHorizontalEdges(Set<Region> edges, BlockVector3 min, BlockVector3 max, int y) {
+        // Bottom face edges
+        edges.add(new CuboidRegion(pos1.withY(y).withZ(min.z()).withX(min.x()), pos2.withY(y).withZ(min.z()).withX(max.x())));
+        edges.add(new CuboidRegion(pos1.withY(y).withZ(max.z()).withX(min.x()), pos2.withY(y).withZ(max.z()).withX(max.x())));
+        edges.add(new CuboidRegion(pos1.withY(y).withZ(min.z()).withX(min.x()), pos2.withY(y).withZ(max.z()).withX(min.x())));
+        edges.add(new CuboidRegion(pos1.withY(y).withZ(min.z()).withX(max.x()), pos2.withY(y).withZ(max.z()).withX(max.x())));
+    }
+
+
     /**
      * Get a region that contains the walls (all faces but the ones parallel to
      * the X-Z plane) of this cuboid.

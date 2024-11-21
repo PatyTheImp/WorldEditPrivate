@@ -1176,6 +1176,22 @@ public class EditSession implements Extent, AutoCloseable {
     }
 
     /**
+     * Sets all the blocks of a set of regions to a given pattern.
+     *
+     * @param regionSet the set of regions
+     * @param pattern the pattern that provides the replacement block
+     * @return number of blocks affected
+     * @throws MaxChangedBlocksException thrown if too many blocks are changed
+     */
+    public int setBlockRegion(Set<Region> regionSet, Pattern pattern) throws MaxChangedBlocksException {
+        int affected = 0;
+        for (Region r : regionSet) {
+            affected += setBlocks(r, pattern);
+        }
+        return affected;
+    }
+
+    /**
      * Replaces all the blocks matching a given filter, within a given region, to a block
      * returned by a given pattern.
      *
@@ -1283,6 +1299,24 @@ public class EditSession implements Extent, AutoCloseable {
     }
 
     /**
+     * Make the edges of the given region as if it was a {@link CuboidRegion}.
+     *
+     * @param region      the region
+     * @param pattern     the pattern to place
+     * @param flags - list of flags corresponding to the faces that are to be filled
+     * @return number of blocks affected
+     * @throws MaxChangedBlocksException thrown if too many blocks are changed
+     */
+    public int makeCuboidEdges(Region region, Pattern pattern, boolean[] flags) throws MaxChangedBlocksException {
+        checkNotNull(region);
+        checkNotNull(pattern);
+
+        CuboidRegion cuboid = CuboidRegion.makeCuboid(region);
+        Set<Region> edges = cuboid.getEdges(flags);
+        return setBlockRegion(edges, pattern);
+    }
+
+    /**
      * Make the faces of the given region. The method by which the faces are found
      * may be inefficient, because there may not be an efficient implementation supported
      * for that specific shape.
@@ -1303,6 +1337,20 @@ public class EditSession implements Extent, AutoCloseable {
         }
     }
 
+    /**
+     * Make the edges of the given region.
+     *
+     * @param region      the region
+     * @param pattern     the pattern to place
+     * @param flags - list of flags corresponding to the faces that are to be filled
+     * @return number of blocks affected
+     * @throws MaxChangedBlocksException thrown if too many blocks are changed
+     */
+    public int makeEdges(final Region region, Pattern pattern, boolean[] flags) throws MaxChangedBlocksException {
+        checkNotNull(region);
+        checkNotNull(pattern);
+        return makeCuboidEdges(region, pattern, flags);
+    }
 
     /**
      * Make the walls (all faces but those parallel to the X-Z plane) of the given region
