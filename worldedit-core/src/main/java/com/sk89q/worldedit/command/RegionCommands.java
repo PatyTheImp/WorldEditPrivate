@@ -128,12 +128,16 @@ public class RegionCommands {
     public void animal(Actor actor, EditSession editSession,
                    @Selection Region region,
                    @Arg(desc = "The animal type")
-                       String type) {
-        Vector3 pos =  editSession.makeAnimal(region, type);
-        if (pos == null)
-            actor.printInfo(TranslatableComponent.of("Invalid parameter"));
-        else
-            actor.printInfo(TranslatableComponent.of("Animal created in " + pos));
+                       String type,
+                       @Arg(desc = "The animal count", def = "1")
+                       int count) {
+        for (int i = 0; i < count; i++) {
+            Vector3 pos = editSession.makeAnimal(region, type);
+            if (pos == null)
+                actor.printInfo(TranslatableComponent.of("Invalid parameter"));
+            else
+                actor.printInfo(TranslatableComponent.of("Animal created in " + pos));
+        }
     }
 
     @Command(
