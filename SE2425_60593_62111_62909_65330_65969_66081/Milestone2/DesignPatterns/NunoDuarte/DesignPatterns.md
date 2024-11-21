@@ -360,7 +360,8 @@ The other classes extend AbstractRegion, implementing these specific methods.
 - **Fields and Methods:** adapt(World world), adaptPlayer(ServerPlayer player), adapt(ItemType itemType), adapt(Vec3 vector) ...
 
 ## 4. Discussion:
-    An adapter to Minecraft worlds for WorldEdit. The FabricAdapter class provides methods to adapt various objects from one API to another, such as World, Biome, Vector3, BlockState, and more. These methods convert objects between WorldEdit representations (e.g., World, BlockState, Vector3) and Minecraft’s Fabric API representations
+
+An adapter to Minecraft worlds for WorldEdit. The FabricAdapter class provides methods to adapt various objects from one API to another,such as World, Biome, Vector3, BlockState, and more. These methods convert objects between WorldEdit representations (e.g., World, BlockState,Vector3) and Minecraft’s Fabric API representations
 
 # Design Pattern 3 (Command)
 
@@ -511,11 +512,13 @@ The other classes extend AbstractRegion, implementing these specific methods.
 ## 3. Location on the codebase:
 
 - **Package:** com.sk89q.worldedit.command.tool
-- **Class:** Tool, BlockTool, DoubleActionBlockTool, QueryTool
+- **Class:** Tool, BlockTool, DoubleActionBlockTool, QueryTool, ToolCommand
 - **Fields and Methods:** actPrimary (BlockTool), actSecondary(DoubleActionBlockTool)
 
 ## 4. Discussion:
 
 Each Tool action method ('actPrimary' and 'actSecondary') encapsulates a command that can be executed independently.
 The Tool hierarchy is designed to perform specific commands/actions (such as acting on a block). Each 'actPrimary' and 'actSecondary' call represents a command being executed on a target location.
+Invoker: ToolCommand class in package com.sk89q.worldedit.command.
+Receiver: Platform, Player, and World, which handle the requested operations and provide contextual information.
 

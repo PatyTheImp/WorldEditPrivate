@@ -86,7 +86,7 @@ This method could be refactored to be more readable and maintainable.
 
 ## 4. Proposal of a refactoring:
 breakdown the method into smaller methods.
-- `deleteChunks` could be broken down into:
+- `deleteChunks` content could be broken down into functions:
     - `readChunkInfo` - to get the current chunk info, reading the file.
     - `isBeforeTime` - check if the beforeTime is not null. Doing all the logic that comes after that.
     - `writeChunkInfo` - to write the chunk info to the file.

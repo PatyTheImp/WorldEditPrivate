@@ -70,7 +70,7 @@
     - `public Iterator<BlockVector3> iterator()` : Method returns an Iterator of BlockVector3 objects.
 
 ## 4. Discussion:
-    The Iterator pattern is used here to iterate over the elements in the region while transforming them.<br>
+    The Iterator pattern is used here to iterate over the elements in the region while transforming them.
 
 
 # Design Pattern 3 (Decorator)
@@ -105,13 +105,13 @@
 - **Package:** `com.sk89q.worldedit.function`
 - **Class:** `FlatRegenMaskingFilter`
 - **Fields and Methods:**
-    - `public boolean apply(BloackVector2 position) throws WolrdEditException` : Method applies the mask and function to the position.
+    - `public boolean apply(BlockVector2 position) throws WorldEditException` : Method applies the mask and function to the position.
     - `public FlatRegionMaskingFilter(Mask2D mask, FlatRegionFunction function)` : Constructor for the class.
-    - `private final FlatRegionFunction function` : Field for the function to be applied.
+    - `private final FlatRegionFunction function![img.png](img.png)` : Field for the function to be applied.
     - `private final Mask2D mask` : Field for the mask to be applied.
 
 ## 4. Discussion:
-    This class is a decorator because implements the same interface as the attribute `function` and adds the functionality of the `mask` to the `function`.<br>
+    This class is a decorator because implements the same interface as the attribute `function` and adds the functionality of the `mask` to the `function`.
 
 
 
