@@ -844,7 +844,15 @@ public class EditSession implements Extent, AutoCloseable {
     }
 
     public Vector3 makeAnimal(Region region, String type) {
-        Vector3 pos = region.getCenter();
+
+        BlockVector3 min = region.getMinimumPoint();
+        BlockVector3 max = region.getMaximumPoint();
+        Vector3 pos = Vector3.at(0, 1, 0).add(
+        min.x() + Math.random() * (max.x() - min.x()),
+        min.y() + Math.random() * (max.y() - min.y()),
+        min.z() + Math.random() * (max.z() - min.z())
+        );
+
         com.sk89q.worldedit.util.Location location = new Location(bypassNone, pos);
         BaseEntity base = new BaseEntity(new EntityType(type));
         Entity entity = bypassNone.createEntity(location, base);
