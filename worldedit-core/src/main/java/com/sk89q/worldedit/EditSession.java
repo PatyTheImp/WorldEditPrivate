@@ -2708,7 +2708,7 @@ public class EditSession implements Extent, AutoCloseable {
         BlockVector2 start = BlockVector2.at(min.x(),min.z());
         BlockVector2 end = BlockVector2.at(max.x(),max.z());
         for (int x = start.x(); x <=end.x() ; x++){
-            for (int z = 0; z <=end.z(); z++) {
+            for (int z = start.z(); z <= end.z(); z++) {
 
                 int y = getHighestTerrainBlock(x, z, min.y(), max.y(), mask);
 
