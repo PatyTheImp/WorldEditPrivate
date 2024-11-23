@@ -868,7 +868,7 @@ public class EditSession implements Extent, AutoCloseable {
     private static Vector3 getRandomPos(Region region) {
         BlockVector3 min = region.getMinimumPoint();
         BlockVector3 max = region.getMaximumPoint();
-        return Vector3.at(
+        return Vector3.at(0,1,0).add(
                 min.x() + Math.random() * (max.x() - min.x()),
                 min.y() + Math.random() * (max.y() - min.y()),
                 min.z() + Math.random() * (max.z() - min.z())
