@@ -28,8 +28,10 @@ import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.command.util.CommandPermissions;
 import com.sk89q.worldedit.command.util.CommandPermissionsConditionGenerator;
 import com.sk89q.worldedit.command.util.Logging;
+import com.sk89q.worldedit.command.util.WorldEditAsyncCommandBuilder;
 import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.extension.platform.Actor;
+import com.sk89q.worldedit.extension.platform.Capability;
 import com.sk89q.worldedit.function.GroundFunction;
 import com.sk89q.worldedit.function.RegionFunction;
 import com.sk89q.worldedit.function.RegionMaskingFilter;
@@ -60,6 +62,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionOperationException;
 import com.sk89q.worldedit.util.SideEffectSet;
 import com.sk89q.worldedit.util.TreeGenerator.TreeType;
+import com.sk89q.worldedit.util.formatting.component.PaginationBox;
 import com.sk89q.worldedit.util.formatting.component.TextUtils;
 import com.sk89q.worldedit.util.formatting.text.Component;
 import com.sk89q.worldedit.util.formatting.text.TextComponent;
@@ -67,6 +70,9 @@ import com.sk89q.worldedit.util.formatting.text.TranslatableComponent;
 import com.sk89q.worldedit.world.RegenOptions;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.animal.AnimalType;
+import com.sk89q.worldedit.world.animal.AnimalVariants;
+import com.sk89q.worldedit.world.biome.BiomeType;
+import com.sk89q.worldedit.world.registry.BiomeRegistry;
 import org.enginehub.piston.annotation.Command;
 import org.enginehub.piston.annotation.CommandContainer;
 import org.enginehub.piston.annotation.param.Arg;
@@ -75,6 +81,7 @@ import org.enginehub.piston.annotation.param.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sk89q.worldedit.command.util.Logging.LogMode.ALL;
 import static com.sk89q.worldedit.command.util.Logging.LogMode.ORIENTATION_REGION;
@@ -141,6 +148,34 @@ public class RegionCommands {
 
         String msg = editSession.makeAnimals(region, type.getName(), count, isBaby, variant);
         actor.printInfo(TranslatableComponent.of(msg));
+    }
+
+    @Command(
+            name = "/variants",
+            desc = "Gets all variants of the given animal available."
+    )
+    @CommandPermissions("worldedit.region.variants")
+    @Logging(REGION)
+    public void variants(Actor actor,
+                         @Arg(desc = "The animal type")
+                         AnimalType type,
+                         @ArgFlag(name = 'p', desc = "Page number.", def = "1")
+                             int page) {
+        checkCommandArgument(type != null, "Invalid animal type");
+
+        AnimalVariants animalVariants = AnimalVariants.create();
+        List<String> variants = animalVariants.getVariantsFor(type);
+        if (variants.isEmpty())
+            actor.printInfo(TranslatableComponent.of(type.getName() + " doesn't have variants"));
+
+        WorldEditAsyncCommandBuilder.createAndSendMessage(actor, () -> {
+            PaginationBox paginationBox =
+                    PaginationBox.fromComponents("Available " + type.getName() + " variants",
+                            "//variants " + type.getName() + " -p %page%",
+                    variants.stream().map(variant ->
+                            TextComponent.builder().append(variant).build()).collect(Collectors.toList()));
+            return paginationBox.create(page);
+        }, (Component) null);
     }
 
     @Command(
