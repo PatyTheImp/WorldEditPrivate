@@ -55,6 +55,7 @@ import com.sk89q.worldedit.util.concurrency.LazyReference;
 import com.sk89q.worldedit.util.io.file.SafeFiles;
 import com.sk89q.worldedit.world.AbstractWorld;
 import com.sk89q.worldedit.world.RegenOptions;
+import com.sk89q.worldedit.world.animal.Animal;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
@@ -711,6 +712,36 @@ public class FabricWorld extends AbstractWorld {
         if (createdEntity != null) {
             world.addFreshEntityWithPassengers(createdEntity);
             return new FabricEntity(createdEntity);
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Animal createAnimal(Location location, BaseEntity entity) {
+        ServerLevel world = (ServerLevel) getWorld();
+        String entityId = entity.getType().id();
+        final Optional<EntityType<?>> entityType = EntityType.byString(entityId);
+        if (entityType.isEmpty()) {
+            return null;
+        }
+        LinCompoundTag linTag = entity.getNbt();
+        net.minecraft.nbt.CompoundTag tag;
+        if (linTag != null) {
+            tag = NBTConverter.toNative(linTag);
+            removeUnwantedEntityTagsRecursively(tag);
+        } else {
+            tag = new net.minecraft.nbt.CompoundTag();
+        }
+        tag.putString("id", entityId);
+
+        net.minecraft.world.entity.Entity createdEntity = EntityType.loadEntityRecursive(tag, world, (loadedEntity) -> {
+            loadedEntity.absMoveTo(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+            return loadedEntity;
+        });
+        if (createdEntity instanceof net.minecraft.world.entity.animal.Animal) {
+            world.addFreshEntityWithPassengers(createdEntity);
+            return new FabricAnimal((net.minecraft.world.entity.animal.Animal) createdEntity);
         }
         return null;
     }

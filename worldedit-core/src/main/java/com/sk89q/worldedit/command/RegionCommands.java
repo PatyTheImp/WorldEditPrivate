@@ -66,6 +66,7 @@ import com.sk89q.worldedit.util.formatting.text.TextComponent;
 import com.sk89q.worldedit.util.formatting.text.TranslatableComponent;
 import com.sk89q.worldedit.world.RegenOptions;
 import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.animal.AnimalType;
 import org.enginehub.piston.annotation.Command;
 import org.enginehub.piston.annotation.CommandContainer;
 import org.enginehub.piston.annotation.param.Arg;
@@ -128,16 +129,16 @@ public class RegionCommands {
     public void animal(Actor actor, EditSession editSession,
                    @Selection Region region,
                    @Arg(desc = "The animal type")
-                       String type,
+                           AnimalType type,
                    @Arg(desc = "The animal count", def = "1")
-                       int count) {
-        for (int i = 0; i < count; i++) {
-            Vector3 pos = editSession.makeAnimal(region, type);
-            if (pos == null)
-                actor.printInfo(TranslatableComponent.of("Invalid parameter"));
-            else
-                actor.printInfo(TranslatableComponent.of("Animal created in " + pos));
-        }
+                       int count,
+                   @Switch(name = 'b', desc = "Generate baby animal")
+                       boolean isBaby) {
+        checkCommandArgument(count >= 1, "Count must be >= 1");
+        checkCommandArgument(type != null, "Invalid animal type");
+
+        int affected = editSession.makeAnimals(region, type.getName(), count, isBaby);
+        actor.printInfo(TranslatableComponent.of(affected + " animals created"));
     }
 
     @Command(

@@ -23,6 +23,9 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.command.util.PermissionCondition;
+import com.sk89q.worldedit.entity.BaseEntity;
+import com.sk89q.worldedit.entity.Entity;
+import com.sk89q.worldedit.entity.metadata.EntityProperties;
 import com.sk89q.worldedit.event.platform.PlatformReadyEvent;
 import com.sk89q.worldedit.event.platform.PlatformUnreadyEvent;
 import com.sk89q.worldedit.event.platform.PlatformsRegisteredEvent;
@@ -34,9 +37,12 @@ import com.sk89q.worldedit.fabric.net.handler.WECUIPacketHandler;
 import com.sk89q.worldedit.internal.anvil.ChunkDeleter;
 import com.sk89q.worldedit.internal.event.InteractionDebouncer;
 import com.sk89q.worldedit.internal.util.LogManagerCompat;
+import com.sk89q.worldedit.math.Vector3;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.util.lifecycle.Lifecycled;
 import com.sk89q.worldedit.util.lifecycle.SimpleLifecycled;
+import com.sk89q.worldedit.world.animal.AnimalIds;
+import com.sk89q.worldedit.world.animal.AnimalType;
 import com.sk89q.worldedit.world.biome.BiomeCategory;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BlockCategory;
@@ -66,6 +72,8 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -238,6 +246,13 @@ public class FabricWorldEdit implements ModInitializer {
                 EntityType.REGISTRY.register(key, new EntityType(key));
             }
         }
+
+        // Animals
+        for (AnimalIds animal : AnimalIds.values()) {
+            String key = animal.getId();
+            AnimalType.REGISTRY.register(key, new AnimalType(key));
+        }
+
         // Biomes
         for (ResourceLocation name : server.registryAccess().registryOrThrow(Registries.BIOME).keySet()) {
             String key = name.toString();

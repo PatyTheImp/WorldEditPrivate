@@ -116,6 +116,7 @@ import com.sk89q.worldedit.util.formatting.text.TextComponent;
 import com.sk89q.worldedit.util.formatting.text.TranslatableComponent;
 import com.sk89q.worldedit.world.NullWorld;
 import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.animal.Animal;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
@@ -839,31 +840,39 @@ public class EditSession implements Extent, AutoCloseable {
 
     @Override
     @Nullable
-    public Entity createEntity(com.sk89q.worldedit.util.Location location, BaseEntity entity) {
+    public Entity createEntity(Location location, BaseEntity entity) {
         return bypassNone.createEntity(location, entity);
     }
 
-    public Vector3 makeAnimal(Region region, String type) {
+    //TODO comments
+    public int makeAnimals(Region region, String type, int count, boolean isBaby) {
+        int affected = 0;
+        for (int i = 0; i < count; i++) {
+            Vector3 pos = getRandomPos(region);
+            Location location = new Location(bypassNone, pos);
+            BaseEntity base = new BaseEntity(new EntityType(type));
+            Animal animal = bypassNone.createAnimal(location, base);
+            if (animal == null)
+                return 0;
+            animal.setBaby(isBaby);
+            affected++;
+        }
+        return affected;
+    }
 
+    /**
+     * Generates a random position inside a given region
+     * @param region
+     * @return the random position
+     */
+    private static Vector3 getRandomPos(Region region) {
         BlockVector3 min = region.getMinimumPoint();
         BlockVector3 max = region.getMaximumPoint();
-        Vector3 pos = Vector3.at(0, 1, 0).add(
-        min.x() + Math.random() * (max.x() - min.x()),
-        min.y() + Math.random() * (max.y() - min.y()),
-        min.z() + Math.random() * (max.z() - min.z())
+        return Vector3.at(
+                min.x() + Math.random() * (max.x() - min.x()),
+                min.y() + Math.random() * (max.y() - min.y()),
+                min.z() + Math.random() * (max.z() - min.z())
         );
-
-        com.sk89q.worldedit.util.Location location = new Location(bypassNone, pos);
-        BaseEntity base = new BaseEntity(new EntityType(type));
-        Entity entity = bypassNone.createEntity(location, base);
-        if (entity == null)
-            return null;
-        EntityProperties entityType = entity.getFacet(EntityProperties.class);
-        if (entityType == null || !entityType.isAnimal()) {
-            entity.remove();
-            return null;
-        }
-        return pos;
     }
 
     /**
