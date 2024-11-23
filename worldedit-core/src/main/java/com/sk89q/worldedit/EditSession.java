@@ -1327,21 +1327,6 @@ public class EditSession implements Extent, AutoCloseable {
     }
 
     /**
-     * Make the edges of the given region.
-     *
-     * @param region      the region
-     * @param pattern     the pattern to place
-     * @param flags - list of flags corresponding to the faces that are to be filled
-     * @return number of blocks affected
-     * @throws MaxChangedBlocksException thrown if too many blocks are changed
-     */
-    public int makeEdges(final Region region, Pattern pattern, boolean[] flags) throws MaxChangedBlocksException {
-        checkNotNull(region);
-        checkNotNull(pattern);
-        return makeCuboidEdges(region, pattern, flags);
-    }
-
-    /**
      * Make the walls (all faces but those parallel to the X-Z plane) of the given region
      * as if it was a {@link CuboidRegion}.
      *

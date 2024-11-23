@@ -277,7 +277,7 @@ public class RegionCommands {
                      @Switch(name = 'f', desc = "fill the floor") boolean fillFloor) throws WorldEditException {
 
         boolean[] flags = {fillWest, fillEast, fillNorth, fillSouth, fillCeiling, fillFloor};
-        int affected = editSession.makeEdges(region, pattern, flags);
+        int affected = editSession.makeCuboidEdges(region, pattern, flags);
         actor.printInfo(TranslatableComponent.of("worldedit.edges.changed", TextComponent.of(affected)));
         return affected;
     }
