@@ -5,4 +5,6 @@ import com.sk89q.worldedit.entity.Entity;
 public interface Animal extends Entity {
     void setBaby(boolean baby);
     boolean isBaby();
+    String getVariant();
+    void setVariant(String variant);
 }

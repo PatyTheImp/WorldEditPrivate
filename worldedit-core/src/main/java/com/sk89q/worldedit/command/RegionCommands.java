@@ -132,13 +132,15 @@ public class RegionCommands {
                            AnimalType type,
                    @Arg(desc = "The animal count", def = "1")
                        int count,
+                   @Arg(desc = "The animal variant", def = "")
+                       String variant,
                    @Switch(name = 'b', desc = "Generate baby animal")
                        boolean isBaby) {
         checkCommandArgument(count >= 1, "Count must be >= 1");
         checkCommandArgument(type != null, "Invalid animal type");
 
-        int affected = editSession.makeAnimals(region, type.getName(), count, isBaby);
-        actor.printInfo(TranslatableComponent.of(affected + " animals created"));
+        String msg = editSession.makeAnimals(region, type.getName(), count, isBaby, variant);
+        actor.printInfo(TranslatableComponent.of(msg));
     }
 
     @Command(

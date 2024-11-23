@@ -13,6 +13,7 @@ public class AnimalCreate implements Change {
     private final BaseEntity state;
     private Animal animal;
     private boolean isBaby;
+    private String variant;
 
     /**
      * Create a new instance.
@@ -29,12 +30,14 @@ public class AnimalCreate implements Change {
         this.state = state;
         this.animal = animal;
         isBaby = animal.isBaby();
+        variant = animal.getVariant();
     }
 
     @Override
     public void undo(UndoContext context) throws WorldEditException {
         if (animal != null) {
             isBaby = animal.isBaby();
+            variant = animal.getVariant();
             animal.remove();
             animal = null;
         }
@@ -43,7 +46,9 @@ public class AnimalCreate implements Change {
     @Override
     public void redo(UndoContext context) throws WorldEditException {
         animal = checkNotNull(context.getExtent()).createAnimal(location, state);
-        if (animal != null)
+        if (animal != null) {
             animal.setBaby(isBaby);
+            animal.setVariant(variant);
+        }
     }
 }

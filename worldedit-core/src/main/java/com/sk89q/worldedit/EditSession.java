@@ -845,19 +845,30 @@ public class EditSession implements Extent, AutoCloseable {
     }
 
     //TODO comments
-    public int makeAnimals(Region region, String type, int count, boolean isBaby) {
-        int affected = 0;
+    public String makeAnimals(Region region, String type, int count, boolean isBaby, String variant) {
+        String msg;
+        if (count == 1)
+            msg = "An animal was created";
+        else
+            msg = count + " animals were created";
         for (int i = 0; i < count; i++) {
             Vector3 pos = getRandomPos(region);
             Location location = new Location(bypassNone, pos);
             BaseEntity base = new BaseEntity(new EntityType(type));
             Animal animal = bypassNone.createAnimal(location, base);
             if (animal == null)
-                return 0;
+                return "Not a valid animal";
             animal.setBaby(isBaby);
-            affected++;
+            if (variant != null && !(variant.isEmpty())) {
+                try {
+                    animal.setVariant(variant);
+                }
+                catch (java.lang.IllegalArgumentException e) {
+                    msg = "Not a valid variant";
+                }
+            }
         }
-        return affected;
+        return msg;
     }
 
     /**
