@@ -21,7 +21,6 @@ package com.sk89q.worldedit.world.animal;
 
 import com.sk89q.worldedit.registry.Keyed;
 import com.sk89q.worldedit.registry.NamespacedRegistry;
-import com.sk89q.worldedit.world.entity.EntityType;
 
 public record AnimalType(String id) implements Keyed {
     public static final NamespacedRegistry<AnimalType> REGISTRY = new NamespacedRegistry<>("animal type", true);

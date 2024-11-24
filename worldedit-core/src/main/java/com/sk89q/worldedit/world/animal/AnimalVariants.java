@@ -28,6 +28,50 @@ public record AnimalVariants(Map<AnimalType, List<String>> variants) {
                         "green",
                         "yellow_blue",
                         "gray"
+                ),
+                new AnimalType("axolotl"), List.of(
+                        "lucy",
+                        "wild",
+                        "gold",
+                        "cyan",
+                        "blue"
+                ),
+                new AnimalType("fox"), List.of(
+                        "red",
+                        "snow"
+                ),
+                new AnimalType("frog"), List.of(
+                        "temperate",
+                        "warm",
+                        "cold"
+                ),
+                new AnimalType("horse"), List.of(
+                        "white",
+                        "creamy",
+                        "chestnut",
+                        "brown",
+                        "black",
+                        "gray",
+                        "dark_brown"
+                ),
+                new AnimalType("llama"), List.of(
+                        "creamy",
+                        "white",
+                        "brown",
+                        "gray"
+                ),
+                new AnimalType("mooshroom"), List.of(
+                        "red",
+                        "brown"
+                ),
+                new AnimalType("rabbit"), List.of(
+                        "white",
+                        "white_splotched",
+                        "gold",
+                        "brown",
+                        "black",
+                        "salt",
+                        "evil"
                 )
         );
 
