@@ -18,8 +18,8 @@
 | **Brief Description**:<br>The system informs the user that the region chosen is invalid.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
 | **Secondary Actors**:<br>Game System                                                                                                                          |
-| **Preconditions**:<br>1. The user chooses an invalid number of positions (0 or 1).                                                                            |
-| **Alternative flow**:<br>1. The alternative flow begins after step 2 of the main flow.  <br>2. The system informs the user that the region chosen is invalid. |
+| **Preconditions**:<br>1. The user selects an invalid number of positions (0 or 1).                                                                            |
+| **Alternative flow**:<br>1. The user selects 0 or 1 positions. <br>2. The user types the `//edges` command including the block type and, optionally, including flags to fill specific faces. <br>2. The system informs the user that the region chosen is invalid. |
 | **Postconditions:**<br>None.                                                                                                                                  |
 
 | Alternative Flow: InvalidPattern                                                                                                                                        |
@@ -29,7 +29,7 @@
 | **Primary Actors**:<br>User                                                                                                                                             |
 | **Secondary Actors**:<br>Game System                                                                                                                                    |
 | **Preconditions**:<br>1. The user specifies an unrecognized block type.                                                                                                 |
-| **Alternative flow**:<br>1. The alternative flow begins after step 2 of the main flow.  <br>2. The system detects the invalid block type and displays an error message. |
+| **Alternative flow**:<br>1. The alternative flow begins after step 1 of the main flow.  <br>2. The user selects an invalid block type. <br>3. The system detects the invalid block type and displays an error message. |
 | **Postconditions:**<br>None.                                                                                                                                            |
 
 | Alternative Flow: InvalidFlag                                                                                                                                              |
@@ -39,9 +39,17 @@
 | **Primary Actors**:<br>User                                                                                                                                                |
 | **Secondary Actors**:<br>Game System                                                                                                                                       |
 | **Preconditions**:<br>1. The user specifies an unrecognized flag or flags.                                                                                                 |
-| **Alternative flow**:<br>1. The alternative flow begins after step 2 of the main flow.  <br>2. The system detects the invalid flag or flags and displays an error message. |
+| **Alternative flow**:<br>1. The alternative flow begins after step 1 of the main flow. <br>2. The user selects one or more invalid flags. <br>3. The system detects the invalid flag or flags and displays an error message. |
 | **Postconditions:**<br>None.                                                                                                                                               |
 
 ## Use Case Diagram
 
 ![Use Case Diagram](UseCaseDiagram.png)
+
+## Sequence Diagram
+
+![Sequence Diagram](SequenceDiagram.png)
+
+## Class Diagram
+
+![Class Diagram](ClassDiagram.png)
