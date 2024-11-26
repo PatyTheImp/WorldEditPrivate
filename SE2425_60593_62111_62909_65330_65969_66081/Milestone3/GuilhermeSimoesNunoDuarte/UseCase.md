@@ -1,3 +1,4 @@
+## Use Cases
 | Use Case: Fill Edges of a Cuboid Region                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **ID**: 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -10,7 +11,7 @@
 | **Alternative Flows**:<br>InvalidPattern<br>InvalidRegion<br>InvalidFlag                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 
-
+## Alternative Flows
 | Alternative Flow: InvalidRegion                                                                                                                               |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **ID**: 1.1                                                                                                                                                   |
@@ -40,3 +41,7 @@
 | **Preconditions**:<br>1. The user specifies an unrecognized flag or flags.                                                                                                 |
 | **Alternative flow**:<br>1. The alternative flow begins after step 2 of the main flow.  <br>2. The system detects the invalid flag or flags and displays an error message. |
 | **Postconditions:**<br>None.                                                                                                                                               |
+
+## Use Case Diagram
+
+![Use Case Diagram](UseCaseDiagram.png)
