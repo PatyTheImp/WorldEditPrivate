@@ -12,5 +12,5 @@ Burndown chart:
 
 Scrum board:
 
-![Scrum Board](Scrum Board Week 6.png)
+![Scrum Board](ScrumBoardWeek6.png)
 
