@@ -173,8 +173,10 @@ public class RegionCommands {
 
         AnimalVariants animalVariants = AnimalVariants.create();
         List<String> variants = animalVariants.getVariantsFor(type);
-        if (variants.isEmpty())
+        if (variants.isEmpty()) {
             actor.printInfo(TranslatableComponent.of(type.getName() + " doesn't have variants"));
+            return;
+        }
 
         WorldEditAsyncCommandBuilder.createAndSendMessage(actor, () -> {
             PaginationBox paginationBox =
