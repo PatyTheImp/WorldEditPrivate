@@ -146,6 +146,14 @@ public class RegionCommands {
         checkCommandArgument(count >= 1, "Count must be >= 1");
         checkCommandArgument(type != null, "Invalid animal type");
 
+        if (variant != null && !variant.isEmpty()) {
+            List<String> variants = AnimalVariants.create().getVariantsFor(type);
+            if (!variants.contains(variant)) {
+                actor.printInfo(TranslatableComponent.of("Invalid variant"));
+                return;
+            }
+        }
+
         String msg = editSession.makeAnimals(region, type.getName(), count, isBaby, variant);
         actor.printInfo(TranslatableComponent.of(msg));
     }

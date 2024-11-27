@@ -844,7 +844,16 @@ public class EditSession implements Extent, AutoCloseable {
         return bypassNone.createEntity(location, entity);
     }
 
-    //TODO comments
+    /**
+     * Summons a specified number of animals inside a region
+     *
+     * @param region - selected region
+     * @param type - the type of animal
+     * @param count - number of animals
+     * @param isBaby - if the animal is a baby
+     * @param variant - the animal variant
+     * @return a message to be printed in the game chat
+     */
     public String makeAnimals(Region region, String type, int count, boolean isBaby, String variant) {
         String msg;
         if (count == 1)

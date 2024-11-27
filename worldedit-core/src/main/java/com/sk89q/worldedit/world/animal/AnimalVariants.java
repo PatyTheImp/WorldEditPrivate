@@ -60,6 +60,12 @@ public record AnimalVariants(Map<AnimalType, List<String>> variants) {
                         "brown",
                         "gray"
                 ),
+                new AnimalType("trader_llama"), List.of(
+                        "creamy",
+                        "white",
+                        "brown",
+                        "gray"
+                ),
                 new AnimalType("mooshroom"), List.of(
                         "red",
                         "brown"
