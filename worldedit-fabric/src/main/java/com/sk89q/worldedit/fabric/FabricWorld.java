@@ -743,6 +743,8 @@ public class FabricWorld extends AbstractWorld {
             world.addFreshEntityWithPassengers(createdEntity);
             return new FabricAnimal((net.minecraft.world.entity.animal.Animal) createdEntity);
         }
+        if (createdEntity != null)
+            createdEntity.remove(net.minecraft.world.entity.Entity.RemovalReason.DISCARDED);
         return null;
     }
 

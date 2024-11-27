@@ -246,7 +246,8 @@ public class FabricWorldEdit implements ModInitializer {
             net.minecraft.world.entity.EntityType<?> entityType = server.registryAccess().registryOrThrow(Registries.ENTITY_TYPE).get(name);
             if (entityType == null)
                 continue;
-            if (entityType.getCategory().equals(MobCategory.CREATURE)) {
+            if (entityType.getCategory().equals(MobCategory.CREATURE) ||
+                    entityType.getCategory().equals(MobCategory.AXOLOTLS)) {
                 String key = name.toString();
                 if (AnimalType.REGISTRY.get(key) == null) {
                     AnimalType.REGISTRY.register(key, new AnimalType(key));
