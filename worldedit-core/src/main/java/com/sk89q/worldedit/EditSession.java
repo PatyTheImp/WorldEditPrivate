@@ -2696,7 +2696,6 @@ public class EditSession implements Extent, AutoCloseable {
      * @return number of blocks affected
      */
     public int raiseBlocks(Region region, int height, BlockType block) throws MaxChangedBlocksException {
-        // TO-DO
         BlockState state = block.getDefaultState();
         Collection<BaseBlock> blocks = new ArrayList<>();
         blocks.add(state.toBaseBlock());
@@ -2713,12 +2712,9 @@ public class EditSession implements Extent, AutoCloseable {
                 int y = getHighestTerrainBlock(x, z, min.y(), max.y(), mask);
 
                 if (y > min.y() || getBlock(BlockVector3.at(x, y, z)).getBlockType().equals(block)) {
-                    System.out.println("enter");
                     for (int i = 0; i < height; i++) {
                         y++;
                         affected += setBlock(BlockVector3.at(x, y, z), state) ? 1 : 0;
-                        System.out.println("x: " + x + " y: " + y + " z: " + z + " affected: " + affected);
-
                     }
                 }
             }
