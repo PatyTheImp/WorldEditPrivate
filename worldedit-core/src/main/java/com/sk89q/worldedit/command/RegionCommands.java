@@ -143,6 +143,7 @@ public class RegionCommands {
         checkCommandArgument(count >= 1, "Count must be >= 1");
         checkCommandArgument(type != null, "Invalid animal type");
 
+        // If a variant is given, check if the animal has it first
         if (variant != null && !variant.isEmpty()) {
             List<String> variants = AnimalVariants.getInstance().getVariantsFor(type.id());
             if (variants == null || !variants.contains(variant)) {
@@ -168,6 +169,7 @@ public class RegionCommands {
                              int page) {
         checkCommandArgument(type != null, "Invalid animal type");
 
+        // Checks if the animal has any variant
         List<String> variants = AnimalVariants.getInstance().getVariantsFor(type.id());
         String name = type.getName().substring(type.getName().indexOf(':')+1); //eliminates the "minecraft:"
         if (variants == null || variants.isEmpty()) {
@@ -175,6 +177,7 @@ public class RegionCommands {
             return;
         }
 
+        // Prints in the game chat a list of variants
         WorldEditAsyncCommandBuilder.createAndSendMessage(actor, () -> {
             PaginationBox paginationBox =
                     PaginationBox.fromComponents("Available " + name + " variants",

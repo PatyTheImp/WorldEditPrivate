@@ -298,6 +298,12 @@ public class FabricWorldEdit implements ModInitializer {
         }
     }
 
+    /**
+     * Registers the animal IDs from the registries in EntityType,
+     * and it's respective variants in AnimalVariants when applicable
+     * @param server - the game server
+     * @param name - location of the resource
+     */
     private static void registerAnimals(MinecraftServer server, ResourceLocation name) {
         net.minecraft.world.entity.EntityType<?> entityType = server.registryAccess().registryOrThrow(Registries.ENTITY_TYPE).get(name);
         if (entityType == null)
@@ -308,7 +314,6 @@ public class FabricWorldEdit implements ModInitializer {
             if (AnimalType.REGISTRY.get(key) == null) {
                 AnimalType.REGISTRY.register(key, new AnimalType(key));
             }
-            //key = eliminateNamespace(key);
             switch (entity) {
                 case Parrot ignored -> getParrotVariants(key);
                 case Axolotl ignored -> getAxolotlVariants(key);
@@ -326,6 +331,22 @@ public class FabricWorldEdit implements ModInitializer {
             entity.remove(Entity.RemovalReason.DISCARDED);
     }
 
+    /**
+     * Gets the parrot variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
+    private static void getParrotVariants(String key) {
+        //this transforms enum values in a list of strings and register the list in AnimalVariants
+        AnimalVariants.getInstance()
+                .register(key, Arrays.stream(Parrot.Variant.values())
+                        .map(Parrot.Variant::getSerializedName)
+                        .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the rabbit variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
     private static void getRabbitVariants(String key) {
         AnimalVariants.getInstance()
                 .register(key, Arrays.stream(Rabbit.Variant.values())
@@ -333,6 +354,10 @@ public class FabricWorldEdit implements ModInitializer {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * Gets the mushroom cow variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
     private static void getMushroomCowVariants(String key) {
         AnimalVariants.getInstance()
                 .register(key, Arrays.stream(MushroomCow.MushroomType.values())
@@ -340,6 +365,10 @@ public class FabricWorldEdit implements ModInitializer {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * Gets the llama variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
     private static void getLlamaVariants(String key) {
         AnimalVariants.getInstance()
                 .register(key, Arrays.stream(Llama.Variant.values())
@@ -347,6 +376,10 @@ public class FabricWorldEdit implements ModInitializer {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * Gets the horse variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
     private static void getHorseVariants(String key) {
         AnimalVariants.getInstance()
                 .register(key, Arrays.stream(Variant.values())
@@ -354,6 +387,10 @@ public class FabricWorldEdit implements ModInitializer {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * Gets the fox variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
     private static void getFoxVariants(String key) {
         AnimalVariants.getInstance().
                 register(key, Arrays.stream(Fox.Type.values())
@@ -361,6 +398,10 @@ public class FabricWorldEdit implements ModInitializer {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * Gets the axolotl variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
     private static void getAxolotlVariants(String key) {
         AnimalVariants.getInstance()
                 .register(key, Arrays.stream(Axolotl.Variant.values())
@@ -368,14 +409,11 @@ public class FabricWorldEdit implements ModInitializer {
                 .collect(Collectors.toList()));
     }
 
-    private static void getParrotVariants(String key) {
-        //this transforms enum values in a list of strings and register the list in AnimalVariants
-        AnimalVariants.getInstance()
-                .register(key, Arrays.stream(Parrot.Variant.values())
-                .map(Parrot.Variant::getSerializedName)
-                .collect(Collectors.toList()));
-    }
-
+    /**
+     * Gets the cat variants from the registries and registers them in AnimalVariants
+     * @param server - game server
+     * @param id - animal ID
+     */
     private static void getCatVariants(MinecraftServer server, String id) {
         for (ResourceLocation variantLocation : server.registryAccess().registryOrThrow(Registries.CAT_VARIANT).keySet()) {
             String variantID = eliminateNamespace(variantLocation.toString());
@@ -383,15 +421,25 @@ public class FabricWorldEdit implements ModInitializer {
         }
     }
 
-    private static @NotNull String eliminateNamespace(String id) {
-        return id.substring(id.indexOf(':') + 1);
-    }
-
+    /**
+     * Gets the frog variants from the registries and registers them in AnimalVariants
+     * @param server - game server
+     * @param id - animal ID
+     */
     private static void getFrogVariants(MinecraftServer server, String id) {
         for (ResourceLocation variantLocation : server.registryAccess().registryOrThrow(Registries.FROG_VARIANT).keySet()) {
             String variantID = eliminateNamespace(variantLocation.toString());
             AnimalVariants.getInstance().register(id, variantID);
         }
+    }
+
+    /**
+     * Eliminates the 'minecraft:' namespace from an id
+     * @param id - id with the 'minecraft:' namespace prefixed
+     * @return - the id without the namespace
+     */
+    private static @NotNull String eliminateNamespace(String id) {
+        return id.substring(id.indexOf(':') + 1);
     }
 
     private void onStartingServer(MinecraftServer minecraftServer) {

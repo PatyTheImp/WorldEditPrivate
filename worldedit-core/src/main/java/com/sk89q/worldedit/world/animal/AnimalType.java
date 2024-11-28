@@ -22,6 +22,10 @@ package com.sk89q.worldedit.world.animal;
 import com.sk89q.worldedit.registry.Keyed;
 import com.sk89q.worldedit.registry.NamespacedRegistry;
 
+/**
+ * Keeps a registry of the types of animals available in the game
+ * @param id - the id of the animal type
+ */
 public record AnimalType(String id) implements Keyed {
     public static final NamespacedRegistry<AnimalType> REGISTRY = new NamespacedRegistry<>("animal type", true);
 

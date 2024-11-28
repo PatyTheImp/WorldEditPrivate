@@ -13,6 +13,9 @@ import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.animal.horse.Variant;
 
+/**
+ * Represents an animal entity on the Fabric platform
+ */
 public class FabricAnimal extends FabricEntity implements com.sk89q.worldedit.world.animal.Animal {
     private final Animal animal;
     private String variant;
@@ -64,6 +67,11 @@ public class FabricAnimal extends FabricEntity implements com.sk89q.worldedit.wo
         return animal.getAge();
     }
 
+    /**
+     * Gets the cat variant from the registries
+     * @param variantID - the id of the variant
+     * @return - the holder of the cat variant
+     */
     private Holder<CatVariant> getCatVariant(String variantID) {
         Registry<CatVariant> catVariantRegistry = FabricWorldEdit.getRegistry(Registries.CAT_VARIANT);
         CatVariant catV = catVariantRegistry.get(ResourceLocation.parse("minecraft:" + variantID));
@@ -72,6 +80,11 @@ public class FabricAnimal extends FabricEntity implements com.sk89q.worldedit.wo
         return Holder.direct(catV);
     }
 
+    /**
+     * Gets the frog variant from the registries
+     * @param variantID - the id of the variant
+     * @return - the holder of the frog variant
+     */
     private Holder<FrogVariant> getFrogVariant(String variantID) {
         Registry<FrogVariant> frogVariantRegistry = FabricWorldEdit.getRegistry(Registries.FROG_VARIANT);
         FrogVariant frogV = frogVariantRegistry.get(ResourceLocation.parse("minecraft:" + variantID));
