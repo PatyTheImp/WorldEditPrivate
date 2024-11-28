@@ -31,7 +31,6 @@ import com.sk89q.worldedit.command.util.Logging;
 import com.sk89q.worldedit.command.util.WorldEditAsyncCommandBuilder;
 import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.extension.platform.Actor;
-import com.sk89q.worldedit.extension.platform.Capability;
 import com.sk89q.worldedit.function.GroundFunction;
 import com.sk89q.worldedit.function.RegionFunction;
 import com.sk89q.worldedit.function.RegionMaskingFilter;
@@ -71,8 +70,6 @@ import com.sk89q.worldedit.world.RegenOptions;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.animal.AnimalType;
 import com.sk89q.worldedit.world.animal.AnimalVariants;
-import com.sk89q.worldedit.world.biome.BiomeType;
-import com.sk89q.worldedit.world.registry.BiomeRegistry;
 import org.enginehub.piston.annotation.Command;
 import org.enginehub.piston.annotation.CommandContainer;
 import org.enginehub.piston.annotation.param.Arg;
@@ -147,8 +144,8 @@ public class RegionCommands {
         checkCommandArgument(type != null, "Invalid animal type");
 
         if (variant != null && !variant.isEmpty()) {
-            List<String> variants = AnimalVariants.create().getVariantsFor(type);
-            if (!variants.contains(variant)) {
+            List<String> variants = AnimalVariants.getInstance().getVariantsFor(type.id());
+            if (variants == null || !variants.contains(variant)) {
                 actor.printInfo(TranslatableComponent.of("Invalid variant"));
                 return;
             }
@@ -171,17 +168,17 @@ public class RegionCommands {
                              int page) {
         checkCommandArgument(type != null, "Invalid animal type");
 
-        AnimalVariants animalVariants = AnimalVariants.create();
-        List<String> variants = animalVariants.getVariantsFor(type);
-        if (variants.isEmpty()) {
-            actor.printInfo(TranslatableComponent.of(type.getName() + " doesn't have variants"));
+        List<String> variants = AnimalVariants.getInstance().getVariantsFor(type.id());
+        String name = type.getName().substring(type.getName().indexOf(':')+1); //eliminates the "minecraft:"
+        if (variants == null || variants.isEmpty()) {
+            actor.printInfo(TranslatableComponent.of(name + " doesn't have variants"));
             return;
         }
 
         WorldEditAsyncCommandBuilder.createAndSendMessage(actor, () -> {
             PaginationBox paginationBox =
-                    PaginationBox.fromComponents("Available " + type.getName() + " variants",
-                            "//variants " + type.getName() + " -p %page%",
+                    PaginationBox.fromComponents("Available " + name + " variants",
+                            "//variants " + name + " -p %page%",
                     variants.stream().map(variant ->
                             TextComponent.builder().append(variant).build()).collect(Collectors.toList()));
             return paginationBox.create(page);

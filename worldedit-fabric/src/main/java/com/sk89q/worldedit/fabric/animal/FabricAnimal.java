@@ -1,5 +1,6 @@
-package com.sk89q.worldedit.fabric;
+package com.sk89q.worldedit.fabric.animal;
 
+import com.sk89q.worldedit.fabric.FabricWorldEdit;
 import com.sk89q.worldedit.fabric.internal.FabricEntity;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -28,11 +29,6 @@ public class FabricAnimal extends FabricEntity implements com.sk89q.worldedit.wo
     }
 
     @Override
-    public boolean isBaby() {
-        return animal.isBaby();
-    }
-
-    @Override
     public String getVariant() {
         return variant;
     }
@@ -51,10 +47,21 @@ public class FabricAnimal extends FabricEntity implements com.sk89q.worldedit.wo
                     mushroomCow.setVariant(MushroomCow.MushroomType.valueOf(variantID.toUpperCase()));
             case Rabbit rabbit -> rabbit.setVariant(Rabbit.Variant.valueOf(variantID.toUpperCase()));
             case Frog frog -> frog.setVariant(getFrogVariant(variantID));
-            case Cat cat -> cat.setVariant(getCatVariant(variantID));
+            case Cat cat ->  cat.setVariant(getCatVariant(variantID));
             default -> throw new IllegalArgumentException();
         }
         this.variant = variantID;
+    }
+
+    @Override
+    public void setAge(int age) {
+        animal.setAge(age);
+
+    }
+
+    @Override
+    public int getAge() {
+        return animal.getAge();
     }
 
     private Holder<CatVariant> getCatVariant(String variantID) {
