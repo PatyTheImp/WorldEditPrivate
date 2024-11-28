@@ -457,7 +457,9 @@ public class RegionCommands {
             actor.printError(e.getRichMessage());
         }
 
-        actor.printInfo(TranslatableComponent.of("worldedit.raise.changed", TextComponent.of(affected)));
+        String block_name = block.toString().replaceFirst("^minecraft:", "");
+
+        actor.printInfo(TranslatableComponent.of("Raised " + affected + " " + block_name + " blocks", TextComponent.of(affected)));
 
         return affected;
     }
