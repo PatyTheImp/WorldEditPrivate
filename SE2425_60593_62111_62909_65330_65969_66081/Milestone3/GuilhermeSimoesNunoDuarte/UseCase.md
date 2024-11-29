@@ -27,7 +27,7 @@
 | **ID**: 1.2                                                                                                                                                                                                            |
 | **Brief Description**:<br>The system informs the user that the block type is invalid.                                                                                                                                  |
 | **Primary Actors**:<br>User                                                                                                                                                                                            |
-| **Secondary Actors**:<br>Game System                                                                                                                                                                                   |
+| **Secondary Actors**:<br>None.                                                                                                                                                                                   |
 | **Preconditions**:<br>1. The user specifies an unrecognized block type.                                                                                                                                                |
 | **Alternative flow**:<br>1. The alternative flow begins after step 1 of the main flow.  <br>2. The user selects an invalid block type. <br>3. The system detects the invalid block type and displays an error message. |
 | **Postconditions:**<br>None.                                                                                                                                                                                           |
