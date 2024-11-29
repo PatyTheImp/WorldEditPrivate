@@ -16,7 +16,7 @@
 | **ID**: 2.1                                                                                                                                                   |
 | **Brief Description**:<br>The system informs the user that the chosen animal type is invalid.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
-| **Secondary Actors**:<br>none                                                                                                                          |
+| **Secondary Actors**:<br>None.                                                                                                                          |
 | **Preconditions**:<br>1. The user enters an invalid animal type.                                                                            |
 | **Alternative flow**:<br>1. The alternative flow begins after step 2 of the main flow. <br>2. The system informs the user that the chosen animal type is invalid. |
 | **Postconditions:**<br>None.                                                                                                                                  |
@@ -26,7 +26,7 @@
 | **ID**: 2.2                                                                                                                                                   |
 | **Brief Description**:<br>The system informs the user that the entered number of arguments is invalid and shows the right usage of the command.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
-| **Secondary Actors**:<br>none                                                                                                                          |
+| **Secondary Actors**:<br>None.                                                                                                                          |
 | **Preconditions**:<br>1. The user enters an invalid number of arguments or enters them in the wrong order.                                                                            |
 | **Alternative flow**:<br>1. The alternative flow begins after step 1.1 of the main flow. <br>2. The system informs the user that the entered number of arguments is invalid and shows the right usage of the command. |
 | **Postconditions:**<br>None.                                                                                                                                  |
@@ -36,7 +36,7 @@
 | **ID**: 2.3                                                                                                                                                   |
 | **Brief Description**:<br>The system informs the user that the count must be a positive number.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
-| **Secondary Actors**:<br>none                                                                                                                          |
+| **Secondary Actors**:<br>None.                                                                                                                          |
 | **Preconditions**:<br>1. The user enters an integer number smaller than 1.                                                                            |
 | **Alternative flow**:<br>1. The alternative flow begins after step 4 of the main flow. <br>2. The system informs the user that the count must be a positive number. |
 | **Postconditions:**<br>None.                                                                                                                                  |
@@ -46,7 +46,7 @@
 | **ID**: 2.4                                                                                                                                                   |
 | **Brief Description**:<br>The system informs the user that the chosen animal variant is invalid.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
-| **Secondary Actors**:<br>none                                                                                                                          |
+| **Secondary Actors**:<br>None.                                                                                                                          |
 | **Preconditions**:<br>1. The user enters an invalid animal variant.                                                                            |
 | **Alternative flow**:<br>1. The alternative flow begins after step 6 of the main flow. <br>2. The system informs the user that the chosen animal variant is invalid. |
 | **Postconditions:**<br>None.                                                                                                                                  |
@@ -68,7 +68,7 @@
 | **ID**: 3.1                                                                                                                                                   |
 | **Brief Description**:<br>The system informs the user that the chosen animal type is invalid.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
-| **Secondary Actors**:<br>none                                                                                                                          |
+| **Secondary Actors**:<br>None.                                                                                                                          |
 | **Preconditions**:<br>1. The user enters an invalid animal type.                                                                            |
 | **Alternative flow**:<br>1. The alternative flow begins after step 2 of the main flow. <br>2. The system informs the user that the chosen animal type is invalid. |
 | **Postconditions:**<br>None.                                                                                                                                  |
@@ -78,7 +78,7 @@
 | **ID**: 3.2                                                                                                                                                   |
 | **Brief Description**:<br>The system informs the user that the entered number of arguments is invalid and shows the right usage of the command.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
-| **Secondary Actors**:<br>none                                                                                                                          |
+| **Secondary Actors**:<br>None.                                                                                                                          |
 | **Preconditions**:<br>1. The user enters an invalid number of arguments or enters them in the wrong order.                                                                            |
 | **Alternative flow**:<br>1. The alternative flow begins after step 1.1 of the main flow. <br>2. The system informs the user that the entered number of arguments is invalid and shows the right usage of the command. |
 | **Postconditions:**<br>None.                                                                                                                                  |
@@ -88,7 +88,7 @@
 | **ID**: 3.3                                                                                                                                                   |
 | **Brief Description**:<br>The system informs the user that the page number is invalid.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
-| **Secondary Actors**:<br>none                                                                                                                          |
+| **Secondary Actors**:<br>None.                                                                                                                          |
 | **Preconditions**:<br>1. The user enters an invalid page number.                                                                            |
 | **Alternative flow**:<br>1. The alternative flow begins after step 4 of the main flow. <br>2. The system informs the user that the page number is invalid. |
 | **Postconditions:**<br>None.                                                                                                                                  |
@@ -98,7 +98,7 @@
 | **ID**: 3.4                                                                                                                                                   |
 | **Brief Description**:<br>The system informs the user that the chosen animal type doesn't have variants.                                                                      |
 | **Primary Actors**:<br>User                                                                                                                                   |
-| **Secondary Actors**:<br>none                                                                                                                          |
+| **Secondary Actors**:<br>None.                                                                                                                          |
 | **Preconditions**:<br>1. The user enters an animal type that don't have variants.                                                                            |
 | **Alternative flow**:<br>1. The alternative flow begins after step 3 of the main flow. <br>2. The system informs the user that the chosen animal type doesn't have variants. |
 | **Postconditions:**<br>None.                                                                                                                                  |
