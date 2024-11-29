@@ -7,7 +7,7 @@ Daniel Dias Agostinho
 
 ## Management info
 - Burndown chart
-  ![image](https://github.com/user-attachments/assets/f8b4875a-833c-4c74-abbe-6671c52a0aab)
+ ![Burndown Chart](Sprint-Chart.png)
 
 - Scrum board
-  ![image](https://github.com/user-attachments/assets/63e906e4-b999-493d-a270-fcdbfe29eaac)
+![Scrum Board](Sprint-Board.png)

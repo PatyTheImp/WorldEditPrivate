@@ -21,10 +21,7 @@ package com.sk89q.worldedit.command;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.*;
 import com.sk89q.worldedit.command.util.CommandPermissions;
 import com.sk89q.worldedit.command.util.CommandPermissionsConditionGenerator;
 import com.sk89q.worldedit.command.util.Logging;
@@ -37,10 +34,7 @@ import com.sk89q.worldedit.function.RegionMaskingFilter;
 import com.sk89q.worldedit.function.block.ApplySideEffect;
 import com.sk89q.worldedit.function.block.BlockReplace;
 import com.sk89q.worldedit.function.generator.FloraGenerator;
-import com.sk89q.worldedit.function.mask.ExistingBlockMask;
-import com.sk89q.worldedit.function.mask.Mask;
-import com.sk89q.worldedit.function.mask.MaskIntersection;
-import com.sk89q.worldedit.function.mask.NoiseFilter2D;
+import com.sk89q.worldedit.function.mask.*;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.function.visitor.LayerVisitor;
@@ -68,8 +62,14 @@ import com.sk89q.worldedit.util.formatting.text.TextComponent;
 import com.sk89q.worldedit.util.formatting.text.TranslatableComponent;
 import com.sk89q.worldedit.world.RegenOptions;
 import com.sk89q.worldedit.world.World;
+
 import com.sk89q.worldedit.world.animal.AnimalType;
 import com.sk89q.worldedit.world.animal.AnimalVariants;
+
+import com.sk89q.worldedit.world.block.BaseBlock;
+import com.sk89q.worldedit.world.block.BlockState;
+import com.sk89q.worldedit.world.block.BlockType;
+
 import org.enginehub.piston.annotation.Command;
 import org.enginehub.piston.annotation.CommandContainer;
 import org.enginehub.piston.annotation.param.Arg;
@@ -77,6 +77,7 @@ import org.enginehub.piston.annotation.param.ArgFlag;
 import org.enginehub.piston.annotation.param.Switch;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -502,6 +503,36 @@ public class RegionCommands {
         }
 
         actor.printInfo(TranslatableComponent.of("worldedit.stack.changed", TextComponent.of(affected)));
+        return affected;
+    }
+
+    @Command(
+            name = "/raise",
+            desc = "raise certain blocks within the region by the given height",
+            descFooter = "Example: '//raise 10 stone' would raise all stone blocks by 10 blocks"
+    )
+    @CommandPermissions("worldedit.region.raise")
+    @Logging(ORIENTATION_REGION)
+    public int raise(Actor actor, World world, EditSession editSession, LocalSession session,
+                     @Selection Region region,
+                     @Arg(desc = "How much to raise blocks", def = "1")
+                         int height,
+                     @Arg(desc = "The mask of blocks to raise")
+                         BlockType block) {
+        checkCommandArgument(height >= 1, "Height must be >= 1");
+        checkCommandArgument(block!=null, "Must choose a block type");
+
+        int affected = 0;
+        try{
+            affected = editSession.raiseBlocks(region, height, block);
+        } catch (MaxChangedBlocksException e){
+            actor.printError(e.getRichMessage());
+        }
+
+        String block_name = block.toString().replaceFirst("^minecraft:", "");
+
+        actor.printInfo(TranslatableComponent.of("Raised " + affected + " " + block_name + " blocks", TextComponent.of(affected)));
+
         return affected;
     }
 

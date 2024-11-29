@@ -88,10 +88,7 @@ import com.sk89q.worldedit.internal.expression.ExpressionException;
 import com.sk89q.worldedit.internal.expression.ExpressionTimeoutException;
 import com.sk89q.worldedit.internal.expression.LocalSlot.Variable;
 import com.sk89q.worldedit.internal.util.LogManagerCompat;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.math.MathUtils;
-import com.sk89q.worldedit.math.Vector2;
-import com.sk89q.worldedit.math.Vector3;
+import com.sk89q.worldedit.math.*;
 import com.sk89q.worldedit.math.interpolation.Interpolation;
 import com.sk89q.worldedit.math.interpolation.KochanekBartelsInterpolation;
 import com.sk89q.worldedit.math.interpolation.Node;
@@ -127,15 +124,7 @@ import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldedit.world.registry.LegacyMapper;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nullable;
 
@@ -2748,6 +2737,41 @@ public class EditSession implements Extent, AutoCloseable {
             vset = getHollowed(vset);
         }
         return setBlocks(vset, pattern);
+    }
+
+    /**
+     * Raises blocks in a region, by a certain height.
+     * @param region the region
+     * @param height the height to raise the blocks
+     * @param block the block to raise
+     * @return number of blocks affected
+     */
+    public int raiseBlocks(Region region, int height, BlockType block) throws MaxChangedBlocksException {
+        BlockState state = block.getDefaultState();
+        Collection<BaseBlock> blocks = new ArrayList<>();
+        blocks.add(state.toBaseBlock());
+        Mask mask = new BlockMask(this, blocks);
+        int affected = 0;
+        BlockVector3 max = region.getMaximumPoint();
+        BlockVector3 min = region.getMinimumPoint();
+
+        BlockVector2 start = BlockVector2.at(min.x(),min.z());
+        BlockVector2 end = BlockVector2.at(max.x(),max.z());
+        for (int x = start.x(); x <=end.x() ; x++){
+            for (int z = start.z(); z <= end.z(); z++) {
+
+                int y = getHighestTerrainBlock(x, z, min.y(), max.y(), mask);
+
+                if (y > min.y() || getBlock(BlockVector3.at(x, y, z)).getBlockType().equals(block)) {
+                    for (int i = 0; i < height; i++) {
+                        y++;
+                        affected += setBlock(BlockVector3.at(x, y, z), state) ? 1 : 0;
+                    }
+                }
+            }
+        }
+
+        return affected;
     }
 
     private static Set<BlockVector3> getBallooned(Set<BlockVector3> vset, double radius) {

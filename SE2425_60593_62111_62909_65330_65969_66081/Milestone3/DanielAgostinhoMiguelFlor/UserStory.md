@@ -1,4 +1,4 @@
-# User story 2
+# User story
 ## Author(s)
 Miguel Flor
 ## Reviewer(s)
