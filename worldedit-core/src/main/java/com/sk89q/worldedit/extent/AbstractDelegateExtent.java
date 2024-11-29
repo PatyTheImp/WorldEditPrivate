@@ -27,6 +27,7 @@ import com.sk89q.worldedit.function.operation.OperationQueue;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
+import com.sk89q.worldedit.world.animal.Animal;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
@@ -82,6 +83,12 @@ public abstract class AbstractDelegateExtent implements Extent {
     @Nullable
     public Entity createEntity(Location location, BaseEntity entity) {
         return extent.createEntity(location, entity);
+    }
+
+    @Override
+    @Nullable
+    public Animal createAnimal(Location location, BaseEntity entity) {
+        return extent.createAnimal(location, entity);
     }
 
     @Override

@@ -37,6 +37,8 @@ import com.sk89q.worldedit.internal.util.LogManagerCompat;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.util.lifecycle.Lifecycled;
 import com.sk89q.worldedit.util.lifecycle.SimpleLifecycled;
+import com.sk89q.worldedit.world.animal.AnimalType;
+import com.sk89q.worldedit.world.animal.AnimalVariants;
 import com.sk89q.worldedit.world.biome.BiomeCategory;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BlockCategory;
@@ -65,6 +67,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -75,6 +78,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
+import net.minecraft.world.entity.animal.frog.Frog;
+import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.animal.horse.Llama;
+import net.minecraft.world.entity.animal.horse.Variant;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -82,15 +91,13 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.BlockHitResult;
 import org.apache.logging.log4j.Logger;
 import org.enginehub.piston.Command;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -231,13 +238,15 @@ public class FabricWorldEdit implements ModInitializer {
                 ItemType.REGISTRY.register(key, new ItemType(key));
             }
         }
-        // Entities
+        // Entities and animals
         for (ResourceLocation name : server.registryAccess().registryOrThrow(Registries.ENTITY_TYPE).keySet()) {
             String key = name.toString();
             if (EntityType.REGISTRY.get(key) == null) {
                 EntityType.REGISTRY.register(key, new EntityType(key));
             }
+            registerAnimals(server, name);
         }
+
         // Biomes
         for (ResourceLocation name : server.registryAccess().registryOrThrow(Registries.BIOME).keySet()) {
             String key = name.toString();
@@ -287,6 +296,150 @@ public class FabricWorldEdit implements ModInitializer {
                 StructureType.REGISTRY.register(key, new StructureType(key));
             }
         }
+    }
+
+    /**
+     * Registers the animal IDs from the registries in EntityType,
+     * and it's respective variants in AnimalVariants when applicable
+     * @param server - the game server
+     * @param name - location of the resource
+     */
+    private static void registerAnimals(MinecraftServer server, ResourceLocation name) {
+        net.minecraft.world.entity.EntityType<?> entityType = server.registryAccess().registryOrThrow(Registries.ENTITY_TYPE).get(name);
+        if (entityType == null)
+            return;
+        Entity entity = entityType.create(server.overworld());
+        if (entity instanceof Animal) {
+            String key = name.toString();
+            if (AnimalType.REGISTRY.get(key) == null) {
+                AnimalType.REGISTRY.register(key, new AnimalType(key));
+            }
+            switch (entity) {
+                case Parrot ignored -> getParrotVariants(key);
+                case Axolotl ignored -> getAxolotlVariants(key);
+                case Fox ignored -> getFoxVariants(key);
+                case Horse ignored -> getHorseVariants(key);
+                case Llama ignored -> getLlamaVariants(key);
+                case MushroomCow ignored -> getMushroomCowVariants(key);
+                case Rabbit ignored -> getRabbitVariants(key);
+                case Frog ignored -> getFrogVariants(server, key);
+                case Cat ignored ->  getCatVariants(server, key);
+                default -> entity.remove(Entity.RemovalReason.DISCARDED);
+            }
+        }
+        if (entity != null)
+            entity.remove(Entity.RemovalReason.DISCARDED);
+    }
+
+    /**
+     * Gets the parrot variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
+    private static void getParrotVariants(String key) {
+        //this transforms enum values in a list of strings and register the list in AnimalVariants
+        AnimalVariants.getInstance()
+                .register(key, Arrays.stream(Parrot.Variant.values())
+                        .map(Parrot.Variant::getSerializedName)
+                        .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the rabbit variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
+    private static void getRabbitVariants(String key) {
+        AnimalVariants.getInstance()
+                .register(key, Arrays.stream(Rabbit.Variant.values())
+                .map(Rabbit.Variant::getSerializedName)
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the mushroom cow variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
+    private static void getMushroomCowVariants(String key) {
+        AnimalVariants.getInstance()
+                .register(key, Arrays.stream(MushroomCow.MushroomType.values())
+                .map(MushroomCow.MushroomType::getSerializedName)
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the llama variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
+    private static void getLlamaVariants(String key) {
+        AnimalVariants.getInstance()
+                .register(key, Arrays.stream(Llama.Variant.values())
+                .map(Llama.Variant::getSerializedName)
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the horse variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
+    private static void getHorseVariants(String key) {
+        AnimalVariants.getInstance()
+                .register(key, Arrays.stream(Variant.values())
+                .map(Variant::getSerializedName)
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the fox variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
+    private static void getFoxVariants(String key) {
+        AnimalVariants.getInstance().
+                register(key, Arrays.stream(Fox.Type.values())
+                .map(Fox.Type::getSerializedName)
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the axolotl variants from it's enum and registers them in AnimalVariants
+     * @param key - animal ID
+     */
+    private static void getAxolotlVariants(String key) {
+        AnimalVariants.getInstance()
+                .register(key, Arrays.stream(Axolotl.Variant.values())
+                .map(Axolotl.Variant::getSerializedName)
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * Gets the cat variants from the registries and registers them in AnimalVariants
+     * @param server - game server
+     * @param id - animal ID
+     */
+    private static void getCatVariants(MinecraftServer server, String id) {
+        for (ResourceLocation variantLocation : server.registryAccess().registryOrThrow(Registries.CAT_VARIANT).keySet()) {
+            String variantID = eliminateNamespace(variantLocation.toString());
+            AnimalVariants.getInstance().register(id, variantID);
+        }
+    }
+
+    /**
+     * Gets the frog variants from the registries and registers them in AnimalVariants
+     * @param server - game server
+     * @param id - animal ID
+     */
+    private static void getFrogVariants(MinecraftServer server, String id) {
+        for (ResourceLocation variantLocation : server.registryAccess().registryOrThrow(Registries.FROG_VARIANT).keySet()) {
+            String variantID = eliminateNamespace(variantLocation.toString());
+            AnimalVariants.getInstance().register(id, variantID);
+        }
+    }
+
+    /**
+     * Eliminates the 'minecraft:' namespace from an id
+     * @param id - id with the 'minecraft:' namespace prefixed
+     * @return - the id without the namespace
+     */
+    private static @NotNull String eliminateNamespace(String id) {
+        return id.substring(id.indexOf(':') + 1);
     }
 
     private void onStartingServer(MinecraftServer minecraftServer) {

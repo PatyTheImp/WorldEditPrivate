@@ -24,6 +24,7 @@ import com.sk89q.worldedit.entity.Entity;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
+import com.sk89q.worldedit.world.animal.Animal;
 
 import java.util.List;
 import javax.annotation.Nullable;
@@ -88,5 +89,17 @@ public interface Extent extends InputExtent, OutputExtent {
      * @return a reference to the created entity, or null if the entity could not be created
      */
     @Nullable Entity createEntity(Location location, BaseEntity entity);
+
+    /**
+     * Create an animal at the given location.
+     *
+     * @param entity the entity
+     * @param location the location
+     * @return a reference to the created animal, or null if the animal could not be created
+     */
+    @Nullable
+    default Animal createAnimal(Location location, BaseEntity entity) {
+        return null;
+    }
 
 }

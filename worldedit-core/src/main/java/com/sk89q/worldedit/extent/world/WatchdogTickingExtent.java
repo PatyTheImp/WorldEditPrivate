@@ -28,6 +28,7 @@ import com.sk89q.worldedit.extent.Extent;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
+import com.sk89q.worldedit.world.animal.Animal;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
@@ -88,6 +89,13 @@ public class WatchdogTickingExtent extends AbstractDelegateExtent {
     public Entity createEntity(Location location, BaseEntity entity) {
         onOperation();
         return super.createEntity(location, entity);
+    }
+
+    @Nullable
+    @Override
+    public Animal createAnimal(Location location, BaseEntity entity) {
+        onOperation();
+        return super.createAnimal(location, entity);
     }
 
     @Override
