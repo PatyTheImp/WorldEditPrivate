@@ -12,4 +12,4 @@ Burndown chart:
 
 Scrum board:
 
-![Scrum Board](ScrumBoardWeek3.jpg)
+![Scrum Board](ScrumBoardWeek3.png)
