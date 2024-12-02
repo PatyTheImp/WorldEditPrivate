@@ -10,3 +10,4 @@ Burndown chart
 ![Burndown Chart](BurndownChartWeek4.jpg)
 
 Scrum board
+![Scrum Board](ScrumBoard.png)

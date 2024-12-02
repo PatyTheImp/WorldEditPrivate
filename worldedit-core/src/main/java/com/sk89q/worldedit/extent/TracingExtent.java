@@ -27,6 +27,7 @@ import com.sk89q.worldedit.entity.Entity;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldedit.util.collection.BlockMap;
+import com.sk89q.worldedit.world.animal.Animal;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
 
@@ -100,6 +101,18 @@ public class TracingExtent extends AbstractDelegateExtent {
         BlockVector3 blockVector3 = location.toVector().toBlockPoint();
         touchedLocations.add(blockVector3);
         Entity result = super.createEntity(location, entity);
+        if (result == null) {
+            failedActions.put(blockVector3, Action.CREATE_ENTITY);
+        }
+        return result;
+    }
+
+    @Nullable
+    @Override
+    public Animal createAnimal(Location location, BaseEntity entity) {
+        BlockVector3 blockVector3 = location.toVector().toBlockPoint();
+        touchedLocations.add(blockVector3);
+        Animal result = super.createAnimal(location, entity);
         if (result == null) {
             failedActions.put(blockVector3, Action.CREATE_ENTITY);
         }
