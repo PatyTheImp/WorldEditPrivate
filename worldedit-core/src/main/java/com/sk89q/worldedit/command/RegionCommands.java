@@ -513,7 +513,7 @@ public class RegionCommands {
     )
     @CommandPermissions("worldedit.region.raise")
     @Logging(ORIENTATION_REGION)
-    public int raise(Actor actor, World world, EditSession editSession, LocalSession session,
+    public int raise(Actor actor, EditSession editSession,
                      @Selection Region region,
                      @Arg(desc = "How much to raise blocks", def = "1")
                          int height,
