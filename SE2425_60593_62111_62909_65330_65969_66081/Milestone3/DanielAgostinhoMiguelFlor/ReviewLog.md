@@ -64,7 +64,8 @@
 
 **Comments:**
 
-- ...
+- The sequence diagram is well done and easy to understand.
+- No changes are needed.
 
 ## Class Diagram
 
