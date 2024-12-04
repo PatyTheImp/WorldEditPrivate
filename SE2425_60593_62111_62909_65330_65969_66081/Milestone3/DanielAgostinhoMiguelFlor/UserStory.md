@@ -2,7 +2,7 @@
 ## Author(s)
 Miguel Flor
 ## Reviewer(s)
-Todos os membros do grupo
+All members of the group
 # User story
 As a builder,
 I want to have a tool that allows me to raise blocks to a certain height, in a given area, so that I can build
