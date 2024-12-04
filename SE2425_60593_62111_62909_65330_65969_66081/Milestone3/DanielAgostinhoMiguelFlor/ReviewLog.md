@@ -87,3 +87,12 @@
 - In the "Number of arguments <2 or >2" test, the third step might be wrong as there are exactly 2 arguments, and the expected results only has the possibility of having too many arguments.
 - Also in this test, I noticed that if the command is "//raise stone" it will raise 1 block height, it only has one argument but the expected result is not clear about this. You should clarify it in the expected results.
 - About the other tests all seems fine and works as expected.
+
+## Updated User Story
+
+**Reviewer:** Nelson Martins
+
+**Comments:**
+
+- The user story is well written and easy to understand.
+- The only thing to point is that the reviewers were written in portuguese, but I think it's not a big deal.
