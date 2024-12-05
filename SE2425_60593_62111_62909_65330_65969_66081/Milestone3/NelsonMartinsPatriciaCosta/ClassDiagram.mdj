@@ -2409,7 +2409,7 @@
 											"font": "Arial;13;1",
 											"left": 1053,
 											"top": 583,
-											"width": 366.41845703125,
+											"width": 387.73388671875,
 											"height": 13,
 											"text": "FabricAnimal"
 										},
@@ -2444,7 +2444,7 @@
 									"font": "Arial;13;0",
 									"left": 1048,
 									"top": 576,
-									"width": 376.41845703125,
+									"width": 397.73388671875,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGTdJnBxODiZpA="
@@ -2481,7 +2481,7 @@
 											"font": "Arial;13;0",
 											"left": 1053,
 											"top": 606,
-											"width": 366.41845703125,
+											"width": 387.73388671875,
 											"height": 13,
 											"text": "-animal: net.minecraft.world.entity.animal.Animal",
 											"horizontalAlignment": 0
@@ -2498,7 +2498,7 @@
 											"font": "Arial;13;0",
 											"left": 1053,
 											"top": 621,
-											"width": 366.41845703125,
+											"width": 387.73388671875,
 											"height": 13,
 											"text": "-variant: String",
 											"horizontalAlignment": 0
@@ -2507,7 +2507,7 @@
 									"font": "Arial;13;0",
 									"left": 1048,
 									"top": 601,
-									"width": 376.41845703125,
+									"width": 397.73388671875,
 									"height": 38
 								},
 								{
@@ -2532,7 +2532,7 @@
 											"font": "Arial;13;0",
 											"left": 1053,
 											"top": 644,
-											"width": 366.41845703125,
+											"width": 387.73388671875,
 											"height": 13,
 											"text": "+FabricAnimal(animal: net.minecraft.world.entity.animal.Animal)",
 											"horizontalAlignment": 0
@@ -2549,34 +2549,17 @@
 											"font": "Arial;13;0",
 											"left": 1053,
 											"top": 659,
-											"width": 366.41845703125,
+											"width": 387.73388671875,
 											"height": 13,
-											"text": "-getCatVariant(variantID: String): Holder<CatVariant>",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGTdKbcj/XVXNg=",
-											"_parent": {
-												"$ref": "AAAAAAGTdJnBxODnNgw="
-											},
-											"model": {
-												"$ref": "AAAAAAGTdKbciPXGxyk="
-											},
-											"font": "Arial;13;0",
-											"left": 1053,
-											"top": 674,
-											"width": 366.41845703125,
-											"height": 13,
-											"text": "-getFrogVariant(variantID: String): Holder<FrogVariant>",
+											"text": "-getVariant(variantID: String, registry: Registry<T>): <T> Holder<T>",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1048,
 									"top": 639,
-									"width": 376.41845703125,
-									"height": 53
+									"width": 397.73388671875,
+									"height": 38
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -2615,8 +2598,8 @@
 							"containerChangeable": true,
 							"left": 1048,
 							"top": 576,
-							"width": 376.41845703125,
-							"height": 116,
+							"width": 397.73388671875,
+							"height": 101,
 							"nameCompartment": {
 								"$ref": "AAAAAAGTdJnBw+DhVoM="
 							},
@@ -2654,8 +2637,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1198,
-									"top": 531,
+									"left": 1204,
+									"top": 530,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -2675,8 +2658,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1211,
-									"top": 524,
+									"left": 1216,
+									"top": 522,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -2696,8 +2679,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1171,
-									"top": 546,
+									"left": 1179,
+									"top": 547,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -2715,7 +2698,7 @@
 								"$ref": "AAAAAAGTdGlu15SGgeE="
 							},
 							"lineStyle": 1,
-							"points": "1168:516;1202:575",
+							"points": "1173:516;1212:575",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGTdJ52qe4kk+A="
@@ -5026,7 +5009,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1343,
+									"left": 1345,
 									"top": 551,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -5047,7 +5030,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1353,
+									"left": 1355,
 									"top": 562,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -5132,7 +5115,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1343,
-									"top": 515,
+									"top": 516,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -5152,8 +5135,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1330,
-									"top": 563,
+									"left": 1332,
+									"top": 562,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -5172,7 +5155,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1340,
+									"left": 1342,
 									"top": 571,
 									"height": 13,
 									"alpha": -0.7853981633974483,
@@ -5192,7 +5175,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1309,
+									"left": 1310,
 									"top": 545,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -5238,7 +5221,7 @@
 								"$ref": "AAAAAAGTdMCUP45O0Co="
 							},
 							"lineStyle": 1,
-							"points": "1368:517;1301:575",
+							"points": "1368:517;1303:575",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGTdMK4+M92ymo="
@@ -8430,7 +8413,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGTdJnBw+DeAHQ="
 							},
-							"name": "getCatVariant",
+							"name": "getVariant",
 							"visibility": "private",
 							"parameters": [
 								{
@@ -8448,37 +8431,17 @@
 									"_parent": {
 										"$ref": "AAAAAAGTdKZsnvTUBW8="
 									},
-									"type": "Holder<CatVariant>",
+									"type": "<T> Holder<T>",
 									"direction": "return"
-								}
-							]
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAGTdKbciPXGxyk=",
-							"_parent": {
-								"$ref": "AAAAAAGTdJnBw+DeAHQ="
-							},
-							"name": "getFrogVariant",
-							"visibility": "private",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAGTdKd94feW+YA=",
-									"_parent": {
-										"$ref": "AAAAAAGTdKbciPXGxyk="
-									},
-									"name": "variantID",
-									"type": "String"
 								},
 								{
 									"_type": "UMLParameter",
-									"_id": "AAAAAAGTdKd94feXVos=",
+									"_id": "AAAAAAGTlpRz9LsFwvY=",
 									"_parent": {
-										"$ref": "AAAAAAGTdKbciPXGxyk="
+										"$ref": "AAAAAAGTdKZsnvTUBW8="
 									},
-									"type": "Holder<FrogVariant>",
-									"direction": "return"
+									"name": "registry",
+									"type": "Registry<T>"
 								}
 							]
 						}

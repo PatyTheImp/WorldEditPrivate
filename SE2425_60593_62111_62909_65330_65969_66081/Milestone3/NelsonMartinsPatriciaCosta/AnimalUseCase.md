@@ -111,6 +111,14 @@
 
 ![Sequence Diagram](SequenceDiagram.png)
 
-## Class Diagram
+## Animal Class Diagram (Simplified)
+
+![Animal Class Diagram](AnimalClassDiagram.png)
+
+## Variants Class Diagram
+
+![Variants Class Diagram](VariantsClassDiagram.png)
+
+## Complete Class Diagram
 
 ![Class Diagram](ClassDiagram.png)
