@@ -1,4 +1,3 @@
 # Video demo
-Please add a url to the video with a demo of your new features here.
 
-[Video Link](https://www.youtube.com/ "Tool demo video")
+[Video Link](https://youtu.be/rAM4b-w_V3Q?si=bLVHTeW7-F82qVV6)
