@@ -183,6 +183,12 @@ public class EditSession implements Extent, AutoCloseable {
         }
     }
 
+    // String constants for messages
+    private static final String SINGLE_ANIMAL_CREATED = "An animal was created";
+    private static final String MULTIPLE_ANIMALS_CREATED = " animals were created";
+    private static final String INVALID_ANIMAL = "Not a valid animal";
+    private static final String INVALID_VARIANT = "Not a valid variant";
+
     @SuppressWarnings("ProtectedField")
     protected final World world;
     private final @Nullable Actor actor;
@@ -846,23 +852,23 @@ public class EditSession implements Extent, AutoCloseable {
     public String makeAnimals(Region region, String type, int count, boolean isBaby, String variant) {
         String msg;
         if (count == 1)
-            msg = "An animal was created";
+            msg = SINGLE_ANIMAL_CREATED;
         else
-            msg = count + " animals were created";
+            msg = count + MULTIPLE_ANIMALS_CREATED;
         for (int i = 0; i < count; i++) {
             Vector3 pos = getRandomPos(region);
             Location location = new Location(bypassNone, pos);
             BaseEntity base = new BaseEntity(new EntityType(type));
             Animal animal = bypassNone.createAnimal(location, base);
             if (animal == null)
-                return "Not a valid animal";
+                return INVALID_ANIMAL;
             animal.setBaby(isBaby);
             if (variant != null && !(variant.isEmpty())) {
                 try {
                     animal.setVariant(variant);
                 }
                 catch (java.lang.IllegalArgumentException e) {
-                    msg = "Not a valid variant";
+                    msg = INVALID_VARIANT;
                 }
             }
         }

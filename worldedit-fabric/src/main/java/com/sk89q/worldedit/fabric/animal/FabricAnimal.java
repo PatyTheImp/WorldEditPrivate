@@ -5,7 +5,9 @@ import com.sk89q.worldedit.fabric.internal.FabricEntity;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.frog.Frog;
@@ -49,8 +51,8 @@ public class FabricAnimal extends FabricEntity implements com.sk89q.worldedit.wo
             case MushroomCow mushroomCow ->
                     mushroomCow.setVariant(MushroomCow.MushroomType.valueOf(variantID.toUpperCase()));
             case Rabbit rabbit -> rabbit.setVariant(Rabbit.Variant.valueOf(variantID.toUpperCase()));
-            case Frog frog -> frog.setVariant(getFrogVariant(variantID));
-            case Cat cat ->  cat.setVariant(getCatVariant(variantID));
+            case Frog frog -> frog.setVariant(getVariant(variantID, FabricWorldEdit.getRegistry(Registries.FROG_VARIANT)));
+            case Cat cat ->  cat.setVariant(getVariant(variantID, FabricWorldEdit.getRegistry(Registries.CAT_VARIANT)));
             default -> throw new IllegalArgumentException();
         }
         this.variant = variantID;
@@ -68,28 +70,16 @@ public class FabricAnimal extends FabricEntity implements com.sk89q.worldedit.wo
     }
 
     /**
-     * Gets the cat variant from the registries
+     * Gets a variant from the registries
      * @param variantID - the id of the variant
-     * @return - the holder of the cat variant
+     * @param registry - the registry key for the variant type
+     * @param <T> - the type of the variant
+     * @return - the holder of the variant
      */
-    private Holder<CatVariant> getCatVariant(String variantID) {
-        Registry<CatVariant> catVariantRegistry = FabricWorldEdit.getRegistry(Registries.CAT_VARIANT);
-        CatVariant catV = catVariantRegistry.get(ResourceLocation.parse("minecraft:" + variantID));
-        if (catV == null)
+    private <T> Holder<T> getVariant(String variantID, Registry<T> registry) {
+        T variant = registry.get(ResourceLocation.parse("minecraft:" + variantID));
+        if (variant == null)
             throw new IllegalArgumentException();
-        return Holder.direct(catV);
-    }
-
-    /**
-     * Gets the frog variant from the registries
-     * @param variantID - the id of the variant
-     * @return - the holder of the frog variant
-     */
-    private Holder<FrogVariant> getFrogVariant(String variantID) {
-        Registry<FrogVariant> frogVariantRegistry = FabricWorldEdit.getRegistry(Registries.FROG_VARIANT);
-        FrogVariant frogV = frogVariantRegistry.get(ResourceLocation.parse("minecraft:" + variantID));
-        if (frogV == null)
-            throw new IllegalArgumentException();
-        return Holder.direct(frogV);
+        return Holder.direct(variant);
     }
 }
