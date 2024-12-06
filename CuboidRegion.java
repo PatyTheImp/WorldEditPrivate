@@ -1,4 +1,3 @@
-
 /*
  * WorldEdit, a Minecraft world manipulation toolkit
  * Copyright (C) sk89q <http://www.sk89q.com>
@@ -135,10 +134,16 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
     }
 
     /**
-     * Get a set of regions that contains the edges or faces of this cuboid
+     * Get a set of regions that contains the edges or faces of this cuboid.
+     * @param flags:
+     * 0 - fillWest,
+     * 1 - fillEast,
+     * 2 - fillNorth,
+     * 3 - fillSouth,
+     * 4 - fillCeiling,
+     * 5 - fillFloor.
      *
-     * @param flags: Array of flags representing which faces to fill
-     * @return a new set of regions representing the edges or faces of the cuboid.
+     * @return a new set of regions
      */
     public Set<Region> getEdges(boolean[] flags) {
         Set<Region> edges = new HashSet<>();
@@ -154,7 +159,7 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
         else if (isLine(pos1.x(), pos2.x(), pos1.y(), pos2.y()))
             edges.add(createLineEdge(min, max, "z"));
         else {
-            addCuboidFaces(edges, flags, min, max);
+            addCuboidEdges(edges, flags, min, max);
             getHorizontalEdges(edges, min, max, min.y()); // Bottom face edges
             getHorizontalEdges(edges, min, max, max.y()); // Top face edges
             getVerticalEdges(edges, min, max);            // Vertical face edges
@@ -162,14 +167,6 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
         return edges;
     }
 
-    /**
-     * Creates a line edge along the specified axis.
-     *
-     * @param min - the minimum point of the line
-     * @param max - the maximum point of the line
-     * @param axis - the axis along which the line edge lies
-     * @return a {@link CuboidRegion} representing the line edge
-     */
     private Region createLineEdge(BlockVector3 min, BlockVector3 max, String axis) {
         return switch (axis) {
             case "x" -> new CuboidRegion(min.withX(min.x()), max.withX(max.x()));
@@ -181,7 +178,6 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
 
     /**
      * Checks if the pairs of coordinates are equal
-     *
      * @param c1 - first coordinate of the first point
      * @param c2 - first coordinate of the second point
      * @param c3 - second coordinate of the first point
@@ -192,63 +188,50 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
         return c1 == c2 && c3 == c4;
     }
 
-    /**
-     * Adds cuboid faces to the given set of regions based on the flags
-     * @param edges - set of regions to add the faces to
-     * @param flags:0 - fillWest,
-     *              1 - fillEast,
-     *              2 - fillNorth,
-     *              3 - fillSouth,
-     *              4 - fillCeiling,
-     *              5 - fillFloor.
-     * @param min
-     * @param max
-     */
-    private void addCuboidFaces(Set<Region> edges, boolean[] flags, BlockVector3 min, BlockVector3 max) {
-        if (min.z() != max.z() && min.y() != max.y()) {
-            if (flags[0]) // West face
-                edges.add(new CuboidRegion(
-                        min.withX(min.x()).withY(min.y() + 1).withZ(min.z() + 1),
-                        max.withX(min.x()).withY(max.y() - 1).withZ(max.z() - 1)
-                ));
-            if (flags[1]) // East face
-                edges.add(new CuboidRegion(
-                        min.withX(max.x()).withY(min.y() + 1).withZ(min.z() + 1),
-                        max.withX(max.x()).withY(max.y() - 1).withZ(max.z() - 1)
-                ));
+    private void addCuboidEdges(Set<Region> edges, boolean[] flags, BlockVector3 min, BlockVector3 max) {
+        if (flags[0]) { // West face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(min.y() + 1).withZ(min.z() + 1),
+                    max.withX(min.x() + 1).withY(max.y() - 1).withZ(max.z() - 1)
+            ));
         }
-        if (min.y() != max.y() && min.x() != max.x()) {
-            if (flags[2]) // North face
-                edges.add(new CuboidRegion(
-                        min.withX(min.x() + 1).withY(min.y() + 1).withZ(min.z()),
-                        max.withX(max.x() - 1).withY(max.y() - 1).withZ(min.z())
-                ));
-            if (flags[3]) // South face
-                edges.add(new CuboidRegion(
-                        min.withX(min.x() + 1).withY(min.y() + 1).withZ(max.z()),
-                        max.withX(max.x() - 1).withY(max.y() - 1).withZ(max.z())
-                ));
+        if (flags[1]) { // East face
+            edges.add(new CuboidRegion(
+                    min.withX(max.x()).withY(min.y() + 1).withZ(min.z() + 1),
+                    max.withX(max.x()).withY(max.y() - 1).withZ(max.z() - 1)
+            ));
         }
-        if (min.x() != max.x() && min.z() != max.z()) {
-            if (flags[4]) // Ceiling face
-                edges.add(new CuboidRegion(
-                        min.withX(min.x() + 1).withY(max.y()).withZ(min.z() + 1),
-                        max.withX(max.x() - 1).withY(max.y()).withZ(max.z() - 1)
-                ));
-            if (flags[5]) // Bottom face
-                edges.add(new CuboidRegion(
-                        min.withX(min.x() + 1).withY(min.y()).withZ(min.z() + 1),
-                        max.withX(max.x() - 1).withY(min.y()).withZ(max.z() - 1)
-                ));
+        if (flags[2]) { // North face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(min.y() + 1).withZ(min.z()),
+                    max.withX(max.x() - 1).withY(max.y() - 1).withZ(min.z())
+            ));
+        }
+        if (flags[3]) { // South face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(min.y() + 1).withZ(max.z()),
+                    max.withX(max.x() - 1).withY(max.y() - 1).withZ(max.z())
+            ));
+        }
+        if (flags[4]) { // Top face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(max.y()).withZ(min.z() + 1),
+                    max.withX(max.x() - 1).withY(max.y()).withZ(max.z() - 1)
+            ));
+        }
+        if (flags[5]) { // Bottom face
+            edges.add(new CuboidRegion(
+                    min.withX(min.x() + 1).withY(min.y()).withZ(min.z() + 1),
+                    max.withX(max.x() - 1).withY(min.y()).withZ(max.z() - 1)
+            ));
         }
     }
 
     /**
-     * Adds the vertical edges
-     *
+     * Draws the vertical edges
      * @param edges - set of edges to add the edges drawn
-     * @param min   - min point
-     * @param max   - max point
+     * @param min - min point
+     * @param max - max point
      */
     private void getVerticalEdges(Set<Region> edges, BlockVector3 min, BlockVector3 max) {
         edges.add(new CuboidRegion(pos1.withY(min.y()).withZ(min.z()).withX(min.x()), pos2.withY(max.y()).withZ(min.z()).withX(min.x())));
@@ -258,12 +241,11 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
     }
 
     /**
-     * Adds the horizontal edges
-     *
+     * Draws the horizontal edges
      * @param edges - set of edges to add the edges drawn
-     * @param min   - min point
-     * @param max   - max point
-     * @param y     - y correspondent to the top or bottom face
+     * @param min - min point
+     * @param max - max point
+     * @param y - y correspondent to the top or bottom face
      */
     private void getHorizontalEdges(Set<Region> edges, BlockVector3 min, BlockVector3 max, int y) {
         edges.add(new CuboidRegion(pos1.withY(y).withZ(min.z()).withX(min.x()), pos2.withY(y).withZ(min.z()).withX(max.x())));
@@ -558,7 +540,7 @@ public class CuboidRegion extends AbstractRegion implements FlatRegion {
     /**
      * Make a cuboid from the center.
      *
-     * @param origin  the origin
+     * @param origin the origin
      * @param apothem the apothem, where 0 is the minimum value to make a 1x1 cuboid
      * @return a cuboid region
      */

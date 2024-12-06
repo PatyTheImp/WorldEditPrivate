@@ -331,6 +331,29 @@ public class RegionCommands {
         return affected;
     }
 
+
+    @Command(
+            name = "/edges",
+            desc = "Build the edges of a selection"
+    )
+    @CommandPermissions("worldedit.region.edges")
+    @Logging(REGION)
+    public int edges(Actor actor, EditSession editSession, @Selection Region region,
+                     @Arg(desc = "The pattern of blocks to set")
+                     Pattern pattern,
+                     @Switch(name = 'w', desc = "fill the west face") boolean fillWest,
+                     @Switch(name = 'e', desc = "fill the east face") boolean fillEast,
+                     @Switch(name = 'n', desc = "fill the north face") boolean fillNorth,
+                     @Switch(name = 's', desc = "fill the south face") boolean fillSouth,
+                     @Switch(name = 'c', desc = "fill the ceiling") boolean fillCeiling,
+                     @Switch(name = 'f', desc = "fill the floor") boolean fillFloor) throws WorldEditException {
+
+        boolean[] flags = {fillWest, fillEast, fillNorth, fillSouth, fillCeiling, fillFloor};
+        int affected = editSession.makeCuboidEdges(region, pattern, flags);
+        actor.printInfo(TranslatableComponent.of("worldedit.edges.changed", TextComponent.of(affected)));
+        return affected;
+    }
+
     @Command(
         name = "/faces",
         aliases = { "/outline" },
