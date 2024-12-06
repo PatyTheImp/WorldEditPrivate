@@ -226,6 +226,7 @@
     "worldedit.regen.failed": "Unable to regenerate chunks. Check console for details.",
     "worldedit.walls.changed": "{0} blocks have been changed.",
     "worldedit.faces.changed": "{0} blocks have been changed.",
+    "worldedit.edges.changed": "{0} blocks have been changed.",
     "worldedit.overlay.overlaid": "{0} blocks have been overlaid.",
     "worldedit.naturalize.naturalized": "{0} block(s) have been made to look more natural.",
     "worldedit.center.changed": "Center set. ({0} blocks changed)",
