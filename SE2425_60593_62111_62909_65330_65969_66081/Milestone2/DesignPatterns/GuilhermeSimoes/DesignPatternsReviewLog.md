@@ -16,7 +16,7 @@
 - The pattern seems to be well identified.
 - Maybe in the discussion, you should identify the `EditSession` as the client class. Also point how that class creates 
   the iterator (in this case, through a for each loop).
-- 
+
 # Design Pattern 3 - Abstract Factory Pattern
 
 **Reviewer:** Daniel Agostinho
