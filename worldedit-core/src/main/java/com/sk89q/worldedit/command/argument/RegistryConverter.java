@@ -25,6 +25,7 @@ import com.sk89q.worldedit.registry.Keyed;
 import com.sk89q.worldedit.registry.Registry;
 import com.sk89q.worldedit.util.formatting.text.Component;
 import com.sk89q.worldedit.util.formatting.text.TextComponent;
+import com.sk89q.worldedit.world.animal.AnimalType;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BlockCategory;
 import com.sk89q.worldedit.world.block.BlockType;
@@ -61,6 +62,7 @@ public final class RegistryConverter<V extends Keyed> implements ArgumentConvert
             ItemCategory.class,
             BiomeType.class,
             EntityType.class,
+            AnimalType.class,
             FluidType.class,
             FluidCategory.class,
             GameMode.class,

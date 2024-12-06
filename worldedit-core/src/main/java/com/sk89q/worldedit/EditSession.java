@@ -22,6 +22,7 @@ package com.sk89q.worldedit;
 import com.google.common.collect.ImmutableList;
 import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.entity.Entity;
+import com.sk89q.worldedit.entity.metadata.EntityProperties;
 import com.sk89q.worldedit.event.extent.EditSessionEvent;
 import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.extension.platform.Capability;
@@ -104,10 +105,7 @@ import com.sk89q.worldedit.regions.shape.ArbitraryBiomeShape;
 import com.sk89q.worldedit.regions.shape.ArbitraryShape;
 import com.sk89q.worldedit.regions.shape.RegionShape;
 import com.sk89q.worldedit.regions.shape.WorldEditExpressionEnvironment;
-import com.sk89q.worldedit.util.Countable;
-import com.sk89q.worldedit.util.Direction;
-import com.sk89q.worldedit.util.SideEffectSet;
-import com.sk89q.worldedit.util.TreeGenerator;
+import com.sk89q.worldedit.util.*;
 import com.sk89q.worldedit.util.collection.BlockMap;
 import com.sk89q.worldedit.util.collection.DoubleArrayList;
 import com.sk89q.worldedit.util.eventbus.EventBus;
@@ -115,12 +113,14 @@ import com.sk89q.worldedit.util.formatting.text.TextComponent;
 import com.sk89q.worldedit.util.formatting.text.TranslatableComponent;
 import com.sk89q.worldedit.world.NullWorld;
 import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.animal.Animal;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
 import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.block.BlockTypes;
+import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldedit.world.registry.LegacyMapper;
 import org.apache.logging.log4j.Logger;
 
@@ -182,6 +182,12 @@ public class EditSession implements Extent, AutoCloseable {
             return this.displayName;
         }
     }
+
+    // String constants for messages
+    private static final String SINGLE_ANIMAL_CREATED = "An animal was created";
+    private static final String MULTIPLE_ANIMALS_CREATED = " animals were created";
+    private static final String INVALID_ANIMAL = "Not a valid animal";
+    private static final String INVALID_VARIANT = "Not a valid variant";
 
     @SuppressWarnings("ProtectedField")
     protected final World world;
@@ -829,8 +835,59 @@ public class EditSession implements Extent, AutoCloseable {
 
     @Override
     @Nullable
-    public Entity createEntity(com.sk89q.worldedit.util.Location location, BaseEntity entity) {
+    public Entity createEntity(Location location, BaseEntity entity) {
         return bypassNone.createEntity(location, entity);
+    }
+
+    /**
+     * Summons a specified number of animals inside a region
+     *
+     * @param region - selected region
+     * @param type - the type of animal
+     * @param count - number of animals
+     * @param isBaby - if the animal is a baby
+     * @param variant - the animal variant
+     * @return a message to be printed in the game chat
+     */
+    public String makeAnimals(Region region, String type, int count, boolean isBaby, String variant) {
+        String msg;
+        if (count == 1)
+            msg = SINGLE_ANIMAL_CREATED;
+        else
+            msg = count + MULTIPLE_ANIMALS_CREATED;
+        for (int i = 0; i < count; i++) {
+            Vector3 pos = getRandomPos(region);
+            Location location = new Location(bypassNone, pos);
+            BaseEntity base = new BaseEntity(new EntityType(type));
+            Animal animal = bypassNone.createAnimal(location, base);
+            if (animal == null)
+                return INVALID_ANIMAL;
+            animal.setBaby(isBaby);
+            if (variant != null && !(variant.isEmpty())) {
+                try {
+                    animal.setVariant(variant);
+                }
+                catch (java.lang.IllegalArgumentException e) {
+                    msg = INVALID_VARIANT;
+                }
+            }
+        }
+        return msg;
+    }
+
+    /**
+     * Generates a random position inside a given region
+     * @param region
+     * @return the random position
+     */
+    private static Vector3 getRandomPos(Region region) {
+        BlockVector3 min = region.getMinimumPoint();
+        BlockVector3 max = region.getMaximumPoint();
+        return Vector3.at(0,1,0).add(
+                min.x() + Math.random() * (max.x() - min.x()),
+                min.y() + Math.random() * (max.y() - min.y()),
+                min.z() + Math.random() * (max.z() - min.z())
+        );
     }
 
     /**
@@ -2729,7 +2786,6 @@ public class EditSession implements Extent, AutoCloseable {
      * @return number of blocks affected
      */
     public int raiseBlocks(Region region, int height, BlockType block) throws MaxChangedBlocksException {
-        // TO-DO
         BlockState state = block.getDefaultState();
         Collection<BaseBlock> blocks = new ArrayList<>();
         blocks.add(state.toBaseBlock());
@@ -2746,12 +2802,9 @@ public class EditSession implements Extent, AutoCloseable {
                 int y = getHighestTerrainBlock(x, z, min.y(), max.y(), mask);
 
                 if (y > min.y() || getBlock(BlockVector3.at(x, y, z)).getBlockType().equals(block)) {
-                    System.out.println("enter");
                     for (int i = 0; i < height; i++) {
                         y++;
                         affected += setBlock(BlockVector3.at(x, y, z), state) ? 1 : 0;
-                        System.out.println("x: " + x + " y: " + y + " z: " + z + " affected: " + affected);
-
                     }
                 }
             }

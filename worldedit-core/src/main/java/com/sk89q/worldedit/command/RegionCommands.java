@@ -25,6 +25,7 @@ import com.sk89q.worldedit.*;
 import com.sk89q.worldedit.command.util.CommandPermissions;
 import com.sk89q.worldedit.command.util.CommandPermissionsConditionGenerator;
 import com.sk89q.worldedit.command.util.Logging;
+import com.sk89q.worldedit.command.util.WorldEditAsyncCommandBuilder;
 import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.function.GroundFunction;
@@ -54,15 +55,21 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionOperationException;
 import com.sk89q.worldedit.util.SideEffectSet;
 import com.sk89q.worldedit.util.TreeGenerator.TreeType;
+import com.sk89q.worldedit.util.formatting.component.PaginationBox;
 import com.sk89q.worldedit.util.formatting.component.TextUtils;
 import com.sk89q.worldedit.util.formatting.text.Component;
 import com.sk89q.worldedit.util.formatting.text.TextComponent;
 import com.sk89q.worldedit.util.formatting.text.TranslatableComponent;
 import com.sk89q.worldedit.world.RegenOptions;
 import com.sk89q.worldedit.world.World;
+
+import com.sk89q.worldedit.world.animal.AnimalType;
+import com.sk89q.worldedit.world.animal.AnimalVariants;
+
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockType;
+
 import org.enginehub.piston.annotation.Command;
 import org.enginehub.piston.annotation.CommandContainer;
 import org.enginehub.piston.annotation.param.Arg;
@@ -72,6 +79,7 @@ import org.enginehub.piston.annotation.param.Switch;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sk89q.worldedit.command.util.Logging.LogMode.ALL;
 import static com.sk89q.worldedit.command.util.Logging.LogMode.ORIENTATION_REGION;
@@ -115,6 +123,70 @@ public class RegionCommands {
         }
 
         return visitor.getAffected();
+    }
+
+    @Command(
+            name = "/animal",
+            desc = "Creates a number of a given animal in the selection"
+    )
+    @CommandPermissions("worldedit.region.animal")
+    @Logging(REGION)
+    public void animal(Actor actor, EditSession editSession,
+                   @Selection Region region,
+                   @Arg(desc = "The animal type")
+                           AnimalType type,
+                   @Arg(desc = "The animal count", def = "1")
+                       int count,
+                   @Arg(desc = "The animal variant", def = "")
+                       String variant,
+                   @Switch(name = 'b', desc = "Generate baby animal")
+                       boolean isBaby) {
+        checkCommandArgument(count >= 1, "Count must be >= 1");
+        checkCommandArgument(type != null, "Invalid animal type");
+
+        // If a variant is given, check if the animal has it first
+        if (variant != null && !variant.isEmpty()) {
+            List<String> variants = AnimalVariants.getInstance().getVariantsFor(type.id());
+            if (variants == null || !variants.contains(variant)) {
+                actor.printInfo(TranslatableComponent.of("Invalid variant"));
+                return;
+            }
+        }
+
+        String msg = editSession.makeAnimals(region, type.getName(), count, isBaby, variant);
+        actor.printInfo(TranslatableComponent.of(msg));
+    }
+
+    @Command(
+            name = "/variants",
+            desc = "Gets all variants of the given animal available."
+    )
+    @CommandPermissions("worldedit.region.variants")
+    @Logging(REGION)
+    public void variants(Actor actor,
+                         @Arg(desc = "The animal type")
+                         AnimalType type,
+                         @ArgFlag(name = 'p', desc = "Page number.", def = "1")
+                             int page) {
+        checkCommandArgument(type != null, "Invalid animal type");
+
+        // Checks if the animal has any variant
+        List<String> variants = AnimalVariants.getInstance().getVariantsFor(type.id());
+        String name = type.getName().substring(type.getName().indexOf(':')+1); //eliminates the "minecraft:"
+        if (variants == null || variants.isEmpty()) {
+            actor.printInfo(TranslatableComponent.of(name + " doesn't have variants"));
+            return;
+        }
+
+        // Prints in the game chat a list of variants
+        WorldEditAsyncCommandBuilder.createAndSendMessage(actor, () -> {
+            PaginationBox paginationBox =
+                    PaginationBox.fromComponents("Available " + name + " variants",
+                            "//variants " + name + " -p %page%",
+                    variants.stream().map(variant ->
+                            TextComponent.builder().append(variant).build()).collect(Collectors.toList()));
+            return paginationBox.create(page);
+        }, (Component) null);
     }
 
     @Command(
@@ -464,7 +536,7 @@ public class RegionCommands {
     )
     @CommandPermissions("worldedit.region.raise")
     @Logging(ORIENTATION_REGION)
-    public int raise(Actor actor, World world, EditSession editSession, LocalSession session,
+    public int raise(Actor actor, EditSession editSession,
                      @Selection Region region,
                      @Arg(desc = "How much to raise blocks", def = "1")
                          int height,
@@ -480,7 +552,9 @@ public class RegionCommands {
             actor.printError(e.getRichMessage());
         }
 
-        actor.printInfo(TranslatableComponent.of("worldedit.raise.changed", TextComponent.of(affected)));
+        String block_name = block.toString().replaceFirst("^minecraft:", "");
+
+        actor.printInfo(TranslatableComponent.of("Raised " + affected + " " + block_name + " blocks", TextComponent.of(affected)));
 
         return affected;
     }

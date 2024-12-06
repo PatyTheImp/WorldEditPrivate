@@ -22,14 +22,12 @@ package com.sk89q.worldedit.extent;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.entity.Entity;
-import com.sk89q.worldedit.history.change.BiomeChange3D;
-import com.sk89q.worldedit.history.change.BlockChange;
-import com.sk89q.worldedit.history.change.EntityCreate;
-import com.sk89q.worldedit.history.change.EntityRemove;
+import com.sk89q.worldedit.history.change.*;
 import com.sk89q.worldedit.history.changeset.ChangeSet;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
+import com.sk89q.worldedit.world.animal.Animal;
 import com.sk89q.worldedit.world.biome.BiomeType;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
@@ -115,6 +113,16 @@ public class ChangeSetExtent extends AbstractDelegateExtent {
         Entity entity = super.createEntity(location, state);
         if (enabled && entity != null) {
             changeSet.add(new EntityCreate(location, state, entity));
+        }
+        return entity;
+    }
+
+    @Nullable
+    @Override
+    public Animal createAnimal(Location location, BaseEntity state) {
+        Animal entity = super.createAnimal(location, state);
+        if (enabled && entity != null) {
+            changeSet.add(new AnimalCreate(location, state, entity));
         }
         return entity;
     }

@@ -4,4 +4,6 @@ Patrícia Costa
 ## Reviewer(s)
 All group members
 # User story
-As an architect, I want a tool that allows me to create frame-like faces and walls with adjustable thickness, so that I can design detailed structures, windows, doors, and decorative elements with precise control over the frame dimensions.
+<br> **As an** architect, <br>
+<br>**I want** a tool that fills the edges of a cuboid region and optionally fills specific faces,<br>
+<br>**so that** I can create structural frames, such as for windows, doors, and decorative trims, while retaining the flexibility to design additional face features as needed.<br>
