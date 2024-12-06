@@ -3,8 +3,10 @@
 2024-12-2 - 2024-12-06
 
 ## Scrum master
-Student name
+Nelson Martins
 
 ## Management info
 Burndown chart
+![GraphWeek8.png](GraphWeek8.png)
 Scrum board
+![ScrumBoardWeek8.png](ScrumBoardWeek8.png)
