@@ -6,7 +6,7 @@
 
 - **Primary actors:** Player
 
-- **Secondary actor:** Game Server
+- **Secondary actor:** None.
 
 ## Area Superpick
 
@@ -14,7 +14,7 @@
 
 - **Primary Actor:** Player
 
-- **Secondary Actor:** Game Server
+- **Secondary Actor:** None.
 
 
 ## Recursive Superpick
@@ -23,7 +23,7 @@
 
 - **Primary Actor:** Player
 
-- **Secondary Actor:** Game Server
+- **Secondary Actor:** None.
 
 # Brush Listing
 
@@ -33,7 +33,7 @@
 
 - **Primary Actor:** Player
 
-- **Secondary Actor:** Game Server
+- **Secondary Actor:** None.
 
 ## Cylinder Brush
 
@@ -41,6 +41,6 @@
 
 - **Primary Actor:** Player
 
-- **Secondary Actor:** Game Server
+- **Secondary Actor:** None.
 
 <img width="589" alt="Captura de ecrã 2024-11-13, às 17 59 05" src="https://github.com/user-attachments/assets/684befef-f4d9-4b91-87e7-7146ebd036ce">
